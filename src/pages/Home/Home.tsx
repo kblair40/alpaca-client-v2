@@ -1,7 +1,27 @@
+import { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 
+import Authenticate from "components/Authenticate";
+import useSelector from "hooks/useSelector";
+
 const Home = () => {
-  return <Box>Home</Box>;
+  const { authenticated } = useSelector((st) => st.user);
+
+  return (
+    <Box>
+      {authenticated.local ? (
+        <Box>
+          <Stuff />
+        </Box>
+      ) : (
+        <Authenticate />
+      )}
+    </Box>
+  );
 };
 
 export default Home;
+
+const Stuff = () => {
+  return <Box>GOOD TO GO</Box>;
+};

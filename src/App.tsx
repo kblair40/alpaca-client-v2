@@ -1,13 +1,13 @@
 import { Routes, Route } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 
-import useSelector from "hooks/useSelector";
+// import useSelector from "hooks/useSelector";
 import Home from "./pages/Home";
 
 function App() {
   const mainBg = useColorModeValue("#fff", "gray.900");
 
-  const { authenticated } = useSelector((st) => st.user);
+  // const { authenticated } = useSelector((st) => st.user);
 
   return (
     <Box minH="100vh" bg={mainBg}>
