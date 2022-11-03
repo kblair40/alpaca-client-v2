@@ -1,9 +1,7 @@
-import React from "react";
+import { Box } from "@chakra-ui/react";
 
-type Props = {};
-
-const Home = (props: Props) => {
-  return <div>Home</div>;
+const Home = () => {
+  return <Box>Home</Box>;
 };
 
 export default Home;
