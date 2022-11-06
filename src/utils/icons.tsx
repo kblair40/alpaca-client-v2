@@ -33,6 +33,32 @@ export const NotVisibleIcon = (props: FillProps) => {
   );
 };
 
+export const FolderIcon = (props: FillProps) => {
+  const activeFill = useIconFill(props);
+  return (
+    <Icon
+      boxSize={props.boxSize ? props.boxSize : "24px"}
+      viewBox="0 0 24 24"
+      fill={activeFill}
+    >
+      <path d="M21.75 6H12.75L9.75 3H2.25C1.00734 3 0 4.00734 0 5.25V18.75C0 19.9927 1.00734 21 2.25 21H21.75C22.9927 21 24 19.9927 24 18.75V8.25C24 7.00734 22.9927 6 21.75 6Z" />
+    </Icon>
+  );
+};
+
+export const DashboardIcon = (props: FillProps) => {
+  const activeFill = useIconFill(props);
+  return (
+    <Icon
+      boxSize={props.boxSize ? props.boxSize : "24px"}
+      viewBox="0 0 24 24"
+      fill={activeFill}
+    >
+      <path d="M23.25 18H3V3.75C3 3.33562 2.66438 3 2.25 3H0.75C0.335625 3 0 3.33562 0 3.75V19.5C0 20.3283 0.671719 21 1.5 21H23.25C23.6644 21 24 20.6644 24 20.25V18.75C24 18.3356 23.6644 18 23.25 18ZM21.75 4.5H16.2159C15.2138 4.5 14.7117 5.71172 15.4205 6.42047L16.9392 7.93922L13.5 11.3789L10.0608 7.93969C9.47484 7.35375 8.52516 7.35375 7.93969 7.93969L4.71984 11.1595C4.42688 11.4525 4.42688 11.9273 4.71984 12.2203L5.78016 13.2806C6.07312 13.5736 6.54797 13.5736 6.84094 13.2806L9 11.1211L12.4392 14.5603C13.0252 15.1462 13.9748 15.1462 14.5603 14.5603L19.0603 10.0603L20.5791 11.5791C21.2878 12.2878 22.4995 11.7858 22.4995 10.7836V5.25C22.5 4.83562 22.1644 4.5 21.75 4.5Z" />
+    </Icon>
+  );
+};
+
 export const HamburgerIcon = (props: FillProps) => {
   const activeFill = useIconFill(props);
   return (

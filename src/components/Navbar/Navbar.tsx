@@ -5,10 +5,13 @@ import {
   IconButton,
   Text,
   useColorMode,
+  useBreakpointValue,
+  Tooltip,
+  HStack,
 } from "@chakra-ui/react";
 
 import useSelector from "hooks/useSelector";
-import { HamburgerIcon } from "utils/icons";
+import { HamburgerIcon, DashboardIcon, FolderIcon } from "utils/icons";
 
 const Navbar = () => {
   const { colorMode } = useColorMode();
@@ -22,11 +25,47 @@ const Navbar = () => {
           variant="ghost"
           size="sm"
           aria-label="Menu Button"
-          icon={<HamburgerIcon boxSize="22px" />}
+          icon={<HamburgerIcon boxSize="24px" />}
         />
+
+        <HStack ml={{ base: "2rem" }} spacing="1rem">
+          <CollapseButton label="Portfolio" />
+          <CollapseButton label="Dashboard" />
+        </HStack>
       </Flex>
     </Box>
   );
 };
 
 export default Navbar;
+
+interface CollapseButtonProps {
+  label: "Dashboard" | "Portfolio";
+}
+
+const CollapseButton = ({ label }: CollapseButtonProps) => {
+  const large = () => (
+    <Button size="sm" leftIcon={icons[label]}>
+      {label}
+    </Button>
+  );
+
+  const small = () => (
+    <Tooltip label={label}>
+      <IconButton
+        size="sm"
+        icon={icons[label]}
+        aria-label={`${label} button`}
+      />
+    </Tooltip>
+  );
+
+  const button = useBreakpointValue({ base: small(), md: large() })!;
+
+  return button;
+};
+
+const icons = {
+  Dashboard: <DashboardIcon boxSize="20px" />,
+  Portfolio: <FolderIcon boxSize="20px" />,
+};
