@@ -3,6 +3,8 @@ import { Box, useColorModeValue } from "@chakra-ui/react";
 
 // import useSelector from "hooks/useSelector";
 import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
+import Portfolio from "./pages/Portfolio";
 import Navbar from "components/Navbar";
 
 function App() {
@@ -16,6 +18,8 @@ function App() {
       <Box h="100%" w="100%" position="relative">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Box>
     </Box>
