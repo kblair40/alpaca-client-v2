@@ -88,9 +88,35 @@ const AuthForm = ({ variant, onClose }: Props) => {
     } else {
       const { username, password } = formData;
       if (username.length >= 3 && password.length >= 3) {
-        // send signup request, maybe by calling signup function
+        try {
+          setLoading(true);
+          const response = await api.post("/signin", formData);
+          console.log("Signin Response:", response.data);
+
+          const { token, user } = response.data;
+
+          if (token) {
+            window.localStorage.setItem("auth-token", token);
+          }
+
+          if (user) {
+            dispatch(
+              userActions.setUserData({
+                data: user,
+                isAuthenticated: true,
+              })
+            );
+          }
+
+          setLoading(false);
+          onClose();
+        } catch (e) {
+          console.log("Failed to Sign In:", e);
+        }
+        setLoading(false);
       }
     }
+    setLoading(false);
   };
 
   const dataIsValid = () => {
