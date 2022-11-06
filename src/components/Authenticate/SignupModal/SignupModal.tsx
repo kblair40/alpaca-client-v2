@@ -1,12 +1,17 @@
+import { useState } from "react";
 import {
   Modal,
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import AuthForm from "./AuthForm";
@@ -17,22 +22,57 @@ interface Props {
 }
 
 const SignupModal = ({ isOpen, onClose }: Props) => {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const themeDependentTabStyles = {
+    _selected: {
+      borderBottomColor: useColorModeValue("blue.600", "blue.400"),
+    },
+    // _active:
+  };
+
+  const defaultTabStyles = {
+    borderBottom: "2px solid transparent",
+    fontWeight: "600",
+    fontSize: "lg",
+  };
+
+  const tabStyles = {
+    ...themeDependentTabStyles,
+    ...defaultTabStyles,
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Modal Title</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <AuthForm variant="signup" />
-        </ModalBody>
 
-        <ModalFooter>
-          <Button mr={3} onClick={onClose}>
-            Close
-          </Button>
-          <Button variant="ghost">Secondary Action</Button>
-        </ModalFooter>
+      <ModalContent pt="1.5rem">
+        <ModalHeader textAlign="center" fontSize={"2rem"} fontWeight={600}>
+          {tabIndex === 0 ? "Create an Account" : "Welcome Back"}
+        </ModalHeader>
+        <ModalCloseButton />
+
+        <ModalBody>
+          <Tabs
+            onChange={(index) => setTabIndex(index)}
+            variant="unstyled"
+            isFitted
+          >
+            <TabList>
+              <Tab {...tabStyles}>Sign Up</Tab>
+              <Tab {...tabStyles}>Log In</Tab>
+            </TabList>
+
+            <TabPanels>
+              <TabPanel>
+                <AuthForm variant="signup" onClose={onClose} />
+              </TabPanel>
+              <TabPanel>
+                <AuthForm variant="signin" onClose={onClose} />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+        </ModalBody>
       </ModalContent>
     </Modal>
   );

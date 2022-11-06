@@ -12,6 +12,7 @@ import {
   Center,
   Button,
   Stack,
+  ModalFooter,
 } from "@chakra-ui/react";
 
 import { toTitleCase } from "utils/helpers";
@@ -19,10 +20,10 @@ import api from "api";
 
 type Props = {
   variant: "signin" | "signup";
-  onSubmit?: (data: any) => void;
+  onClose: () => void;
 };
 
-const AuthForm = ({ variant, onSubmit }: Props) => {
+const AuthForm = ({ variant, onClose }: Props) => {
   let inputs =
     variant === "signup"
       ? [
@@ -35,15 +36,10 @@ const AuthForm = ({ variant, onSubmit }: Props) => {
         ]
       : ["username", "password"];
 
-  let defaultFormData: { [key: string]: string } = {};
-  inputs.forEach((inp) => {
-    defaultFormData[inp] = "";
-  });
+  const defaultFormData: { [key: string]: string } = {};
+  inputs.forEach((inp) => (defaultFormData[inp] = ""));
 
   const [formData, setFormData] = useState<any>(defaultFormData);
-  // const [formData, setFormData] = useState<any>(
-  //   inputs.map((inp) => ({ [`${inp}`]: "" }))
-  // );
 
   const handleSubmit = () => {
     console.log("FORM DATA:", formData);
@@ -51,25 +47,35 @@ const AuthForm = ({ variant, onSubmit }: Props) => {
 
   return (
     <React.Fragment>
-      {inputs.map((inp, i) => {
-        return (
-          <FormControl isRequired key={i}>
-            <FormLabel>
-              {toTitleCase(inp, inp.includes("_") ? "_" : " ")}
-            </FormLabel>
-            <Input
-              id={inp}
-              value={formData[inp]}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  [`${inp}`]: e.target.value,
-                })
-              }
-            />
-          </FormControl>
-        );
-      })}
+      <Stack spacing="12px">
+        {inputs.map((inp, i) => {
+          return (
+            <FormControl isRequired key={i}>
+              <FormLabel fontWeight={500}>
+                {toTitleCase(inp, inp.includes("_") ? "_" : " ")}
+              </FormLabel>
+
+              <Input
+                id={inp}
+                value={formData[inp]}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    [`${inp}`]: e.target.value,
+                  })
+                }
+              />
+            </FormControl>
+          );
+        })}
+      </Stack>
+
+      <ModalFooter>
+        <Button mr={3} onClick={onClose}>
+          Close
+        </Button>
+        <Button variant="ghost">Secondary Action</Button>
+      </ModalFooter>
     </React.Fragment>
   );
 };
