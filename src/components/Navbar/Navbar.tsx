@@ -20,6 +20,7 @@ import {
   FolderIcon,
   SearchIcon,
 } from "utils/icons";
+import AvatarMenu from "./AvatarMenu";
 
 const Navbar = () => {
   const { colorMode } = useColorMode();
@@ -30,6 +31,7 @@ const Navbar = () => {
     <Box h="60px" position="fixed" top={0} left={0} right={0} bg={bg}>
       <Flex h="100%" w="100%" align="center" px={{ base: "1.5rem" }}>
         <IconButton
+          display={{ md: "none" }}
           variant="ghost"
           size="sm"
           aria-label="Menu Button"
@@ -43,6 +45,10 @@ const Navbar = () => {
 
         <Box ml="2rem" flex={1}>
           <SearchInput isDark={isDark} />
+        </Box>
+
+        <Box ml="2rem">
+          <AvatarMenu />
         </Box>
       </Flex>
     </Box>
