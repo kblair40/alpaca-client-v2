@@ -15,6 +15,8 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 
+import useDispatch from "hooks/useDispatch";
+import { userActions } from "store/userSlice";
 import { toTitleCase } from "utils/helpers";
 import api from "api";
 
@@ -40,19 +42,48 @@ const fields = {
 const AuthForm = ({ variant, onClose }: Props) => {
   let inputs = fields[variant];
 
+  const dispatch = useDispatch();
+
   const defaultFormData: FormData = {};
   inputs.forEach((inp) => (defaultFormData[inp] = ""));
 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [errors, setErrors] = useState<FormData>(defaultFormData);
+  const [serverError, setServerError] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("FORM DATA:", formData);
     if (variant === "signup") {
       console.log("SIGNUP");
       if (dataIsValid()) {
         console.log("Data is valid");
+        try {
+          setLoading(true);
+          const response = await api.post("/signup", formData);
+          console.log("SIGNUP RESPONSE:", response.data);
+
+          const { token, user } = response.data;
+
+          if (token) {
+            window.localStorage.setItem("auth-token", token);
+          }
+
+          if (user) {
+            dispatch(
+              userActions.setUserData({
+                data: user,
+                isAuthenticated: true,
+              })
+            );
+          }
+
+          setLoading(false);
+          onClose();
+        } catch (e) {
+          console.log("FAILED TO SIGNUP:", e);
+        }
+        setLoading(false);
       }
     } else {
       const { username, password } = formData;
@@ -62,17 +93,9 @@ const AuthForm = ({ variant, onClose }: Props) => {
     }
   };
 
-  const signup = async () => {
-    //
-  };
-
-  const signin = async () => {
-    //
-  };
-
   const dataIsValid = () => {
     const data = { ...formData };
-    const formErrors = { ...errors };
+    const formErrors = { ...defaultFormData };
 
     const {
       password,
@@ -82,6 +105,12 @@ const AuthForm = ({ variant, onClose }: Props) => {
       last_name,
       email,
     } = data;
+
+    console.log(
+      "passwords:",
+      { password, confirm_password },
+      password === confirm_password
+    );
 
     const passwordsMatch = password === confirm_password;
     if (!passwordsMatch) {

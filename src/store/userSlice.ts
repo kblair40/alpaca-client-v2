@@ -4,7 +4,6 @@ const userSlice = createSlice({
   name: "userAuth",
   initialState: {
     data: {},
-    isAuthenticated: false,
     authenticated: {
       local: Boolean(window.localStorage.getItem("auth-token")),
       alpaca: Boolean(window.localStorage.getItem("alpaca-token")),
@@ -16,11 +15,11 @@ const userSlice = createSlice({
       state.data = data;
 
       if (isAuthenticated !== undefined) {
-        state.isAuthenticated = isAuthenticated;
+        state.authenticated.local = isAuthenticated;
       }
     },
     setIsAuthenticated(state, action) {
-      state.isAuthenticated = action.payload.data;
+      state.authenticated.local = action.payload.data;
     },
   },
 });
