@@ -117,6 +117,23 @@ export const HamburgerIcon = (props: FillProps) => {
     </Icon>
   );
 };
+
+export const ExclamationIcon = (props: FillProps) => {
+  const activeFill = useIconFill(props);
+  return (
+    <Icon
+      boxSize={props.boxSize ? props.boxSize : "24px"}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path
+        d="M15.75 20.25C15.75 22.3177 14.0677 24 12 24C9.93225 24 8.25 22.3177 8.25 20.25C8.25 18.1823 9.93225 16.5 12 16.5C14.0677 16.5 15.75 18.1823 15.75 20.25ZM8.68406 1.1812L9.32156 13.9312C9.35152 14.5299 9.84567 15 10.4452 15H13.5548C14.1543 15 14.6485 14.5299 14.6784 13.9312L15.3159 1.1812C15.348 0.538594 14.8358 0 14.1923 0H9.80766C9.16425 0 8.65195 0.538594 8.68406 1.1812Z"
+        fill={activeFill}
+      />
+    </Icon>
+  );
+};
+
 export const AlpacaLogoIcon = (props: FillProps) => {
   return (
     <Icon
