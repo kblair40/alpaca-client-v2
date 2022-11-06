@@ -20,6 +20,7 @@ import {
   SearchIcon,
 } from "utils/icons";
 import AvatarMenu from "./AvatarMenu";
+import AuthButtons from "./AuthButtons";
 
 const Navbar = () => {
   const { colorMode } = useColorMode();
@@ -53,7 +54,8 @@ const Navbar = () => {
         </Flex>
 
         <Box ml="2rem">
-          <AvatarMenu />
+          {/* <AvatarMenu /> */}
+          <AuthButtons />
         </Box>
       </Flex>
     </Box>

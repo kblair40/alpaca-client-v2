@@ -19,9 +19,10 @@ import AuthForm from "./AuthForm";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
+  defaultTab?: number;
 }
 
-const SignupModal = ({ isOpen, onClose }: Props) => {
+const SignupModal = ({ isOpen, onClose, defaultTab = 0 }: Props) => {
   const [tabIndex, setTabIndex] = useState(0);
 
   const themeDependentTabStyles = {
@@ -58,6 +59,7 @@ const SignupModal = ({ isOpen, onClose }: Props) => {
           <Tabs
             onChange={(index) => setTabIndex(index)}
             variant="unstyled"
+            defaultIndex={defaultTab}
             isFitted
           >
             <TabList>
