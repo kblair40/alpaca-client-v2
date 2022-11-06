@@ -8,10 +8,18 @@ import {
   useBreakpointValue,
   Tooltip,
   HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
 
 import useSelector from "hooks/useSelector";
-import { HamburgerIcon, DashboardIcon, FolderIcon } from "utils/icons";
+import {
+  HamburgerIcon,
+  DashboardIcon,
+  FolderIcon,
+  SearchIcon,
+} from "utils/icons";
 
 const Navbar = () => {
   const { colorMode } = useColorMode();
@@ -32,6 +40,10 @@ const Navbar = () => {
           <CollapseButton label="Portfolio" />
           <CollapseButton label="Dashboard" />
         </HStack>
+
+        <Box ml="2rem" flex={1}>
+          <SearchInput isDark={isDark} />
+        </Box>
       </Flex>
     </Box>
   );
@@ -68,4 +80,28 @@ const CollapseButton = ({ label }: CollapseButtonProps) => {
 const icons = {
   Dashboard: <DashboardIcon boxSize="20px" />,
   Portfolio: <FolderIcon boxSize="20px" />,
+};
+
+const SearchInput = ({ isDark }: { isDark: boolean }) => {
+  const placeholderColor = isDark ? "gray.300" : "gray.500";
+  return (
+    <InputGroup>
+      <InputLeftElement
+        h="36px"
+        children={<SearchIcon boxSize="16px" />}
+        pointerEvents="none"
+      />
+      <Input
+        h="36px"
+        borderRadius="6px"
+        _placeholder={{
+          color: placeholderColor,
+          fontSize: "sm",
+          position: "relative",
+          bottom: "1px",
+        }}
+        placeholder="Search for stocks or indexes"
+      />
+    </InputGroup>
+  );
 };
