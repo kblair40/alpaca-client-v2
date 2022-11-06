@@ -18,6 +18,7 @@ import {
   DashboardIcon,
   FolderIcon,
   SearchIcon,
+  AlpacaLogoIcon,
 } from "utils/icons";
 import AvatarMenu from "./AvatarMenu";
 import AuthButtons from "./AuthButtons";
@@ -47,6 +48,7 @@ const Navbar = () => {
         />
 
         <HStack ml={{ base: "2rem", md: 0 }} spacing="1rem">
+          <AlpacaLogoIcon boxSize="24px" />
           <CollapseButton label="Portfolio" />
           <CollapseButton label="Dashboard" />
         </HStack>
