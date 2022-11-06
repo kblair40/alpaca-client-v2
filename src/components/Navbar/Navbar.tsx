@@ -26,6 +26,8 @@ const Navbar = () => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
+  const { authenticated } = useSelector((st) => st.user);
+
   const bg = isDark ? "gray.800" : "gray.50";
   return (
     <Box h="60px" position="fixed" top={0} left={0} right={0} bg={bg}>
@@ -54,8 +56,11 @@ const Navbar = () => {
         </Flex>
 
         <Box ml="2rem">
-          {/* <AvatarMenu /> */}
-          <AuthButtons />
+          {authenticated && authenticated.local ? (
+            <AvatarMenu />
+          ) : (
+            <AuthButtons />
+          )}
         </Box>
       </Flex>
     </Box>
