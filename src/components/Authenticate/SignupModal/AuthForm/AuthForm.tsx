@@ -23,26 +23,58 @@ type Props = {
   onClose: () => void;
 };
 
-const AuthForm = ({ variant, onClose }: Props) => {
-  let inputs =
-    variant === "signup"
-      ? [
-          "first_name",
-          "last_name",
-          "username",
-          "email",
-          "password",
-          "confirm_password",
-        ]
-      : ["username", "password"];
+type FormData = { [key: string]: string };
 
-  const defaultFormData: { [key: string]: string } = {};
+const fields = {
+  signup: [
+    "first_name",
+    "last_name",
+    "username",
+    "email",
+    "password",
+    "confirm_password",
+  ],
+  signin: ["username", "password"],
+};
+
+const AuthForm = ({ variant, onClose }: Props) => {
+  let inputs = fields[variant];
+
+  const defaultFormData: FormData = {};
   inputs.forEach((inp) => (defaultFormData[inp] = ""));
 
-  const [formData, setFormData] = useState<any>(defaultFormData);
+  const [formData, setFormData] = useState<FormData>(defaultFormData);
+  const [errors, setErrors] = useState<FormData>(defaultFormData);
 
   const handleSubmit = () => {
     console.log("FORM DATA:", formData);
+    if (variant === "signup") {
+      console.log("SIGNUP");
+      if (dataIsValid()) {
+        console.log("Data is valid");
+      }
+    } else {
+      const { username, password } = formData;
+      if (username.length >= 3 && password.length >= 3) {
+        // send signup request, maybe by calling signup function
+      }
+    }
+  };
+
+  const signup = async () => {
+    //
+  };
+
+  const signin = async () => {
+    //
+  };
+
+  const dataIsValid = () => {
+    const data = { ...formData };
+
+    // const passwordsMatch =
+
+    return true;
   };
 
   return (
