@@ -76,7 +76,7 @@ const AuthForm = ({ variant, onClose }: Props) => {
         px={0}
         mt="1.5rem"
       >
-        <Button onClick={onClose} rounded="full">
+        <Button onClick={onClose} rounded="full" variant="solid-blue">
           {variant === "signup" ? "Sign Up" : "Log In"}
         </Button>
         <Button mt=".5rem" variant="ghost" rounded="full" onClick={onClose}>

@@ -42,15 +42,17 @@ const SignupModal = ({ isOpen, onClose }: Props) => {
     ...defaultTabStyles,
   };
 
+  const modalBg = useColorModeValue("gray.50", "gray.800");
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
 
-      <ModalContent pt="1.5rem">
+      <ModalContent pt="1.5rem" bg={modalBg}>
         <ModalHeader textAlign="center" fontSize={"1.75rem"} fontWeight={600}>
           {tabIndex === 0 ? "Create an Account" : "Welcome Back"}
         </ModalHeader>
-        <ModalCloseButton />
+        <ModalCloseButton rounded="full" top="1rem" />
 
         <ModalBody>
           <Tabs
