@@ -13,8 +13,12 @@ import {
   Button,
   Stack,
   ModalFooter,
+  InputGroup,
+  InputRightElement,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
+import { VisibleIcon, NotVisibleIcon } from "utils/icons";
 import useDispatch from "hooks/useDispatch";
 import { userActions } from "store/userSlice";
 import { toTitleCase } from "utils/helpers";
@@ -51,6 +55,8 @@ const AuthForm = ({ variant, onClose }: Props) => {
   const [formData, setFormData] = useState<FormData>(defaultFormData);
   const [errors, setErrors] = useState<FormData>(defaultFormData);
   const [serverError, setServerError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = async () => {
     console.log("FORM DATA:", formData);
@@ -172,6 +178,10 @@ const AuthForm = ({ variant, onClose }: Props) => {
     return true;
   };
 
+  const lightIconBg = { hover: "gray.50", active: "gray.100" };
+  const darkIconBg = { hover: "gray.700", active: "gray.600" };
+  const iconBg = useColorModeValue(lightIconBg, darkIconBg);
+
   return (
     <React.Fragment>
       <Stack spacing="12px">
@@ -182,16 +192,62 @@ const AuthForm = ({ variant, onClose }: Props) => {
                 {toTitleCase(inp, inp.includes("_") ? "_" : " ")}
               </FormLabel>
 
-              <Input
-                id={inp}
-                value={formData[inp]}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    [`${inp}`]: e.target.value,
-                  })
-                }
-              />
+              {!inp.includes("password") ? (
+                <Input
+                  id={inp}
+                  type="text"
+                  value={formData[inp]}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      [`${inp}`]: e.target.value,
+                    })
+                  }
+                />
+              ) : (
+                <InputGroup>
+                  <Input
+                    overflow="hidden"
+                    id={inp}
+                    value={formData[inp]}
+                    type={
+                      inp === "password" && showPassword
+                        ? "text"
+                        : inp === "confirm_password" && showConfirmPassword
+                        ? "text"
+                        : "password"
+                    }
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        [`${inp}`]: e.target.value,
+                      })
+                    }
+                  />
+                  <InputRightElement
+                    borderRadius="0 6px 6px 0"
+                    children={
+                      (inp === "password" && !showPassword) ||
+                      (inp === "confirm_password" && !showConfirmPassword) ? (
+                        <VisibleIcon />
+                      ) : (
+                        <NotVisibleIcon />
+                      )
+                    }
+                    transition="background-color 0.3s"
+                    cursor="pointer"
+                    _hover={{ bg: iconBg.hover }}
+                    _active={{ bg: iconBg.active }}
+                    onClick={() => {
+                      if (inp === "password") {
+                        setShowPassword((prev) => !prev);
+                      } else {
+                        setShowConfirmPassword((prev) => !prev);
+                      }
+                    }}
+                  />
+                </InputGroup>
+              )}
             </FormControl>
           );
         })}
