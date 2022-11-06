@@ -3,7 +3,6 @@ import {
   Flex,
   Button,
   IconButton,
-  Text,
   useColorMode,
   useBreakpointValue,
   Tooltip,
@@ -29,7 +28,13 @@ const Navbar = () => {
   const bg = isDark ? "gray.800" : "gray.50";
   return (
     <Box h="60px" position="fixed" top={0} left={0} right={0} bg={bg}>
-      <Flex h="100%" w="100%" align="center" px={{ base: "1.5rem" }}>
+      <Flex
+        h="100%"
+        w="100%"
+        align="center"
+        px={{ base: "1.5rem" }}
+        justify="space-between"
+      >
         <IconButton
           display={{ md: "none" }}
           variant="ghost"
@@ -38,14 +43,14 @@ const Navbar = () => {
           icon={<HamburgerIcon boxSize="24px" />}
         />
 
-        <HStack ml={{ base: "2rem" }} spacing="1rem">
+        <HStack ml={{ base: "2rem", md: 0 }} spacing="1rem">
           <CollapseButton label="Portfolio" />
           <CollapseButton label="Dashboard" />
         </HStack>
 
-        <Box ml="2rem" flex={1}>
+        <Flex ml="2rem" flex={1} justify="center">
           <SearchInput isDark={isDark} />
-        </Box>
+        </Flex>
 
         <Box ml="2rem">
           <AvatarMenu />
@@ -91,7 +96,7 @@ const icons = {
 const SearchInput = ({ isDark }: { isDark: boolean }) => {
   const placeholderColor = isDark ? "gray.300" : "gray.500";
   return (
-    <InputGroup>
+    <InputGroup maxW="400px">
       <InputLeftElement
         h="36px"
         children={<SearchIcon boxSize="16px" />}

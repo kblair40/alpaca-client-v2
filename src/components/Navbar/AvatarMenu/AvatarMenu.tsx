@@ -19,8 +19,6 @@ const AvatarMenu = () => {
 
   const chevronFill = useColorModeValue("gray.500", "gray.400");
 
-  const svgClass = isOpen ? "menu_open" : "menu_closed";
-
   return (
     <Menu onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
       <MenuButton h="36px">
