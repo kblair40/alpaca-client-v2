@@ -99,9 +99,9 @@ const theme = extendTheme({
       baseStyle: {
         _disabled: { _hover: { bg: "unset" } },
       },
-      defaultProps: {
-        variant: "solid-neutral",
-      },
+      // defaultProps: {
+      //   variant: "solid-neutral",
+      // },
     },
   },
   fonts: {
