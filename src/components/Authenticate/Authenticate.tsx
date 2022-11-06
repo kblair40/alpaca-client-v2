@@ -8,10 +8,7 @@ const Authenticate = () => {
 
   return (
     <React.Fragment>
-      <Center
-        h="calc(100vh - 60px)"
-        // border="1px solid white"
-      >
+      <Center h="calc(100vh - 60px)">
         <Button variant="solid-blue" onClick={() => setShowModal(true)}>
           Sign In / Sign Up
         </Button>
