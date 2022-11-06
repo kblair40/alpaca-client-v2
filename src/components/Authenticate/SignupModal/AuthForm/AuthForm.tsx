@@ -14,6 +14,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 
+import { toTitleCase } from "utils/helpers";
 import api from "api";
 
 type Props = {
@@ -53,7 +54,9 @@ const AuthForm = ({ variant, onSubmit }: Props) => {
       {inputs.map((inp, i) => {
         return (
           <FormControl isRequired key={i}>
-            <FormLabel>{inp}</FormLabel>
+            <FormLabel>
+              {toTitleCase(inp, inp.includes("_") ? "_" : " ")}
+            </FormLabel>
             <Input
               id={inp}
               value={formData[inp]}
