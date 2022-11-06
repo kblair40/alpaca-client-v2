@@ -70,11 +70,18 @@ const AuthForm = ({ variant, onClose }: Props) => {
         })}
       </Stack>
 
-      <ModalFooter>
-        <Button mr={3} onClick={onClose}>
-          Close
+      <ModalFooter
+        flexDirection="column"
+        alignItems="stretch"
+        px={0}
+        mt="1.5rem"
+      >
+        <Button onClick={onClose} rounded="full">
+          {variant === "signup" ? "Sign Up" : "Log In"}
         </Button>
-        <Button variant="ghost">Secondary Action</Button>
+        <Button mt=".5rem" variant="ghost" rounded="full" onClick={onClose}>
+          Cancel
+        </Button>
       </ModalFooter>
     </React.Fragment>
   );

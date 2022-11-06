@@ -47,7 +47,7 @@ const SignupModal = ({ isOpen, onClose }: Props) => {
       <ModalOverlay />
 
       <ModalContent pt="1.5rem">
-        <ModalHeader textAlign="center" fontSize={"2rem"} fontWeight={600}>
+        <ModalHeader textAlign="center" fontSize={"1.75rem"} fontWeight={600}>
           {tabIndex === 0 ? "Create an Account" : "Welcome Back"}
         </ModalHeader>
         <ModalCloseButton />
@@ -64,7 +64,10 @@ const SignupModal = ({ isOpen, onClose }: Props) => {
             </TabList>
 
             <TabPanels>
-              <TabPanel>
+              <TabPanel
+                pt="1.5rem"
+                //
+              >
                 <AuthForm variant="signup" onClose={onClose} />
               </TabPanel>
               <TabPanel>
