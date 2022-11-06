@@ -3,6 +3,7 @@ import { Box, useColorModeValue } from "@chakra-ui/react";
 
 // import useSelector from "hooks/useSelector";
 import Home from "./pages/Home";
+import Navbar from "components/Navbar";
 
 function App() {
   const mainBg = useColorModeValue("#fff", "gray.900");
@@ -11,6 +12,7 @@ function App() {
 
   return (
     <Box minH="100vh" bg={mainBg}>
+      <Navbar />
       <Box h="100%" w="100%" position="relative">
         <Routes>
           <Route path="/" element={<Home />} />

@@ -23,5 +23,5 @@ const Home = () => {
 export default Home;
 
 const Stuff = () => {
-  return <Box>GOOD TO GO</Box>;
+  return <Box />;
 };
