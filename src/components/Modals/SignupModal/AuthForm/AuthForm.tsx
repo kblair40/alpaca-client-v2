@@ -186,6 +186,7 @@ const AuthForm = ({ variant, onClose }: Props) => {
   const lightIconBg = { hover: "gray.50", active: "gray.100" };
   const darkIconBg = { hover: "gray.700", active: "gray.600" };
   const iconBg = useColorModeValue(lightIconBg, darkIconBg);
+  const errorTextColor = useColorModeValue("red.600", "red.300");
 
   return (
     <React.Fragment>
@@ -259,7 +260,11 @@ const AuthForm = ({ variant, onClose }: Props) => {
               )}
 
               {errors[inp] && (
-                <FormErrorMessage>{errors[inp]}</FormErrorMessage>
+                <FormErrorMessage
+                // color={errorTextColor}
+                >
+                  {errors[inp]}
+                </FormErrorMessage>
               )}
             </FormControl>
           );
@@ -270,9 +275,20 @@ const AuthForm = ({ variant, onClose }: Props) => {
         flexDirection="column"
         alignItems="stretch"
         px={0}
-        mt="1.5rem"
+        mt="4px"
         pb={0}
       >
+        <Text
+          fontSize="sm"
+          fontWeight="500"
+          color={errorTextColor}
+          textAlign="center"
+          mb=".5rem"
+          h="21px"
+        >
+          {serverError}
+        </Text>
+
         <Button
           isLoading={loading}
           onClick={handleSubmit}
