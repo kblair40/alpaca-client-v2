@@ -39,7 +39,7 @@ const Navbar = () => {
     dispatch(userActions.logoutLocal());
   };
 
-  const bg = isDark ? "gray.800" : "gray.50";
+  const bg = isDark ? "gray.900" : "gray.50";
   return (
     <Box h="60px" position="fixed" top={0} left={0} right={0} bg={bg}>
       <Flex
@@ -63,8 +63,16 @@ const Navbar = () => {
               <AlpacaButton />
             </Box>
           )}
-          <CollapseButton label="Portfolio" isDisabled={!isAuthenticated} />
-          <CollapseButton label="Dashboard" isDisabled={!isAuthenticated} />
+          <CollapseButton
+            label="Portfolio"
+            isDisabled={!isAuthenticated}
+            isDark={isDark}
+          />
+          <CollapseButton
+            label="Dashboard"
+            isDisabled={!isAuthenticated}
+            isDark={isDark}
+          />
         </HStack>
 
         <Flex ml="2rem" flex={1} justify="center">
@@ -88,12 +96,25 @@ export default Navbar;
 interface CollapseButtonProps {
   label: "Dashboard" | "Portfolio";
   isDisabled: boolean;
+  isDark?: boolean;
 }
 
-const CollapseButton = ({ label, isDisabled }: CollapseButtonProps) => {
+const CollapseButton = ({ label, isDisabled, isDark }: CollapseButtonProps) => {
+  const bg = isDark ? "gray.900" : "white";
+  const hoverBg = isDark ? "gray.800" : "gray.50";
+  const activeBg = isDark ? "gray.700" : "gray.100";
+
+  const btnProps = {
+    bg,
+    _hover: { bg: hoverBg },
+    _active: { bg: activeBg },
+    size: "sm",
+    isDisabled,
+  };
+
   const large = () => (
     <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
-      <Button size="sm" leftIcon={icons[label]} isDisabled={isDisabled}>
+      <Button leftIcon={icons[label]} {...btnProps}>
         {label}
       </Button>
     </Tooltip>
@@ -102,10 +123,9 @@ const CollapseButton = ({ label, isDisabled }: CollapseButtonProps) => {
   const small = () => (
     <Tooltip label={!isDisabled ? label : "You must be signed in"}>
       <IconButton
-        size="sm"
         icon={icons[label]}
         aria-label={`${label} button`}
-        isDisabled={isDisabled}
+        {...btnProps}
       />
     </Tooltip>
   );
@@ -122,7 +142,7 @@ const icons = {
 
 interface SearchProps {
   isDark: boolean;
-  isDisabled?: boolean;
+  isDisabled: boolean;
 }
 
 const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
