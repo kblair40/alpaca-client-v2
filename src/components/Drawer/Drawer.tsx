@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  useBreakpointValue,
-  useColorMode,
-  Box,
-} from "@chakra-ui/react";
+import { Button, useColorMode, Box } from "@chakra-ui/react";
 
 import DrawerWrapper from "./DrawerWrapper";
 import "./Drawer.css";
