@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, useColorMode, Box } from "@chakra-ui/react";
 
 import DrawerWrapper from "./DrawerWrapper";
-import "./Drawer.css";
 
 const Drawer = () => {
   const { colorMode } = useColorMode();
