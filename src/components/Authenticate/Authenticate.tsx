@@ -11,7 +11,6 @@ const Authenticate = () => {
         left={0}
         right={0}
         w="100%"
-        zIndex={1000}
       >
         <Flex
           flexDirection="column"

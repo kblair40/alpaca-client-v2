@@ -7,9 +7,9 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
-  Button,
   Box,
   useColorModeValue,
+  Portal,
 } from "@chakra-ui/react";
 
 import { ChevronDownIcon } from "utils/icons";
@@ -42,12 +42,14 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
         </Flex>
       </MenuButton>
 
-      <MenuList>
-        <MenuItem>Settings</MenuItem>
-        <MenuItem>Account</MenuItem>
-        <MenuDivider />
-        <MenuItem onClick={onClickLogout}>Log Out</MenuItem>
-      </MenuList>
+      <Portal>
+        <MenuList>
+          <MenuItem>Settings</MenuItem>
+          <MenuItem>Account</MenuItem>
+          <MenuDivider />
+          <MenuItem onClick={onClickLogout}>Log Out</MenuItem>
+        </MenuList>
+      </Portal>
     </Menu>
   );
 };

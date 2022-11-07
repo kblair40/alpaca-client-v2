@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Box } from "@chakra-ui/react";
 
 import Authenticate from "components/Authenticate";
