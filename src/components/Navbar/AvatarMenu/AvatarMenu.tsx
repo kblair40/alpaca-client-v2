@@ -22,9 +22,14 @@ type Props = {
 const AvatarMenu = ({ onClickLogout }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { authenticated } = useSelector((st) => st.user);
+  const { authenticated, data } = useSelector((st) => st.user);
 
   const chevronFill = useColorModeValue("gray.500", "gray.400");
+  const menuBg = useColorModeValue("gray.50", "gray.800");
+
+  const itemStyles = {
+    fontWeight: 500,
+  };
 
   return (
     <Menu onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
@@ -38,7 +43,14 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
             },
           }}
         >
-          <Avatar size="sm" mr=".5rem" boxSize="36px" />
+          <Avatar
+            size="sm"
+            mr=".5rem"
+            boxSize="36px"
+            src={
+              data && data.avatar_image_url ? data.avatar_image_url : undefined
+            }
+          />
           <Box className="icon_wrapper">
             <ChevronDownIcon boxSize="1rem" fill={chevronFill} />
           </Box>
@@ -46,16 +58,17 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
       </MenuButton>
 
       <Portal>
-        <MenuList>
+        <MenuList bg={menuBg}>
           {authenticated.local && (
             <React.Fragment>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Account</MenuItem>
+              <MenuItem {...itemStyles}>Settings</MenuItem>
+              <MenuItem {...itemStyles}>Account</MenuItem>
               <MenuDivider />
             </React.Fragment>
           )}
 
           <MenuItem
+            {...itemStyles}
             onClick={
               authenticated.local
                 ? onClickLogout
