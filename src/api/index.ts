@@ -7,10 +7,10 @@ const api = axios.create({
 api.interceptors.request.use(
   // called everytime we make a request
   async (config) => {
-    const my_token = await window.localStorage.getItem("auth-token");
+    const token = await window.localStorage.getItem("auth-token");
 
-    if (my_token) {
-      config.headers!.Authorization = `Bearer ${my_token}`;
+    if (token) {
+      config.headers!.Authorization = `Bearer ${token}`;
     }
     return config;
   },

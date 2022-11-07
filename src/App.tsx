@@ -34,13 +34,7 @@ function App() {
   return (
     <Box minH="100vh" bg={mainBg}>
       <Navbar />
-      <Box
-        h="calc(100vh - 60px)"
-        w="100%"
-        position="relative"
-        top="60px"
-        // border="1px solid red"
-      >
+      <Box h="calc(100vh - 60px)" w="100%" position="relative" top="60px">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />

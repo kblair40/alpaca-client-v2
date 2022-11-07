@@ -4,22 +4,20 @@ import api from "api";
 
 export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   const isAuthenticated = !!window.localStorage.getItem("auth-token");
-  if (!isAuthenticated) {
-    return {};
-  }
-
-  try {
-    const response = await api.get(`/user`);
-    console.log("\n\nUSER RESPONSE:", response.data, "\n\n");
-    if (response && response.data) {
-      return response.data;
-    } else {
-      return {};
+  let res = {};
+  if (isAuthenticated) {
+    try {
+      const response = await api.get(`/user`);
+      // console.log("USER DATA:", response.data);
+      if (response && response.data) {
+        res = response.data;
+      }
+    } catch (err) {
+      console.log("FAILED:", err);
+      return null;
     }
-  } catch (err) {
-    console.error("FAILED:", err);
-    return null;
   }
+  return res;
 });
 
 type SliceState = {
@@ -70,13 +68,16 @@ const userSlice = createSlice({
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        console.log("\n\nUSER DATA DATA:", data);
+        // console.log("\n\nUSER DATA DATA:", data);
 
-        if (!data) {
-          return;
+        if (data) {
+          state.data = data;
+        } else {
+          state.error = true;
+          state.status = "failed";
         }
       })
-      .addCase(fetchUser.rejected, (state, action) => {
+      .addCase(fetchUser.rejected, (state) => {
         state.status = "failed";
         state.error = true;
       });
