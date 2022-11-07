@@ -178,6 +178,11 @@ const AuthForm = ({ variant, onClose }: Props) => {
     return true;
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    console.log("KEY:", e.key);
+    if (e.key === "Enter") handleSubmit();
+  };
+
   const lightIconBg = { hover: "gray.50", active: "gray.100" };
   const darkIconBg = { hover: "gray.700", active: "gray.600" };
   const iconBg = useColorModeValue(lightIconBg, darkIconBg);
@@ -197,6 +202,7 @@ const AuthForm = ({ variant, onClose }: Props) => {
                   id={inp}
                   type="text"
                   value={formData[inp]}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -209,6 +215,8 @@ const AuthForm = ({ variant, onClose }: Props) => {
                   <Input
                     overflow="hidden"
                     id={inp}
+                    onKeyDown={handleKeyDown}
+                    // onKeyDown={inp === "password" ? handleKeyPress : undefined}
                     value={formData[inp]}
                     type={
                       inp === "password" && showPassword
