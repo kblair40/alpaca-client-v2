@@ -1,7 +1,8 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { Box, useColorModeValue } from "@chakra-ui/react";
 
-// import useSelector from "hooks/useSelector";
+import useSelector from "hooks/useSelector";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Portfolio from "./pages/Portfolio";
@@ -10,7 +11,14 @@ import Navbar from "components/Navbar";
 function App() {
   const mainBg = useColorModeValue("#fff", "gray.900");
 
-  // const { authenticated } = useSelector((st) => st.user);
+  const { authenticated } = useSelector((st) => st.user);
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!authenticated.local) {
+      navigate("/");
+    }
+  }, [authenticated]);
 
   return (
     <Box minH="100vh" bg={mainBg}>

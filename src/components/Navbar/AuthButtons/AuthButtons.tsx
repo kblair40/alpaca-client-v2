@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import { Button, HStack } from "@chakra-ui/react";
 
-import SignupModal from "components/Authenticate/SignupModal";
+import SignupModal from "components/Modals/SignupModal";
 
 const AuthButtons = () => {
   const [authModalOpen, setAuthModalOpen] = useState(false);

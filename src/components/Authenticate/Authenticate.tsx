@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Flex, Text, Button, Center } from "@chakra-ui/react";
 
-import SignupModal from "./SignupModal";
+import SignupModal from "../Modals/SignupModal";
 
 const Authenticate = () => {
   const [showModal, setShowModal] = useState(false);
