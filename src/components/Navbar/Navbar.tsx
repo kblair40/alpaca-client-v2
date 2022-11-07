@@ -47,6 +47,7 @@ const Navbar = () => {
   const borderColor = isDark ? "gray.700" : "gray.100";
   return (
     <Box
+      zIndex={1000}
       h="60px"
       position="fixed"
       top={0}
@@ -159,7 +160,7 @@ const CollapseButton = ({ label, isDisabled, isDark }: CollapseButtonProps) => {
   );
 
   const small = () => (
-    <Link to={`/${label.toLowerCase()}`}>
+    <Link to={label === "Home" ? "/" : `/${label.toLowerCase()}`}>
       <Tooltip label={!isDisabled ? label : "You must be signed in"}>
         <IconButton
           icon={icons[label]}
