@@ -13,11 +13,13 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 
+import { type Status } from "components/Navbar/AlpacaButton";
 import { AlpacaLogoIcon } from "utils/icons";
 
 type Props = {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (status: Status) => void;
+  isAuthenticated: boolean;
 };
 
 const baseURL = "https://app.alpaca.markets";
@@ -26,7 +28,7 @@ const scope = "data trading account:write";
 const clientSecret = process.env.REACT_APP_ALPACA_CLIENT_SECRET!;
 const clientID = process.env.REACT_APP_ALPACA_CLIENT_ID!;
 
-const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
+const AlpacaAuthModal = ({ isOpen, onClose, isAuthenticated }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
@@ -86,6 +88,7 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
       console.log("FAILED TO GET CODE:", e);
       showToast("error");
       setLoading(false);
+      onClose("error");
       return;
     }
 
@@ -96,6 +99,7 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
           // console.log("TOKEN:", token);
           showToast("success");
           setLoading(false);
+          onClose("success");
         }
       } catch (e) {
         // console.log("ERROR3:", e);
@@ -105,6 +109,7 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
       // console.log("DONE LOADING: NO CODE");
       showToast("error");
       setLoading(false);
+      onClose("error");
     }
   };
 
@@ -169,15 +174,25 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
   const modalBg = useColorModeValue("gray.50", "gray.900");
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size={{ base: "xs", sm: "md" }}>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => onClose(null)}
+      size={{ base: "xs", sm: "md" }}
+    >
       <ModalOverlay />
       <ModalContent bg={modalBg} top="2rem">
         <ModalHeader textAlign="center">
-          Your Alpaca account is not connected!
+          {!isAuthenticated
+            ? "Your Alpaca account is not connected!"
+            : "Your Alpaca account is connected!"}
         </ModalHeader>
 
         <ModalBody>
-          <Text textAlign="center">Connect your account to use this app</Text>
+          <Text textAlign="center">
+            {!isAuthenticated
+              ? "Connect your account to use this app"
+              : "You may disconnect your account, but you will no longer be able to trade, research, or view your Alpaca account data."}
+          </Text>
           <ModalFooter>
             <Button
               size="lg"
@@ -188,10 +203,14 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
               _active={{ bg: "alpaca.700" }}
               _loading={{ pointerEvents: "none" }}
               leftIcon={<AlpacaLogoIcon boxSize="24px" fill="gray.900" />}
-              onClick={connectToAlpaca}
+              onClick={
+                !isAuthenticated
+                  ? connectToAlpaca
+                  : () => onClose("disconnected")
+              }
               isLoading={loading}
             >
-              Connect Now
+              {!isAuthenticated ? "Connect Now" : "Disconnect"}
             </Button>
           </ModalFooter>
         </ModalBody>

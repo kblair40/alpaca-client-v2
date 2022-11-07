@@ -22,7 +22,12 @@ const userSlice = createSlice({
       state.authenticated.local = false;
     },
     logoutAlpaca(state) {
+      console.log("\nLOGGING OUT OF ALPACA\n");
       state.authenticated.alpaca = false;
+    },
+    loginAlpaca(state) {
+      console.log("\nLOGGING IN TO ALPACA\n");
+      state.authenticated.alpaca = true;
     },
   },
 });

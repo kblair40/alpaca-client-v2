@@ -3,7 +3,11 @@ import { Box, useTheme, useColorModeValue } from "@chakra-ui/react";
 
 import { AlpacaLogoIcon, ExclamationIcon } from "utils/icons";
 import useSelector from "hooks/useSelector";
+import useDispatch from "hooks/useDispatch";
+import { userActions } from "store/userSlice";
 import AlpacaAuthModal from "components/Modals/AlpacaAuthModal";
+
+export type Status = "error" | "success" | "disconnected" | null;
 
 const AlpacaButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -14,6 +18,18 @@ const AlpacaButton = () => {
   const exclamationFill = useColorModeValue(red["600"], red["500"]);
 
   const { authenticated } = useSelector((st) => st.user);
+  const dispatch = useDispatch();
+
+  const handleClose = (status: Status) => {
+    if (status === "success" && !authenticated.alpaca) {
+      dispatch(userActions.loginAlpaca());
+    } else if (status === "disconnected") {
+      localStorage.removeItem("alpaca-token");
+      dispatch(userActions.logoutAlpaca());
+    }
+
+    setModalOpen(false);
+  };
 
   return (
     <React.Fragment>
@@ -36,7 +52,9 @@ const AlpacaButton = () => {
       {modalOpen && (
         <AlpacaAuthModal
           isOpen={modalOpen}
-          onClose={() => setModalOpen(false)}
+          onClose={handleClose}
+          isAuthenticated={authenticated.alpaca}
+          // onClose={() => setModalOpen(false)}
         />
       )}
     </React.Fragment>
