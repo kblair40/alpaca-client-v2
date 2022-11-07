@@ -32,6 +32,8 @@ const Navbar = () => {
   const { authenticated } = useSelector((st) => st.user);
   const dispatch = useDispatch();
 
+  const isAuthenticated = authenticated.local;
+
   const handleClickLogout = () => {
     localStorage.removeItem("auth-token");
     dispatch(userActions.logoutLocal());
@@ -56,13 +58,13 @@ const Navbar = () => {
         />
 
         <HStack ml={{ base: "2rem", md: 0 }} spacing="1rem">
-          <AlpacaButton />
-          <CollapseButton label="Portfolio" />
-          <CollapseButton label="Dashboard" />
+          {isAuthenticated && <AlpacaButton />}
+          <CollapseButton label="Portfolio" isDisabled={!isAuthenticated} />
+          <CollapseButton label="Dashboard" isDisabled={!isAuthenticated} />
         </HStack>
 
         <Flex ml="2rem" flex={1} justify="center">
-          <SearchInput isDark={isDark} />
+          <SearchInput isDark={isDark} isDisabled={!isAuthenticated} />
         </Flex>
 
         <Box ml="2rem">
@@ -81,21 +83,25 @@ export default Navbar;
 
 interface CollapseButtonProps {
   label: "Dashboard" | "Portfolio";
+  isDisabled: boolean;
 }
 
-const CollapseButton = ({ label }: CollapseButtonProps) => {
+const CollapseButton = ({ label, isDisabled }: CollapseButtonProps) => {
   const large = () => (
-    <Button size="sm" leftIcon={icons[label]}>
-      {label}
-    </Button>
+    <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
+      <Button size="sm" leftIcon={icons[label]} isDisabled={isDisabled}>
+        {label}
+      </Button>
+    </Tooltip>
   );
 
   const small = () => (
-    <Tooltip label={label}>
+    <Tooltip label={!isDisabled ? label : "You must be signed in"}>
       <IconButton
         size="sm"
         icon={icons[label]}
         aria-label={`${label} button`}
+        isDisabled={isDisabled}
       />
     </Tooltip>
   );
@@ -110,26 +116,34 @@ const icons = {
   Portfolio: <FolderIcon boxSize="20px" />,
 };
 
-const SearchInput = ({ isDark }: { isDark: boolean }) => {
+interface SearchProps {
+  isDark: boolean;
+  isDisabled?: boolean;
+}
+
+const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
   const placeholderColor = isDark ? "gray.300" : "gray.500";
   return (
-    <InputGroup maxW="400px">
-      <InputLeftElement
-        h="36px"
-        children={<SearchIcon boxSize="16px" />}
-        pointerEvents="none"
-      />
-      <Input
-        h="36px"
-        borderRadius="6px"
-        _placeholder={{
-          color: placeholderColor,
-          fontSize: "sm",
-          position: "relative",
-          bottom: "1px",
-        }}
-        placeholder="Search for stocks or indexes"
-      />
-    </InputGroup>
+    <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
+      <InputGroup maxW="400px">
+        <InputLeftElement
+          h="36px"
+          children={<SearchIcon boxSize="16px" />}
+          pointerEvents="none"
+        />
+        <Input
+          isDisabled={isDisabled}
+          h="36px"
+          borderRadius="6px"
+          _placeholder={{
+            color: placeholderColor,
+            fontSize: "sm",
+            position: "relative",
+            bottom: "1px",
+          }}
+          placeholder="Search for stocks or indexes"
+        />
+      </InputGroup>
+    </Tooltip>
   );
 };
