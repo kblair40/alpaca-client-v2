@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Avatar,
   Flex,
@@ -12,6 +12,7 @@ import {
   Portal,
 } from "@chakra-ui/react";
 
+import useSelector from "hooks/useSelector";
 import { ChevronDownIcon } from "utils/icons";
 
 type Props = {
@@ -20,6 +21,8 @@ type Props = {
 
 const AvatarMenu = ({ onClickLogout }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { authenticated } = useSelector((st) => st.user);
 
   const chevronFill = useColorModeValue("gray.500", "gray.400");
 
@@ -44,10 +47,23 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
 
       <Portal>
         <MenuList>
-          <MenuItem>Settings</MenuItem>
-          <MenuItem>Account</MenuItem>
-          <MenuDivider />
-          <MenuItem onClick={onClickLogout}>Log Out</MenuItem>
+          {authenticated.local && (
+            <React.Fragment>
+              <MenuItem>Settings</MenuItem>
+              <MenuItem>Account</MenuItem>
+              <MenuDivider />
+            </React.Fragment>
+          )}
+
+          <MenuItem
+            onClick={
+              authenticated.local
+                ? onClickLogout
+                : () => console.log("SHOULD NOT BE POSSIBLE")
+            }
+          >
+            Log Out
+          </MenuItem>
         </MenuList>
       </Portal>
     </Menu>
