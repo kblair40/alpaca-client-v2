@@ -7,6 +7,7 @@ import {
   ModalBody,
   useColorModeValue,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -66,55 +67,61 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
       `scope=${scope}`;
 
     // const { code } = await openAlpacaPopUp(connectURL);
-    // console.log("\n\nCODE:", code);
+    const res: any = await openAlpacaPopUp(connectURL);
+    const code = res.code;
+    console.log("\n\nCODE:", code);
 
-    // if (code) {
-    //   requestAlpacaToken(code);
-    // }
+    if (code) {
+      requestAlpacaToken(code);
+    }
   };
 
-  // const openAlpacaPopUp = (uri) => {
-  //   return new Promise((resolve, reject) => {
-  //     const authWindow = window.open(uri);
-  //     let snippet = uri | null;
+  const openAlpacaPopUp = (uri: string) => {
+    return new Promise((resolve, reject) => {
+      const authWindow = window.open(uri);
+      // let snippet: any = uri | null;
+      let snippet: any;
 
-  //     const interval = setInterval(async () => {
-  //       try {
-  //         snippet =
-  //           authWindow && authWindow.location && authWindow.location.search;
-  //       } catch (e) {}
+      const interval = setInterval(async () => {
+        try {
+          snippet =
+            authWindow && authWindow.location && authWindow.location.search;
+        } catch (e) {}
 
-  //       if (snippet) {
-  //         const rawCode = snippet.substring(1);
+        if (snippet) {
+          const rawCode = snippet.substring(1);
 
-  //         const code = JSON.parse(
-  //           '{"' + rawCode.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+          const code = JSON.parse(
+            '{"' + rawCode.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
 
-  //           function (key, value) {
-  //             return key === "" ? value : decodeURIComponent(value);
-  //           }
-  //         );
+            function (key, value) {
+              return key === "" ? value : decodeURIComponent(value);
+            }
+          );
 
-  //         authWindow.close();
+          if (authWindow) {
+            authWindow.close();
+          }
 
-  //         resolve(code);
-  //         clearInterval(interval);
-  //       }
-  //     }, 100);
-  //   });
-  // };
+          resolve(code);
+          clearInterval(interval);
+        }
+      }, 100);
+    });
+  };
 
   const modalBg = useColorModeValue("gray.50", "gray.900");
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size={{ base: "xs", sm: "md" }}>
       <ModalOverlay />
-      <ModalContent bg={modalBg}>
+      <ModalContent bg={modalBg} top="2rem">
         <ModalHeader textAlign="center">
           Your Alpaca account is not connected!
         </ModalHeader>
 
         <ModalBody>
+          <Text textAlign="center">Connect your account to use this app</Text>
           <ModalFooter>
             <Button
               size="lg"
@@ -124,6 +131,7 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
               _hover={{ bg: "alpaca.600" }}
               _active={{ bg: "alpaca.700" }}
               leftIcon={<AlpacaLogoIcon boxSize="24px" fill="gray.900" />}
+              onClick={connectToAlpaca}
             >
               Connect Now
             </Button>
