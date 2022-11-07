@@ -58,7 +58,11 @@ const Navbar = () => {
         />
 
         <HStack ml={{ base: "2rem", md: 0 }} spacing="1rem">
-          {isAuthenticated && <AlpacaButton />}
+          {isAuthenticated && (
+            <Box pr="1rem">
+              <AlpacaButton />
+            </Box>
+          )}
           <CollapseButton label="Portfolio" isDisabled={!isAuthenticated} />
           <CollapseButton label="Dashboard" isDisabled={!isAuthenticated} />
         </HStack>
