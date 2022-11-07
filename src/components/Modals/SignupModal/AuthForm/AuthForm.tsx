@@ -7,9 +7,7 @@ import {
   Input,
   Box,
   Text,
-  Heading,
   Flex,
-  Center,
   Button,
   Stack,
   ModalFooter,
@@ -138,12 +136,6 @@ const AuthForm = ({ variant, onClose }: Props) => {
       email,
     } = data;
 
-    console.log(
-      "passwords:",
-      { password, confirm_password },
-      password === confirm_password
-    );
-
     const passwordsMatch = password === confirm_password;
     if (!passwordsMatch) {
       formErrors["confirm_password"] = "Passwords must match";
@@ -169,7 +161,6 @@ const AuthForm = ({ variant, onClose }: Props) => {
       formErrors["email"] = "Email must be between 4 and 14 characters long";
     }
 
-    console.log("FILTERED VALUES:", Object.values(formErrors).filter(Boolean));
     if (Object.values(formErrors).filter(Boolean).length) {
       setErrors(formErrors);
       return false;
@@ -216,7 +207,6 @@ const AuthForm = ({ variant, onClose }: Props) => {
                     overflow="hidden"
                     id={inp}
                     onKeyDown={handleKeyDown}
-                    // onKeyDown={inp === "password" ? handleKeyPress : undefined}
                     value={formData[inp]}
                     type={
                       inp === "password" && showPassword
