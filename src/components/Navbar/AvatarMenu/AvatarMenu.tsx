@@ -14,7 +14,11 @@ import {
 
 import { ChevronDownIcon } from "utils/icons";
 
-const AvatarMenu = () => {
+type Props = {
+  onClickLogout: () => void;
+};
+
+const AvatarMenu = ({ onClickLogout }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const chevronFill = useColorModeValue("gray.500", "gray.400");
@@ -42,7 +46,7 @@ const AvatarMenu = () => {
         <MenuItem>Settings</MenuItem>
         <MenuItem>Account</MenuItem>
         <MenuDivider />
-        <MenuItem>Log Out</MenuItem>
+        <MenuItem onClick={onClickLogout}>Log Out</MenuItem>
       </MenuList>
     </Menu>
   );

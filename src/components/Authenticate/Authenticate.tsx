@@ -1,23 +1,33 @@
-import React, { useState } from "react";
-import { Box, Flex, Text, Button, Center } from "@chakra-ui/react";
-
-import SignupModal from "../Modals/SignupModal";
+import { Fragment } from "react";
+import { Flex, Text, Center } from "@chakra-ui/react";
 
 const Authenticate = () => {
-  const [showModal, setShowModal] = useState(false);
-
   return (
-    <React.Fragment>
-      <Center h="calc(100vh - 60px)">
-        <Button variant="solid-blue" onClick={() => setShowModal(true)}>
-          Sign In / Sign Up
-        </Button>
+    <Fragment>
+      <Center
+        h="100%"
+        position="absolute"
+        bottom={0}
+        left={0}
+        right={0}
+        w="100%"
+        zIndex={1000}
+      >
+        <Flex
+          flexDirection="column"
+          align="center"
+          w={{ base: "80vw", sm: "70vw", md: "50vw" }}
+        >
+          <Text textAlign="center" fontWeight={500} fontSize="lg" mb="1rem">
+            You are not logged in.
+          </Text>
+          <Text textAlign="center">
+            Click 'Sign Up' above to create an account or 'Log In' to sign in to
+            existing account.
+          </Text>
+        </Flex>
       </Center>
-
-      {showModal && (
-        <SignupModal isOpen={showModal} onClose={() => setShowModal(false)} />
-      )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

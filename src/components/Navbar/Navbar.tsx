@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 
 import useSelector from "hooks/useSelector";
+import useDispatch from "hooks/useDispatch";
 import {
   HamburgerIcon,
   DashboardIcon,
@@ -22,12 +23,19 @@ import {
 import AvatarMenu from "./AvatarMenu";
 import AuthButtons from "./AuthButtons";
 import AlpacaButton from "./AlpacaButton";
+import { userActions } from "store/userSlice";
 
 const Navbar = () => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
   const { authenticated } = useSelector((st) => st.user);
+  const dispatch = useDispatch();
+
+  const handleClickLogout = () => {
+    localStorage.removeItem("auth-token");
+    dispatch(userActions.logoutLocal());
+  };
 
   const bg = isDark ? "gray.800" : "gray.50";
   return (
@@ -48,7 +56,6 @@ const Navbar = () => {
         />
 
         <HStack ml={{ base: "2rem", md: 0 }} spacing="1rem">
-          {/* <AlpacaLogoIcon boxSize="24px" /> */}
           <AlpacaButton />
           <CollapseButton label="Portfolio" />
           <CollapseButton label="Dashboard" />
@@ -60,7 +67,7 @@ const Navbar = () => {
 
         <Box ml="2rem">
           {authenticated && authenticated.local ? (
-            <AvatarMenu />
+            <AvatarMenu onClickLogout={handleClickLogout} />
           ) : (
             <AuthButtons />
           )}

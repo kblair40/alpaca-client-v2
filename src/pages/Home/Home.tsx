@@ -8,7 +8,7 @@ const Home = () => {
   const { authenticated } = useSelector((st) => st.user);
 
   return (
-    <Box>
+    <Box h="100%">
       {authenticated.local ? (
         <Box>
           <Stuff />
