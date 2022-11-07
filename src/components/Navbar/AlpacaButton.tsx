@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Box, useTheme, useColorModeValue } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
-import { AlpacaLogoIcon, ExclamationIcon } from "utils/icons";
+import { AlpacaLogoIcon, ExclamationIcon, CheckIcon } from "utils/icons";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
 import { userActions } from "store/userSlice";
@@ -12,10 +12,8 @@ export type Status = "error" | "success" | "disconnected" | null;
 const AlpacaButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const {
-    colors: { red },
-  } = useTheme();
-  const exclamationFill = useColorModeValue(red["600"], red["500"]);
+  const exclamationFill = useColorModeValue("red.600", "red.500");
+  const checkFill = useColorModeValue("green.600", "green.500");
 
   const { authenticated } = useSelector((st) => st.user);
   const dispatch = useDispatch();
@@ -42,9 +40,13 @@ const AlpacaButton = () => {
           <AlpacaLogoIcon boxSize="32px" />
         </Box>
 
-        {authenticated && !authenticated.alpaca ? (
+        {authenticated ? (
           <Box position="absolute" top="-6px" left="-2px" zIndex={2}>
-            <ExclamationIcon boxSize="12px" fill={exclamationFill} />
+            {!authenticated.alpaca ? (
+              <ExclamationIcon boxSize="14px" fill={exclamationFill} />
+            ) : (
+              <CheckIcon boxSize="14px" fill={checkFill} />
+            )}
           </Box>
         ) : null}
       </Box>
