@@ -18,8 +18,11 @@ const userSlice = createSlice({
         state.authenticated.local = isAuthenticated;
       }
     },
-    setIsAuthenticated(state, action) {
-      state.authenticated.local = action.payload.data;
+    logoutLocal(state) {
+      state.authenticated.local = false;
+    },
+    logoutAlpaca(state) {
+      state.authenticated.alpaca = false;
     },
   },
 });
