@@ -84,8 +84,11 @@ const AuthForm = ({ variant, onClose }: Props) => {
 
           setLoading(false);
           onClose();
-        } catch (e) {
+        } catch (e: any) {
           console.log("FAILED TO SIGNUP:", e);
+          if (e.response.data && e.response.data.msg) {
+            setServerError(e.response.data.msg);
+          }
         }
         setLoading(false);
       }
@@ -176,6 +179,8 @@ const AuthForm = ({ variant, onClose }: Props) => {
     if (Object.values(errors).some((val) => !!val)) {
       setErrors(defaultFormData);
     }
+
+    if (serverError) setServerError("");
   };
 
   const lightIconBg = { hover: "gray.50", active: "gray.100" };
@@ -266,6 +271,7 @@ const AuthForm = ({ variant, onClose }: Props) => {
         alignItems="stretch"
         px={0}
         mt="1.5rem"
+        pb={0}
       >
         <Button
           isLoading={loading}
@@ -276,7 +282,7 @@ const AuthForm = ({ variant, onClose }: Props) => {
           {variant === "signup" ? "Sign Up" : "Log In"}
         </Button>
 
-        <Button mt=".5rem" variant="ghost" rounded="full" onClick={onClose}>
+        <Button mt=".75rem" variant="ghost" rounded="full" onClick={onClose}>
           Cancel
         </Button>
       </ModalFooter>

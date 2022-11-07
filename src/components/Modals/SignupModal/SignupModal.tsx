@@ -71,7 +71,7 @@ const SignupModal = ({ isOpen, onClose, defaultTab = 0 }: Props) => {
               <TabPanel pt="1.5rem">
                 <AuthForm variant="signup" onClose={onClose} />
               </TabPanel>
-              <TabPanel>
+              <TabPanel pt="1.5rem">
                 <AuthForm variant="signin" onClose={onClose} />
               </TabPanel>
             </TabPanels>
