@@ -9,6 +9,7 @@ import {
   useColorModeValue,
   Button,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 
@@ -28,6 +29,8 @@ const clientID = process.env.REACT_APP_ALPACA_CLIENT_ID!;
 const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
 
+  const toast = useToast();
+
   const interval = useRef<NodeJS.Timeout | null>(null);
 
   const requestAlpacaToken = async (code: string) => {
@@ -43,7 +46,6 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
     const encodedBody = Object.keys(body)
       .map((key) => `${key}=${encodeURIComponent(body[key])}`)
       .join("&");
-    console.log("\n\n", { body });
 
     let response: any;
     try {
@@ -79,9 +81,10 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
     let code: any;
     try {
       code = await openAlpacaPopUp(connectURL);
-      console.log("\n\nCODE:", code);
+      // console.log("\n\nCODE:", code);
     } catch (e) {
       console.log("FAILED TO GET CODE:", e);
+      showToast("error");
       setLoading(false);
       return;
     }
@@ -90,15 +93,17 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
       try {
         const token = await requestAlpacaToken(code);
         if (token) {
-          console.log("TOKEN:", token);
+          // console.log("TOKEN:", token);
+          showToast("success");
           setLoading(false);
         }
       } catch (e) {
-        console.log("ERROR:", e);
+        // console.log("ERROR3:", e);
         setLoading(false);
       }
     } else {
-      console.log("DONE LOADING");
+      // console.log("DONE LOADING: NO CODE");
+      showToast("error");
       setLoading(false);
     }
   };
@@ -108,38 +113,57 @@ const AlpacaAuthModal = ({ isOpen, onClose }: Props) => {
       const authWindow = window.open(uri);
 
       interval.current = setInterval(async () => {
-        try {
-          let snippet =
-            authWindow && authWindow.location && authWindow.location.search;
+        let snippet =
+          authWindow && authWindow.location && authWindow.location.search;
 
-          if (snippet) {
-            const rawCode = snippet.substring(1);
+        if (snippet) {
+          const rawCode = snippet.substring(1);
 
-            const code: { [key: string]: string } = JSON.parse(
-              '{"' + rawCode.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
+          const code: { [key: string]: string } = JSON.parse(
+            '{"' + rawCode.replace(/&/g, '","').replace(/=/g, '":"') + '"}',
 
-              function (key, value) {
-                return key === "" ? value : decodeURIComponent(value);
-              }
-            );
-
-            if (authWindow) authWindow.close();
-
-            if (code && code.code) {
-              resolve(code.code);
-            } else {
-              reject("Something went wrong");
+            function (key, value) {
+              return key === "" ? value : decodeURIComponent(value);
             }
+          );
 
-            if (interval.current) {
-              clearInterval(interval.current);
-            }
+          if (authWindow) authWindow.close();
+
+          // console.log("\n\nCODE:", code);
+          if (code && code.code) {
+            // console.log("RESOLVING:");
+            resolve(code.code);
+          } else {
+            // console.log("ERROR1:");
+            reject(code.error ? code.error : "Something went wrong");
           }
-        } catch (e) {
-          reject("Something went wrong");
+
+          if (interval.current) {
+            clearInterval(interval.current);
+          }
+        } else {
+          // console.log("\n\nWINDOW CLOSED\n\n");
+          reject("Window closed");
+          if (interval.current) {
+            clearInterval(interval.current);
+          }
         }
       }, 100);
     });
+  };
+
+  const showToast = (connectionStatus: "success" | "error") => {
+    const isError = connectionStatus === "error";
+    const title = isError
+      ? "Failed to connect"
+      : "Successfully connected to Alpaca!";
+    const description = isError
+      ? "Please try again"
+      : "You can now place trades, view/manage orders and research equities";
+    const duration = 9000;
+    const status = isError ? "error" : "success";
+
+    toast({ title, description, duration, status, isClosable: true });
   };
 
   const modalBg = useColorModeValue("gray.50", "gray.900");
