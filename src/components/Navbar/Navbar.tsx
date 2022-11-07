@@ -11,6 +11,7 @@ import {
   InputGroup,
   InputLeftElement,
 } from "@chakra-ui/react";
+import { useLocation, Link } from "react-router-dom";
 
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
@@ -19,11 +20,14 @@ import {
   DashboardIcon,
   FolderIcon,
   SearchIcon,
+  HomeIcon,
 } from "utils/icons";
 import AvatarMenu from "./AvatarMenu";
 import AuthButtons from "./AuthButtons";
 import AlpacaButton from "./AlpacaButton";
 import { userActions } from "store/userSlice";
+
+type CollapseButtonLabel = "Dashboard" | "Portfolio" | "Home";
 
 const Navbar = () => {
   const { colorMode } = useColorMode();
@@ -40,8 +44,18 @@ const Navbar = () => {
   };
 
   const bg = isDark ? "gray.900" : "gray.50";
+  const borderColor = isDark ? "gray.700" : "gray.100";
   return (
-    <Box h="60px" position="fixed" top={0} left={0} right={0} bg={bg}>
+    <Box
+      h="60px"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      bg={bg}
+      borderBottom="1px solid"
+      borderColor={borderColor}
+    >
       <Flex
         h="100%"
         w="100%"
@@ -63,16 +77,18 @@ const Navbar = () => {
               <AlpacaButton />
             </Box>
           )}
-          <CollapseButton
-            label="Portfolio"
-            isDisabled={!isAuthenticated}
-            isDark={isDark}
-          />
-          <CollapseButton
-            label="Dashboard"
-            isDisabled={!isAuthenticated}
-            isDark={isDark}
-          />
+          {(["Home", "Portfolio", "Dashboard"] as CollapseButtonLabel[]).map(
+            (label, i) => {
+              return (
+                <CollapseButton
+                  key={i}
+                  label={label}
+                  isDisabled={!isAuthenticated}
+                  isDark={isDark}
+                />
+              );
+            }
+          )}
         </HStack>
 
         <Flex ml="2rem" flex={1} justify="center">
@@ -94,15 +110,35 @@ const Navbar = () => {
 export default Navbar;
 
 interface CollapseButtonProps {
-  label: "Dashboard" | "Portfolio";
+  label: CollapseButtonLabel;
   isDisabled: boolean;
   isDark?: boolean;
 }
 
 const CollapseButton = ({ label, isDisabled, isDark }: CollapseButtonProps) => {
-  const bg = isDark ? "gray.900" : "white";
-  const hoverBg = isDark ? "gray.800" : "gray.50";
-  const activeBg = isDark ? "gray.700" : "gray.100";
+  const { pathname } = useLocation();
+
+  const isActive =
+    (label === "Home" && pathname === "/") ||
+    pathname.endsWith(label.toLowerCase());
+
+  const bg =
+    isDark && isActive
+      ? "gray.700"
+      : isDark
+      ? "gray.900"
+      : isActive
+      ? "gray.100"
+      : "white";
+  const hoverBg = isDark ? "gray.700" : "gray.100";
+  const activeBg =
+    isDark && isActive
+      ? "gray.700"
+      : isDark
+      ? "gray.600"
+      : isActive
+      ? "gray.100"
+      : "gray.200";
 
   const btnProps = {
     bg,
@@ -113,21 +149,25 @@ const CollapseButton = ({ label, isDisabled, isDark }: CollapseButtonProps) => {
   };
 
   const large = () => (
-    <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
-      <Button leftIcon={icons[label]} {...btnProps}>
-        {label}
-      </Button>
-    </Tooltip>
+    <Link to={label === "Home" ? "/" : `/${label.toLowerCase()}`}>
+      <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
+        <Button leftIcon={icons[label]} {...btnProps}>
+          {label}
+        </Button>
+      </Tooltip>
+    </Link>
   );
 
   const small = () => (
-    <Tooltip label={!isDisabled ? label : "You must be signed in"}>
-      <IconButton
-        icon={icons[label]}
-        aria-label={`${label} button`}
-        {...btnProps}
-      />
-    </Tooltip>
+    <Link to={`/${label.toLowerCase()}`}>
+      <Tooltip label={!isDisabled ? label : "You must be signed in"}>
+        <IconButton
+          icon={icons[label]}
+          aria-label={`${label} button`}
+          {...btnProps}
+        />
+      </Tooltip>
+    </Link>
   );
 
   const button = useBreakpointValue({ base: small(), md: large() })!;
@@ -138,6 +178,7 @@ const CollapseButton = ({ label, isDisabled, isDark }: CollapseButtonProps) => {
 const icons = {
   Dashboard: <DashboardIcon boxSize="20px" />,
   Portfolio: <FolderIcon boxSize="20px" />,
+  Home: <HomeIcon boxSize="20px" />,
 };
 
 interface SearchProps {
@@ -149,7 +190,7 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
   const placeholderColor = isDark ? "gray.300" : "gray.500";
   return (
     <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
-      <InputGroup maxW="400px">
+      <InputGroup maxW="260px">
         <InputLeftElement
           h="36px"
           children={<SearchIcon boxSize="16px" />}
