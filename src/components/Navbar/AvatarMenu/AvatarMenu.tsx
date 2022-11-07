@@ -31,6 +31,9 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
     fontWeight: 500,
   };
 
+  const avatarImg =
+    data && data.avatar_image_url ? data.avatar_image_url : null;
+
   return (
     <Menu onOpen={() => setIsOpen(true)} onClose={() => setIsOpen(false)}>
       <MenuButton h="36px">
@@ -43,14 +46,7 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
             },
           }}
         >
-          <Avatar
-            size="sm"
-            mr=".5rem"
-            boxSize="36px"
-            src={
-              data && data.avatar_image_url ? data.avatar_image_url : undefined
-            }
-          />
+          <Avatar size="sm" mr=".5rem" boxSize="36px" src={avatarImg} />
           <Box className="icon_wrapper">
             <ChevronDownIcon boxSize="1rem" fill={chevronFill} />
           </Box>
