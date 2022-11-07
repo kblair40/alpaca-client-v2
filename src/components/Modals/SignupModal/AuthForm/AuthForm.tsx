@@ -170,8 +170,12 @@ const AuthForm = ({ variant, onClose }: Props) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    console.log("KEY:", e.key);
     if (e.key === "Enter") handleSubmit();
+
+    // if there is at least one error, clear all errors
+    if (Object.values(errors).some((val) => !!val)) {
+      setErrors(defaultFormData);
+    }
   };
 
   const lightIconBg = { hover: "gray.50", active: "gray.100" };
@@ -182,8 +186,10 @@ const AuthForm = ({ variant, onClose }: Props) => {
     <React.Fragment>
       <Stack spacing="12px">
         {inputs.map((inp, i) => {
+          console.log("\nINP:", inp);
+          console.log("Errors:", errors[inp]);
           return (
-            <FormControl isRequired key={i}>
+            <FormControl isRequired isInvalid={!!errors[inp]} key={i}>
               <FormLabel fontWeight={500}>
                 {toTitleCase(inp, inp.includes("_") ? "_" : " ")}
               </FormLabel>
@@ -245,6 +251,10 @@ const AuthForm = ({ variant, onClose }: Props) => {
                     }}
                   />
                 </InputGroup>
+              )}
+
+              {errors[inp] && (
+                <FormErrorMessage>{errors[inp]}</FormErrorMessage>
               )}
             </FormControl>
           );
