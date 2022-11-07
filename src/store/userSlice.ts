@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import api from "api";
 
-export const fetchCalendar = createAsyncThunk("user/fetchUser", async () => {
+export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
   const isAuthenticated = !!window.localStorage.getItem("auth-token");
   if (!isAuthenticated) {
     return {};
@@ -10,6 +10,7 @@ export const fetchCalendar = createAsyncThunk("user/fetchUser", async () => {
 
   try {
     const response = await api.get(`/user`);
+    console.log("\n\nUSER RESPONSE:", response.data, "\n\n");
     if (response && response.data) {
       return response.data;
     } else {
@@ -63,20 +64,19 @@ const userSlice = createSlice({
 
   extraReducers(builder) {
     builder
-      .addCase(fetchCalendar.pending, (state) => {
+      .addCase(fetchUser.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchCalendar.fulfilled, (state, action) => {
+      .addCase(fetchUser.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-
-        console.log("DATA DATA:", data);
+        console.log("\n\nUSER DATA DATA:", data);
 
         if (!data) {
           return;
         }
       })
-      .addCase(fetchCalendar.rejected, (state, action) => {
+      .addCase(fetchUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = true;
       });
