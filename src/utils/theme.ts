@@ -19,6 +19,19 @@ const theme = extendTheme({
       800: "#02216d",
       900: "#011136",
     },
+    alpaca: {
+      base: "#FCD72B",
+      50: "#FCE26A",
+      100: "#FCDF5D",
+      200: "#FCDD51",
+      300: "#FCDB44",
+      400: "#FCD838",
+      500: "#FCD72B",
+      600: "#FCD421",
+      700: "#FCD217",
+      800: "#FCD00D",
+      900: "#FCCF03",
+    },
   },
   components: {
     Icon: {
