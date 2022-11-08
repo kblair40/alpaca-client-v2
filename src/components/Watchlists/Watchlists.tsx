@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Box, Text, Flex } from "@chakra-ui/react";
 
+import { IWatchlist } from "utils/types/watchlist";
 import alpacaApi from "api/alpaca";
 
-const Watchlist = () => {
+const Watchlists = () => {
   const [loading, setLoading] = useState(false);
-  const [watchlists, setWatchlists] = useState<any[]>();
+  const [watchlists, setWatchlists] = useState<IWatchlist[]>();
 
   useEffect(() => {
     const fetchWatchlists = async () => {
@@ -19,15 +20,24 @@ const Watchlist = () => {
             promises.push(alpacaApi.get(`/watchlists/${wl.id}`));
           }
           let responses = await Promise.all(promises);
+
           if (responses && responses.length) {
+            let watchlists = responses.map((resp) => resp.data);
+            setWatchlists(watchlists);
+          } else {
+            setWatchlists([]);
           }
+
           console.log("\n\nRESPONSES:", responses);
         } else {
           setWatchlists([]);
         }
       } catch (e) {
         console.log("FAILED FETCHING WATCHLIST:", e);
+        setWatchlists([]);
       }
+
+      setLoading(false);
     };
 
     fetchWatchlists();
@@ -36,4 +46,4 @@ const Watchlist = () => {
   return <Box></Box>;
 };
 
-export default Watchlist;
+export default Watchlists;
