@@ -19,7 +19,6 @@ import {
   CloseButton,
   Wrap,
   WrapItem,
-  Text,
 } from "@chakra-ui/react";
 
 import { type IAsset } from "utils/types/asset";
@@ -133,7 +132,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
       }
 
       const response = await alpaca.post("/watchlists", body);
-      // console.log("CREATE RESPONSE.DATA:", response.data);
+      console.log("CREATE RESPONSE.DATA:", response.data);
     } catch (e: any) {
       console.log("FAILED TO CREATE WATCHLIST:", e);
       let error = e.response.data.message;

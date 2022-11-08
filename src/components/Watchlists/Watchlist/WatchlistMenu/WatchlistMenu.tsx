@@ -11,6 +11,7 @@ import {
 import useDispatch from "hooks/useDispatch";
 import { watchlistActions } from "store/watchlistSlice";
 import alpacaApi from "api/alpaca";
+import { alpaca } from "api";
 import { MoreHorizontalIcon, TrashIcon, EditIcon } from "utils/icons";
 import DeleteModal from "./DeleteModal";
 
@@ -33,7 +34,8 @@ const WatchlistMenu = ({ id, name }: Props) => {
   const handleConfirmDelete = async () => {
     setDeleting(true);
     try {
-      const response = await alpacaApi.delete(`/watchlists/${id}`);
+      // const response = await alpacaApi.delete(`/watchlists/${id}`);
+      const response = await alpaca.delete(`/watchlists/${id}`);
       console.log("RESPONSE:", response.data);
     } catch (e) {
       console.log("FAILED TO DELETE WATCHLIST:", e);
