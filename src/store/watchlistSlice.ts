@@ -36,7 +36,7 @@ const watchlistSlice = createSlice({
   } as SliceState,
   reducers: {
     addWatchlist(state, action) {
-      state.data = [...state.data, action.payload];
+      state.data = [action.payload, ...state.data];
     },
     deleteWatchlist(state, action) {
       const id = action.payload;

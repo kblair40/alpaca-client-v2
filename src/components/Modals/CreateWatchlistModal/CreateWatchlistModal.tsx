@@ -21,6 +21,8 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 
+import useDispatch from "hooks/useDispatch";
+import { watchlistActions } from "store/watchlistSlice";
 import { type IAsset } from "utils/types/asset";
 import { alpaca } from "api";
 import alpacaApi from "api/alpaca";
@@ -39,6 +41,8 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   const [addSymbolValue, setAddSymbolValue] = useState("");
   const [addSymbolError, setAddSymbolError] = useState("");
   const [createError, setCreateError] = useState("");
+
+  const dispatch = useDispatch();
 
   const bg = useColorModeValue("gray.50", "gray.900");
   const helperTextColor = useColorModeValue("gray.700", "gray.200");
@@ -133,6 +137,8 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 
       const response = await alpaca.post("/watchlists", body);
       console.log("CREATE RESPONSE.DATA:", response.data);
+      dispatch(watchlistActions.addWatchlist(response.data));
+      onClose();
     } catch (e: any) {
       console.log("FAILED TO CREATE WATCHLIST:", e);
       let error = e.response.data.message;

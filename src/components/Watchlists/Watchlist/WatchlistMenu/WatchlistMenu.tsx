@@ -10,7 +10,6 @@ import {
 
 import useDispatch from "hooks/useDispatch";
 import { watchlistActions } from "store/watchlistSlice";
-import alpacaApi from "api/alpaca";
 import { alpaca } from "api";
 import { MoreHorizontalIcon, TrashIcon, EditIcon } from "utils/icons";
 import DeleteModal from "./DeleteModal";
