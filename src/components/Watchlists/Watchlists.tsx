@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Text, Flex, Center, Spinner, Stack } from "@chakra-ui/react";
+import { Box, Center, Spinner, Stack } from "@chakra-ui/react";
 
 import { IWatchlist } from "utils/types/watchlist";
 import Watchlist from "./Watchlist";

@@ -1,4 +1,4 @@
-interface IWatchlistAsset {
+export interface IWatchlistAsset {
   // This can be improved... https://alpaca.markets/docs/api-references/trading-api/watchlist/#watchlist-entity
   class: string;
   easy_to_borrow: boolean;
@@ -18,4 +18,9 @@ export interface IWatchlist {
   updated_at: string;
   name: string;
   assets: IWatchlistAsset[];
+}
+
+export interface IMenuOption {
+  label: string;
+  onClick: (arg?: any) => void;
 }

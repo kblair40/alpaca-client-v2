@@ -28,14 +28,14 @@ const Watchlist = ({ watchlist: wl }: Props) => {
         <Text fontSize="sm" fontWeight="600">
           {wl.name || "Unnamed Watchlist"}
         </Text>
-        <WatchlistMenu id={wl.id} />
+        <WatchlistMenu id={wl.id} name={wl.name} />
       </Flex>
 
       <Stack mt=".75rem">
         {wl.assets && wl.assets.length ? (
           wl.assets.map((asset, i) => {
             return (
-              <Flex lineHeight={1} cursor="pointer">
+              <Flex key={i} lineHeight={1} cursor="pointer">
                 <Tooltip label={asset.name}>
                   <Text flex={1} fontSize="13px" fontWeight="500">
                     {asset.symbol}

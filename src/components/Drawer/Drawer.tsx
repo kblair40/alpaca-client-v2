@@ -8,10 +8,10 @@ import TickerPerformance from "components/TickerPerformance";
 import Watchlists from "components/Watchlists";
 
 const Drawer = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
-
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <React.Fragment>
@@ -38,8 +38,6 @@ const Drawer = () => {
         isOpen={isOpen}
         toggle={() => setIsOpen((prev) => !prev)}
       />
-
-      {/* <Watchlists /> */}
     </React.Fragment>
   );
 };
