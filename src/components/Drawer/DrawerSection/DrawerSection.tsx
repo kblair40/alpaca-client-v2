@@ -8,6 +8,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { MoreHorizontalIcon } from "utils/icons";
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const DrawerSection = ({ children, label }: Props) => {
+  const menuBg = useColorModeValue("gray.50", "gray.900");
   return (
     <Box>
       <Flex justify={{ md: "space-between" }} align={{ md: "center" }}>
@@ -34,7 +36,7 @@ const DrawerSection = ({ children, label }: Props) => {
             icon={<MoreHorizontalIcon boxSize="18px" />}
           />
 
-          <MenuList>
+          <MenuList bg={menuBg}>
             <MenuItem>Item 1</MenuItem>
             <MenuItem>Item 2</MenuItem>
           </MenuList>
