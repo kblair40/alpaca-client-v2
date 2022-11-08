@@ -1,4 +1,11 @@
-import { Box, Text, Flex, Stack, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Stack,
+  Tooltip,
+  useColorMode,
+} from "@chakra-ui/react";
 
 import { IWatchlist } from "utils/types/watchlist";
 
@@ -29,9 +36,11 @@ const Watchlist = ({ watchlist: wl }: Props) => {
                   cursor="pointer"
                   // border="1px solid white"
                 >
-                  <Text flex={1} fontSize="13px" fontWeight="500">
-                    {asset.symbol}
-                  </Text>
+                  <Tooltip label={asset.name}>
+                    <Text flex={1} fontSize="13px" fontWeight="500">
+                      {asset.symbol}
+                    </Text>
+                  </Tooltip>
 
                   <Text flex={1} fontSize="xs" fontWeight="500">
                     $83.07
