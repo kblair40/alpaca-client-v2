@@ -1,4 +1,12 @@
 import { extendTheme } from "@chakra-ui/react";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/styled-system";
+
+const inputHelpers = createMultiStyleConfigHelpers([
+  "addon",
+  "field",
+  "element",
+]);
+const selectHelpers = createMultiStyleConfigHelpers(["icon", "field"]);
 
 const theme = extendTheme({
   config: {
@@ -116,6 +124,32 @@ const theme = extendTheme({
       //   variant: "solid-neutral",
       // },
     },
+    Input: inputHelpers.defineMultiStyleConfig({
+      variants: {
+        "neutral-outline": ({ colorMode: cm }) => ({
+          field: {
+            bg: "transparent",
+            borderWidth: "1px",
+            borderStyle: "solid",
+            borderColor: cm === "dark" ? "gray.500" : "gray.300",
+            color: cm === "dark" ? "gray.50" : "gray.800",
+
+            _hover: {
+              borderColor: cm === "dark" ? "gray.400" : "gray.400",
+            },
+            _focus: {
+              borderColor: cm === "dark" ? "gray.300" : "gray.500",
+            },
+            _focusVisible: { outline: "none" },
+            _placeholder: {
+              color: cm === "dark" ? "gray.300" : "gray.500",
+            },
+          },
+          element: {},
+          addon: {},
+        }),
+      },
+    }),
   },
   fonts: {
     body: "Open Sans, sans-serif",
