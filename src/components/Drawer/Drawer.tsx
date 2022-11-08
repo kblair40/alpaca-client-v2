@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, useColorMode, Box, Stack } from "@chakra-ui/react";
+import { Button, useColorMode, Stack } from "@chakra-ui/react";
 
 import DrawerSection from "./DrawerSection";
 import DrawerWrapper from "./DrawerWrapper";
@@ -18,7 +18,7 @@ const Drawer = () => {
           direction={{ base: "row", md: "column" }}
           spacing={{ base: ".5rem", md: "1.5rem" }}
         >
-          <DrawerSection label="watchlist">{/*  */}</DrawerSection>
+          <DrawerSection label="watchlists">{/*  */}</DrawerSection>
 
           <DrawerSection label="index etf">
             <Stack>

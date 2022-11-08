@@ -8,7 +8,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
 } from "@chakra-ui/react";
 
 import { MoreHorizontalIcon } from "utils/icons";
@@ -21,12 +20,8 @@ type Props = {
 const DrawerSection = ({ children, label }: Props) => {
   return (
     <Box>
-      <Flex
-        justify={{ md: "space-between" }}
-        align={{ md: "center" }}
-        // border="1px solid #aaa"
-      >
-        <Text fontWeight={600} textTransform="uppercase">
+      <Flex justify={{ md: "space-between" }} align={{ md: "center" }}>
+        <Text fontWeight={700} textTransform="uppercase" fontSize="15px">
           {label}
         </Text>
 
@@ -34,9 +29,9 @@ const DrawerSection = ({ children, label }: Props) => {
           <MenuButton
             as={IconButton}
             variant="icon-button"
-            size="sm"
+            size="xs"
             rounded="full"
-            icon={<MoreHorizontalIcon />}
+            icon={<MoreHorizontalIcon boxSize="18px" />}
           />
 
           <MenuList>
@@ -46,7 +41,7 @@ const DrawerSection = ({ children, label }: Props) => {
         </Menu>
       </Flex>
 
-      <Box>{children}</Box>
+      <Box pt="8px">{children}</Box>
     </Box>
   );
 };
