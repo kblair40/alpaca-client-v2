@@ -14,7 +14,11 @@ import {
   Button,
   useColorModeValue,
   FormHelperText,
+  FormErrorMessage,
   Box,
+  CloseButton,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 
 import { type IAsset } from "utils/types/asset";
@@ -30,11 +34,12 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   const [loading, setLoading] = useState(false);
   const [allAssets, setAllAssets] = useState<any[]>();
   const [addedSymbols, setAddedSymbols] = useState<string[]>([]);
+  const [addSymbolValue, setAddSymbolValue] = useState("");
+  const [addSymbolError, setAddSymbolError] = useState("");
 
   const bg = useColorModeValue("gray.50", "gray.900");
   const helperTextColor = useColorModeValue("gray.700", "gray.200");
-
-  const symbolInputRef = useRef<HTMLInputElement>(null);
+  const errorMsgColor = useColorModeValue("red.600", "red.300");
 
   useEffect(() => {
     const fetchAssets = async () => {
@@ -70,19 +75,25 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   }, []);
 
   const handleAddTicker = (symbol: string) => {
-    setAddedSymbols((prev: string[]) => [...prev, symbol]);
+    setAddedSymbols((prev) => [...prev, symbol]);
     // handleKeyDown performs null check.  '!' is fine here.
-    symbolInputRef.current!.value = "";
+    setAddSymbolValue("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!symbolInputRef.current) return;
+    if (!addSymbolValue) return;
 
-    if (e.key === "Enter") {
-      const { value } = symbolInputRef.current;
+    const length = addSymbolValue.length;
 
-      if (value.length && isValid(value)) {
-        handleAddTicker(value);
+    if (e.key === "Enter" && length) {
+      if (length > 5) {
+        return setAddSymbolError(
+          "Symbols shouldn't be longer than 5 characters"
+        );
+      }
+
+      if (addSymbolValue.length && isValid(addSymbolValue)) {
+        handleAddTicker(addSymbolValue);
       }
     }
   };
@@ -90,11 +101,18 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   const isValid = (symbol: string) => {
     const isIncluded = allAssets?.includes(symbol.toUpperCase());
     console.log(`${symbol} is included? ${isIncluded}`);
+    if (isIncluded) {
+      return true;
+    } else {
+      setAddSymbolError(
+        `Could not find an equity with the symbol ${symbol.toUpperCase()}`
+      );
+    }
     return isIncluded;
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} allowPinchZoom>
       <ModalOverlay />
 
       <ModalContent bg={bg}>
@@ -104,29 +122,51 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
           <Stack spacing="1rem">
             <FormControl isRequired>
               <FormLabel>Watchlist Name</FormLabel>
-              <Input value={name} onChange={(e) => setName(e.target.value)} />
+              <Input
+                variant="neutral-outline"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </FormControl>
 
             <Box>
-              <FormControl isRequired>
+              <FormControl isInvalid={!!addSymbolError}>
                 <FormLabel>Tickers</FormLabel>
-                <Input ref={symbolInputRef} onKeyDown={handleKeyDown} />
-                <FormHelperText
-                  mt="4px"
-                  fontSize="13px"
-                  color={helperTextColor}
-                >
-                  Type a symbol and press enter to add it to your watchlist
-                </FormHelperText>
+                <Input
+                  variant="neutral-outline"
+                  value={addSymbolValue}
+                  onChange={(e) => {
+                    setAddSymbolValue(e.target.value);
+                    if (addSymbolError) setAddSymbolError("");
+                  }}
+                  onKeyDown={handleKeyDown}
+                />
+                {!addSymbolError ? (
+                  <FormHelperText
+                    mt="4px"
+                    fontSize="13px"
+                    color={helperTextColor}
+                  >
+                    Type a symbol and press enter to add it to your watchlist
+                  </FormHelperText>
+                ) : (
+                  <FormErrorMessage color={errorMsgColor}>
+                    {addSymbolError}
+                  </FormErrorMessage>
+                )}
               </FormControl>
 
-              <Stack direction="row" wrap="wrap" mt="1rem">
+              <Wrap direction="row" mt="1rem">
                 {addedSymbols && addedSymbols.length
                   ? addedSymbols.map((symbol, i) => {
-                      return <SymbolChip symbol={symbol} key={i} />;
+                      return (
+                        <WrapItem>
+                          <SymbolChip symbol={symbol} key={i} />
+                        </WrapItem>
+                      );
                     })
                   : null}
-              </Stack>
+              </Wrap>
             </Box>
           </Stack>
         </ModalBody>
@@ -146,18 +186,30 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 export default CreateWatchlistModal;
 
 const SymbolChip = ({ symbol }: { symbol: string }) => {
-  const bg = useColorModeValue("gray.200", "gray.600");
+  const bg = useColorModeValue("gray.200", "gray.700");
   return (
-    <Box
+    <Flex
       bg={bg}
-      p="4px"
+      pl="4px"
       borderRadius="3px"
-      lineHeight={1}
-      textTransform="uppercase"
-      fontWeight="600"
-      fontSize="13px"
+      align="center"
+      sx={{
+        "& svg": {
+          boxSize: "9px",
+        },
+      }}
     >
-      {symbol}
-    </Box>
+      <Box
+        lineHeight={1}
+        textTransform="uppercase"
+        fontWeight="600"
+        letterSpacing=".5px"
+        fontSize="13px"
+      >
+        {symbol}
+      </Box>
+
+      <CloseButton size="sm" ml="4px" />
+    </Flex>
   );
 };
