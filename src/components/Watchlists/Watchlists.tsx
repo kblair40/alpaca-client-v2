@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Box, Text, Flex } from "@chakra-ui/react";
+import { Box, Text, Flex, Center, Spinner } from "@chakra-ui/react";
 
 import { IWatchlist } from "utils/types/watchlist";
 import alpacaApi from "api/alpaca";
 
 const Watchlists = () => {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [watchlists, setWatchlists] = useState<IWatchlist[]>();
 
   useEffect(() => {
@@ -42,6 +42,14 @@ const Watchlists = () => {
 
     fetchWatchlists();
   }, []);
+
+  if (loading) {
+    return (
+      <Center h="120px">
+        <Spinner />
+      </Center>
+    );
+  }
 
   return <Box></Box>;
 };

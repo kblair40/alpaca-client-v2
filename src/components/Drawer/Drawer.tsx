@@ -20,7 +20,9 @@ const Drawer = () => {
           direction={{ base: "row", md: "column" }}
           spacing={{ base: ".5rem", md: "1.5rem" }}
         >
-          <DrawerSection label="watchlists">{/*  */}</DrawerSection>
+          <DrawerSection label="watchlists">
+            <Watchlists />
+          </DrawerSection>
 
           <DrawerSection label="index etf">
             <Stack>
@@ -36,7 +38,7 @@ const Drawer = () => {
         isOpen={isOpen}
         toggle={() => setIsOpen((prev) => !prev)}
       />
-      <Watchlists />
+
       {/* <Watchlists /> */}
     </React.Fragment>
   );
