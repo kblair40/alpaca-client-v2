@@ -56,7 +56,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
             asset_class: "us_equity",
           },
         });
-        console.log("ASSETS RESPONSE.DATA:", response.data);
+        // console.log("ASSETS RESPONSE.DATA:", response.data);
 
         if (response.data) {
           let tradableAssets: string[] = [];
@@ -67,7 +67,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
             }
           });
 
-          console.log("COUNT:", tradableAssets.length);
+          // console.log("COUNT:", tradableAssets.length);
           setAllAssets(tradableAssets);
         }
       } catch (e) {
@@ -133,7 +133,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
       }
 
       const response = await alpaca.post("/watchlists", body);
-      console.log("CREATE RESPONSE.DATA:", response.data);
+      // console.log("CREATE RESPONSE.DATA:", response.data);
     } catch (e: any) {
       console.log("FAILED TO CREATE WATCHLIST:", e);
       let error = e.response.data.message;
@@ -146,7 +146,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 
   const nameInvalid =
     !!createError && createError.split(" ").includes("unique");
-  console.log("IS INVALID:", nameInvalid);
+  // console.log("IS INVALID:", nameInvalid);
 
   const errorMsgProps = {
     color: errorColor,
@@ -212,8 +212,8 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
                 {addedSymbols && addedSymbols.length
                   ? addedSymbols.map((symbol, i) => {
                       return (
-                        <WrapItem>
-                          <SymbolChip symbol={symbol} key={i} />
+                        <WrapItem key={i}>
+                          <SymbolChip symbol={symbol} />
                         </WrapItem>
                       );
                     })
