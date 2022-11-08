@@ -4,6 +4,7 @@ import { Button, useColorMode, Stack } from "@chakra-ui/react";
 import DrawerSection from "./DrawerSection";
 import DrawerWrapper from "./DrawerWrapper";
 import TickerPerformance from "components/TickerPerformance";
+import Watchlist from "components/Watchlist";
 
 const Drawer = () => {
   const { colorMode } = useColorMode();
@@ -34,6 +35,8 @@ const Drawer = () => {
         isOpen={isOpen}
         toggle={() => setIsOpen((prev) => !prev)}
       />
+
+      <Watchlist />
     </React.Fragment>
   );
 };
