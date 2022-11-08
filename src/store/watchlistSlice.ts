@@ -1,74 +1,54 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import api from "api";
+import { alpaca } from "api";
 
-export const fetchUser = createAsyncThunk("user/fetchUser", async () => {
-  const isAuthenticated = !!window.localStorage.getItem("auth-token");
-  let res = {};
-  if (isAuthenticated) {
-    try {
-      const response = await api.get(`/user`);
-      // console.log("USER DATA:", response.data);
-      if (response && response.data) {
-        res = response.data;
+export const fetchWatchlists = createAsyncThunk(
+  "watchlist/fetchWatchlists",
+  async () => {
+    const isAuthenticated = !!window.localStorage.getItem("auth-token");
+    if (isAuthenticated) {
+      try {
+        const response = await alpaca.get(`/watchlists`);
+        // console.log("USER DATA:", response.data);
+        if (response && response.data) {
+          return response.data;
+        }
+      } catch (err) {
+        console.log("FAILED:", err);
+        return null;
       }
-    } catch (err) {
-      console.log("FAILED:", err);
-      return null;
     }
   }
-  return res;
-});
+);
 
 type SliceState = {
-  data: any;
+  data: any[];
   status: null | "loading" | "completed" | "failed";
   error: boolean;
-  authenticated: { local: boolean; alpaca: boolean };
 };
 
-const userSlice = createSlice({
-  name: "user",
+const watchlistSlice = createSlice({
+  name: "watchlist",
   initialState: {
-    data: {},
+    data: [],
     status: null,
     error: false,
-    authenticated: {
-      local: Boolean(window.localStorage.getItem("auth-token")),
-      alpaca: Boolean(window.localStorage.getItem("alpaca-token")),
-    },
   } as SliceState,
   reducers: {
-    setUserData(state, action) {
-      const { data, isAuthenticated } = action.payload;
-      state.data = data;
-
-      if (isAuthenticated !== undefined) {
-        state.authenticated.local = isAuthenticated;
-      }
-    },
-    logoutLocal(state) {
-      state.authenticated.local = false;
-    },
-    logoutAlpaca(state) {
-      console.log("\nLOGGING OUT OF ALPACA\n");
-      state.authenticated.alpaca = false;
-    },
-    loginAlpaca(state) {
-      console.log("\nLOGGING IN TO ALPACA\n");
-      state.authenticated.alpaca = true;
+    addWatchlist(state, action) {
+      state.data = [...state.data, action.payload];
     },
   },
 
   extraReducers(builder) {
     builder
-      .addCase(fetchUser.pending, (state) => {
+      .addCase(fetchWatchlists.pending, (state) => {
         state.status = "loading";
       })
-      .addCase(fetchUser.fulfilled, (state, action) => {
+      .addCase(fetchWatchlists.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        // console.log("\n\nUSER DATA DATA:", data);
+        console.log("FULFILLED DATA:", data);
 
         if (data) {
           state.data = data;
@@ -77,13 +57,13 @@ const userSlice = createSlice({
           state.status = "failed";
         }
       })
-      .addCase(fetchUser.rejected, (state) => {
+      .addCase(fetchWatchlists.rejected, (state) => {
         state.status = "failed";
         state.error = true;
       });
   },
 });
 
-export const userActions = userSlice.actions;
+export const watchlistActions = watchlistSlice.actions;
 
-export default userSlice.reducer;
+export default watchlistSlice.reducer;

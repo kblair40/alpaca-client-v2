@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Box, Center, Spinner, Stack } from "@chakra-ui/react";
 
+import { fetchWatchlists } from "store/watchlistSlice";
+import useDispatch from "hooks/useDispatch";
+import useSelector from "hooks/useSelector";
 import { IWatchlist } from "utils/types/watchlist";
 import Watchlist from "./Watchlist";
 import { alpaca } from "api";
@@ -8,6 +11,18 @@ import { alpaca } from "api";
 const Watchlists = () => {
   const [loading, setLoading] = useState(true);
   const [watchlists, setWatchlists] = useState<IWatchlist[]>();
+
+  const dispatch = useDispatch();
+  const { data, status } = useSelector((st) => st.watchlist);
+  console.log("\n\nDATA/STATUS:", { data, status }, "\n\n");
+
+  useEffect(() => {
+    dispatch(fetchWatchlists());
+  }, []);
+
+  useEffect(() => {
+    console.log("\nNEW DATA:", data, "\n");
+  }, [data]);
 
   useEffect(() => {
     const fetchWatchlists = async () => {
