@@ -32,11 +32,15 @@ const WatchlistSectionMenu = (props: Props) => {
           icon={<MoreHorizontalIcon boxSize="18px" />}
         />
 
-        <MenuList bg={menuBg}>
-          <MenuItem onClick={() => setCreateModalOpen(true)}>
+        <MenuList bg={menuBg} fontSize="sm" py={0}>
+          <MenuItem
+            py=".5rem"
+            fontWeight="500"
+            icon={<PlusIcon boxSize="18px" />}
+            onClick={() => setCreateModalOpen(true)}
+          >
             Create New Watchlist
           </MenuItem>
-          {/* fdsa fdsa fdsa fdsa fdsa fdsa fdsa fdsa fdsa fdsa fdsa fdsa */}
         </MenuList>
       </Menu>
 
