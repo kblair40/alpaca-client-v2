@@ -1,10 +1,4 @@
-import {
-  Box,
-  Flex,
-  Text,
-  useColorMode,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, useColorMode } from "@chakra-ui/react";
 
 type Props = {};
 
