@@ -120,36 +120,66 @@ const theme = extendTheme({
       baseStyle: {
         _disabled: { _hover: { bg: "unset" } },
       },
-      // defaultProps: {
-      //   variant: "solid-neutral",
-      // },
     },
     Input: inputHelpers.defineMultiStyleConfig({
       variants: {
-        "neutral-outline": ({ colorMode: cm }) => ({
-          field: {
-            bg: "transparent",
-            borderWidth: "1px",
-            borderStyle: "solid",
-            borderColor: cm === "dark" ? "gray.500" : "gray.300",
-            color: cm === "dark" ? "gray.50" : "gray.800",
+        "neutral-outline": ({ colorMode: cm, isInvalid }) => {
+          const red = cm === "dark" ? "red.300" : "red.500";
+          const gray = cm === "dark" ? "gray.500" : "gray.300";
+          const focusGray = cm === "dark" ? "gray.300" : "gray.500";
 
-            _hover: {
-              borderColor: cm === "dark" ? "gray.400" : "gray.400",
+          return {
+            field: {
+              bg: "transparent",
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: isInvalid ? red : gray,
+              color: cm === "dark" ? "gray.50" : "gray.800",
+
+              _hover: {
+                borderColor: undefined,
+              },
+              _focus: {
+                borderColor: isInvalid ? red : focusGray,
+              },
+              _focusVisible: { outline: "none" },
+              _placeholder: {
+                color: cm === "dark" ? "gray.300" : "gray.500",
+              },
             },
-            _focus: {
-              borderColor: cm === "dark" ? "gray.300" : "gray.500",
-            },
-            _focusVisible: { outline: "none" },
-            _placeholder: {
-              color: cm === "dark" ? "gray.300" : "gray.500",
-            },
-          },
-          element: {},
-          addon: {},
-        }),
+            element: {},
+            addon: {},
+          };
+        },
       },
     }),
+    // Input: inputHelpers.defineMultiStyleConfig({
+    //   variants: {
+    //     "neutral-outline": ({ colorMode: cm }) => ({
+    //       field: {
+    //         bg: "transparent",
+    //         borderWidth: "1px",
+    //         borderStyle: "solid",
+    //         borderColor: cm === "dark" ? "gray.500" : "gray.300",
+    //         color: cm === "dark" ? "gray.50" : "gray.800",
+
+    //         _hover: {
+    //           borderColor: undefined,
+    //           // borderColor: cm === "dark" ? "gray.400" : "gray.400",
+    //         },
+    //         _focus: {
+    //           borderColor: cm === "dark" ? "gray.300" : "gray.500",
+    //         },
+    //         _focusVisible: { outline: "none" },
+    //         _placeholder: {
+    //           color: cm === "dark" ? "gray.300" : "gray.500",
+    //         },
+    //       },
+    //       element: {},
+    //       addon: {},
+    //     }),
+    //   },
+    // }),
   },
   fonts: {
     body: "Open Sans, sans-serif",
