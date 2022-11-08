@@ -42,7 +42,7 @@ const watchlistSlice = createSlice({
       const id = action.payload;
       const wlCopy = [...state.data];
       const wlIndex = wlCopy.findIndex((wl) => wl.id === id);
-      console.log("WL INDEX:", wlIndex);
+
       if (wlIndex !== -1) {
         wlCopy.splice(wlIndex, 1);
         state.data = wlCopy;
@@ -58,7 +58,7 @@ const watchlistSlice = createSlice({
       .addCase(fetchWatchlists.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        console.log("FULFILLED DATA:", data);
+        // console.log("FULFILLED DATA:", data);
 
         if (data) {
           state.data = data;
