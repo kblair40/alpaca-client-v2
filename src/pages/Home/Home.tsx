@@ -34,7 +34,7 @@ const Home = () => {
             base: "1px solid",
             md: "none",
           }),
-          backgroundColor: isDark ? "gray.800" : "gray.50",
+          backgroundColor: isDark ? "gray.900" : "gray.50",
           borderColor: isDark ? gray["700"] : gray["100"],
           padding: useBreakpointValue({
             base: ".5rem",

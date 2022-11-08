@@ -9,7 +9,7 @@ const TickerPerformance = (props: Props) => {
   const positiveColor = isDark ? "green.300" : "green.500";
   const negativeColor = isDark ? "red.300" : "red.500";
 
-  const bg = isDark ? "gray.900" : "gray.100";
+  const bg = isDark ? "gray.800" : "gray.100";
 
   const textColor = positiveColor;
 
