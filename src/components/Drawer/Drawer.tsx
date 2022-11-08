@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Button, useColorMode, Box } from "@chakra-ui/react";
+import { Button, useColorMode, Box, Stack } from "@chakra-ui/react";
 
+import DrawerSection from "./DrawerSection";
 import DrawerWrapper from "./DrawerWrapper";
+import TickerPerformance from "components/TickerPerformance";
 
 const Drawer = () => {
   const { colorMode } = useColorMode();
@@ -12,7 +14,20 @@ const Drawer = () => {
   return (
     <React.Fragment>
       <DrawerWrapper isOpen={isOpen}>
-        <Box>Nisi deserunt anim veniam ut nostrud ullamco sunt in.</Box>
+        <Stack
+          direction={{ base: "row", md: "column" }}
+          spacing={{ base: ".5rem", md: "1.5rem" }}
+        >
+          <DrawerSection label="watchlist">{/*  */}</DrawerSection>
+
+          <DrawerSection label="index etf">
+            <Stack>
+              <TickerPerformance />
+              <TickerPerformance />
+              <TickerPerformance />
+            </Stack>
+          </DrawerSection>
+        </Stack>
       </DrawerWrapper>
 
       <OpenCloseButton

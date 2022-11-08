@@ -85,6 +85,19 @@ export const SearchIcon = (props: FillProps) => {
   );
 };
 
+export const PlusIcon = (props: FillProps) => {
+  const activeFill = useIconFill(props);
+  return (
+    <Icon
+      boxSize={props.boxSize ? props.boxSize : "24px"}
+      viewBox="0 0 24 24"
+      fill={activeFill}
+    >
+      <path d="M21 9.75H14.25V3C14.25 2.17172 13.5783 1.5 12.75 1.5H11.25C10.4217 1.5 9.75 2.17172 9.75 3V9.75H3C2.17172 9.75 1.5 10.4217 1.5 11.25V12.75C1.5 13.5783 2.17172 14.25 3 14.25H9.75V21C9.75 21.8283 10.4217 22.5 11.25 22.5H12.75C13.5783 22.5 14.25 21.8283 14.25 21V14.25H21C21.8283 14.25 22.5 13.5783 22.5 12.75V11.25C22.5 10.4217 21.8283 9.75 21 9.75Z" />
+    </Icon>
+  );
+};
+
 export const MoreVerticalIcon = (props: FillProps) => {
   const activeFill = useIconFill(props);
   return (
@@ -109,6 +122,39 @@ export const MoreVerticalIcon = (props: FillProps) => {
       />
       <path
         d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z"
+        stroke={activeFill}
+        strokeWidth="2.505"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Icon>
+  );
+};
+
+export const MoreHorizontalIcon = (props: FillProps) => {
+  const activeFill = useIconFill(props);
+  return (
+    <Icon
+      boxSize={props.boxSize ? props.boxSize : "24px"}
+      viewBox="0 0 24 24"
+      fill={"none"}
+    >
+      <path
+        d="M5 13C5.55228 13 6 12.5523 6 12C6 11.4477 5.55228 11 5 11C4.44772 11 4 11.4477 4 12C4 12.5523 4.44772 13 5 13Z"
+        stroke={activeFill}
+        strokeWidth="2.505"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
+        stroke={activeFill}
+        strokeWidth="2.505"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M19 13C19.5523 13 20 12.5523 20 12C20 11.4477 19.5523 11 19 11C18.4477 11 18 11.4477 18 12C18 12.5523 18.4477 13 19 13Z"
         stroke={activeFill}
         strokeWidth="2.505"
         strokeLinecap="round"
