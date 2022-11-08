@@ -14,9 +14,7 @@ import {
 import CreateWatchlistModal from "components/Modals/CreateWatchlistModal";
 import { MoreHorizontalIcon, PlusIcon } from "utils/icons";
 
-type Props = {};
-
-const WatchlistSectionMenu = (props: Props) => {
+const WatchlistSectionMenu = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
   const menuBg = useColorModeValue("gray.50", "gray.900");
@@ -44,10 +42,12 @@ const WatchlistSectionMenu = (props: Props) => {
         </MenuList>
       </Menu>
 
-      <CreateWatchlistModal
-        isOpen={createModalOpen}
-        onClose={() => setCreateModalOpen(false)}
-      />
+      {createModalOpen && (
+        <CreateWatchlistModal
+          isOpen={createModalOpen}
+          onClose={() => setCreateModalOpen(false)}
+        />
+      )}
     </Fragment>
   );
 };

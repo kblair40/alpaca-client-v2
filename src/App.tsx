@@ -18,9 +18,7 @@ function App() {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (!authenticated.local) {
-      navigate("/");
-    }
+    if (!authenticated.local) navigate("/");
   }, [authenticated, navigate]);
 
   const didFetch = useRef(false);
