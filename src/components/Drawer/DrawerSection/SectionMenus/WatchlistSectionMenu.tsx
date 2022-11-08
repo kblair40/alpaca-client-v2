@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 import CreateWatchlistModal from "components/Modals/CreateWatchlistModal";
-import { MoreHorizontalIcon } from "utils/icons";
+import { MoreHorizontalIcon, PlusIcon } from "utils/icons";
 
 type Props = {};
 

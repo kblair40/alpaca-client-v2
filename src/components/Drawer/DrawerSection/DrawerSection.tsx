@@ -2,11 +2,16 @@ import React from "react";
 import { Flex, Box, Text } from "@chakra-ui/react";
 
 import WatchlistSectionMenu from "components/Drawer/DrawerSection/SectionMenus/WatchlistSectionMenu";
-import { MoreHorizontalIcon } from "utils/icons";
+import IndexEtfSectionMenu from "components/Drawer/DrawerSection/SectionMenus/IndexEtfSectionMenu";
 
 type Props = {
   label: "watchlists" | "index etfs";
   children?: React.ReactNode;
+};
+
+const MENUS = {
+  watchlists: <WatchlistSectionMenu />,
+  "index etfs": <IndexEtfSectionMenu />,
 };
 
 const DrawerSection = ({ children, label }: Props) => {
@@ -16,7 +21,7 @@ const DrawerSection = ({ children, label }: Props) => {
         <Text fontWeight={700} textTransform="uppercase" fontSize="15px">
           {label}
         </Text>
-        <WatchlistSectionMenu />
+        {MENUS[label]}
       </Flex>
 
       <Box pt="8px">{children}</Box>
