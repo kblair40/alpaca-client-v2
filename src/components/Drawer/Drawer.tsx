@@ -24,7 +24,7 @@ const Drawer = () => {
             <Watchlists />
           </DrawerSection>
 
-          <DrawerSection label="index etf">
+          <DrawerSection label="index etfs">
             <Stack>
               <TickerPerformance />
               <TickerPerformance />

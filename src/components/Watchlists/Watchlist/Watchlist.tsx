@@ -28,36 +28,48 @@ const Watchlist = ({ watchlist: wl }: Props) => {
       </Text>
 
       <Stack mt=".75rem">
-        {wl.assets && wl.assets.length
-          ? wl.assets.map((asset, i) => {
-              return (
-                <Flex
-                  lineHeight={1}
-                  cursor="pointer"
-                  // border="1px solid white"
+        {wl.assets && wl.assets.length ? (
+          wl.assets.map((asset, i) => {
+            return (
+              <Flex lineHeight={1} cursor="pointer">
+                <Tooltip label={asset.name}>
+                  <Text flex={1} fontSize="13px" fontWeight="500">
+                    {asset.symbol}
+                  </Text>
+                </Tooltip>
+
+                <Text
+                  textAlign="center"
+                  flex={1}
+                  fontSize="xs"
+                  fontWeight="500"
                 >
-                  <Tooltip label={asset.name}>
-                    <Text flex={1} fontSize="13px" fontWeight="500">
-                      {asset.symbol}
-                    </Text>
-                  </Tooltip>
+                  $83.473
+                </Text>
 
-                  <Text flex={1} fontSize="xs" fontWeight="500">
-                    $83.07
-                  </Text>
-
-                  <Text
-                    color={negativeColor}
-                    flex={1}
-                    fontSize="xs"
-                    fontWeight="500"
-                  >
-                    -0.19%
-                  </Text>
-                </Flex>
-              );
-            })
-          : null}
+                <Text
+                  color={negativeColor}
+                  flex={1}
+                  fontSize="xs"
+                  fontWeight="500"
+                  textAlign="right"
+                >
+                  -0.19%
+                </Text>
+              </Flex>
+            );
+          })
+        ) : (
+          <Text
+            py="1rem"
+            textAlign="center"
+            fontSize="sm"
+            fontWeight="700"
+            letterSpacing={".3px"}
+          >
+            NO ASSETS
+          </Text>
+        )}
       </Stack>
     </Box>
   );
