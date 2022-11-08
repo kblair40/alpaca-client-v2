@@ -1,13 +1,4 @@
-import React from "react";
-import {
-  Box,
-  Text,
-  Flex,
-  Center,
-  Spinner,
-  Stack,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Text, Flex, Stack, useColorMode } from "@chakra-ui/react";
 
 import { IWatchlist } from "utils/types/watchlist";
 
@@ -19,7 +10,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
-  const positiveColor = isDark ? "green.300" : "green.500";
+  // const positiveColor = isDark ? "green.300" : "green.500";
   const negativeColor = isDark ? "red.300" : "red.500";
   const mainBg = isDark ? "gray.800" : "gray.50";
 
