@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 import { IWatchlist } from "utils/types/watchlist";
+import WatchlistMenu from "./WatchlistMenu";
 
 type Props = {
   watchlist: IWatchlist;
@@ -23,9 +24,12 @@ const Watchlist = ({ watchlist: wl }: Props) => {
 
   return (
     <Box p="8px 8px 16px" bg={mainBg}>
-      <Text fontSize="sm" fontWeight="600">
-        {wl.name || "Unnamed Watchlist"}
-      </Text>
+      <Flex justify="space-between">
+        <Text fontSize="sm" fontWeight="600">
+          {wl.name || "Unnamed Watchlist"}
+        </Text>
+        <WatchlistMenu id={wl.id} />
+      </Flex>
 
       <Stack mt=".75rem">
         {wl.assets && wl.assets.length ? (
