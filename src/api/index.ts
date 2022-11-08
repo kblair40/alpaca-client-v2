@@ -27,7 +27,7 @@ export const alpaca = axios.create({
   baseURL: "http://localhost:3001/alpaca",
 });
 
-api.interceptors.request.use(
+alpaca.interceptors.request.use(
   // called everytime we make a request
   async (config) => {
     const token = await window.localStorage.getItem("auth-token");

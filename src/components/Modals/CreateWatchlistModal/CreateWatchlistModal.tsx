@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalHeader,
@@ -19,11 +19,12 @@ import {
   CloseButton,
   Wrap,
   WrapItem,
+  Text,
 } from "@chakra-ui/react";
 
 import { type IAsset } from "utils/types/asset";
 import { alpaca } from "api";
-// import alpacaApi from "api/alpaca";
+import alpacaApi from "api/alpaca";
 
 type Props = {
   isOpen: boolean;
@@ -38,15 +39,16 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   const [addedSymbols, setAddedSymbols] = useState<string[]>([]);
   const [addSymbolValue, setAddSymbolValue] = useState("");
   const [addSymbolError, setAddSymbolError] = useState("");
+  const [createError, setCreateError] = useState("");
 
   const bg = useColorModeValue("gray.50", "gray.900");
   const helperTextColor = useColorModeValue("gray.700", "gray.200");
-  const errorMsgColor = useColorModeValue("red.600", "red.300");
+  const errorColor = useColorModeValue("red.600", "red.300");
 
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await alpaca.get("/assets", {
+        const response = await alpacaApi.get("/assets", {
           params: {
             status: "active",
             // docs say us_equity is default, but as of 11/08/22, crypto
@@ -125,23 +127,35 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 
     setLoading(true);
     try {
-      const headers = { "Content-Type": "application/json" };
       const body: Body = { name };
       if (addedSymbols && addedSymbols.length) {
         body["symbols"] = addedSymbols;
       }
 
-      const response = await alpaca.post("/watchlists", body, { headers });
+      const response = await alpaca.post("/watchlists", body);
       console.log("CREATE RESPONSE.DATA:", response.data);
-    } catch (e) {
+    } catch (e: any) {
       console.log("FAILED TO CREATE WATCHLIST:", e);
+      let error = e.response.data.message;
+      error = error[0].toUpperCase() + error.slice(1);
+      setCreateError(error);
     }
 
     setLoading(false);
   };
 
+  const nameInvalid =
+    !!createError && createError.split(" ").includes("unique");
+  console.log("IS INVALID:", nameInvalid);
+
+  const errorMsgProps = {
+    color: errorColor,
+    fontSize: "13px",
+    mt: "4px",
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={onClose} allowPinchZoom>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
 
       <ModalContent bg={bg}>
@@ -149,13 +163,20 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 
         <ModalBody>
           <Stack spacing="1rem">
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={nameInvalid}>
               <FormLabel>Watchlist Name</FormLabel>
               <Input
                 variant="neutral-outline"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                isInvalid={nameInvalid}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (createError) setCreateError("");
+                }}
               />
+              <FormErrorMessage {...errorMsgProps}>
+                {createError}
+              </FormErrorMessage>
             </FormControl>
 
             <Box>
@@ -163,6 +184,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
                 <FormLabel>Tickers</FormLabel>
                 <Input
                   isDisabled={fetching}
+                  isInvalid={!!addSymbolError}
                   variant="neutral-outline"
                   value={addSymbolValue}
                   onChange={(e) => {
@@ -180,7 +202,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
                     Type a symbol and press enter to add it to your watchlist
                   </FormHelperText>
                 ) : (
-                  <FormErrorMessage color={errorMsgColor}>
+                  <FormErrorMessage {...errorMsgProps}>
                     {addSymbolError}
                   </FormErrorMessage>
                 )}

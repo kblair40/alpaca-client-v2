@@ -124,6 +124,7 @@ const theme = extendTheme({
     Input: inputHelpers.defineMultiStyleConfig({
       variants: {
         "neutral-outline": ({ colorMode: cm, isInvalid }) => {
+          console.log("INPUT PROPS:", { isInvalid });
           const red = cm === "dark" ? "red.300" : "red.500";
           const gray = cm === "dark" ? "gray.500" : "gray.300";
           const focusGray = cm === "dark" ? "gray.300" : "gray.500";
