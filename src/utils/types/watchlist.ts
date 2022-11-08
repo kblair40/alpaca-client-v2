@@ -8,6 +8,7 @@ interface IWatchlistAsset {
   shortable: boolean;
   symbol: string;
   tradable: boolean;
+  name: string;
 }
 
 export interface IWatchlist {
