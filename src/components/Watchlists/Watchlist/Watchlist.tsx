@@ -65,10 +65,10 @@ const Watchlist = ({ watchlist: wl }: Props) => {
           })
         ) : (
           <Text
-            py="1rem"
+            py=".25rem"
             textAlign="center"
             fontSize="sm"
-            fontWeight="700"
+            fontWeight="400"
             letterSpacing={".3px"}
           >
             NO ASSETS
