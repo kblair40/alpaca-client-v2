@@ -42,6 +42,8 @@ const Home = () => {
           }),
           left: useBreakpointValue({ base: "unset", md: "-100%" }),
           bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
+          // new
+          maxHeight: "calc(100vh - 60px)",
         },
       }}
     >
