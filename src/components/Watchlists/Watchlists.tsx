@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Box, Text, Flex, Center, Spinner } from "@chakra-ui/react";
+import { Box, Text, Flex, Center, Spinner, Stack } from "@chakra-ui/react";
 
 import { IWatchlist } from "utils/types/watchlist";
+import Watchlist from "./Watchlist";
 import alpacaApi from "api/alpaca";
 
 const Watchlists = () => {
@@ -51,7 +52,24 @@ const Watchlists = () => {
     );
   }
 
-  return <Box></Box>;
+  return (
+    <Box>
+      {watchlists && watchlists.length ? (
+        <Stack>
+          {watchlists.map((wl, i) => {
+            return <Watchlist key={i} watchlist={wl} />;
+          })}
+        </Stack>
+      ) : (
+        <Box>
+          <Box>
+            Do culpa amet commodo aliqua qui cillum nostrud laboris non
+            exercitation adipisicing duis do.
+          </Box>
+        </Box>
+      )}
+    </Box>
+  );
 };
 
 export default Watchlists;
