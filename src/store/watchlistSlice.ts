@@ -38,6 +38,16 @@ const watchlistSlice = createSlice({
     addWatchlist(state, action) {
       state.data = [...state.data, action.payload];
     },
+    deleteWatchlist(state, action) {
+      const id = action.payload;
+      const wlCopy = [...state.data];
+      const wlIndex = wlCopy.findIndex((wl) => wl.id === id);
+      console.log("WL INDEX:", wlIndex);
+      if (wlIndex !== -1) {
+        wlCopy.splice(wlIndex, 1);
+        state.data = wlCopy;
+      }
+    },
   },
 
   extraReducers(builder) {

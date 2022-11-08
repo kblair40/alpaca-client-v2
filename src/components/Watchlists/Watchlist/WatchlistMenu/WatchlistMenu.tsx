@@ -8,6 +8,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
+import useDispatch from "hooks/useDispatch";
+import { watchlistActions } from "store/watchlistSlice";
 import alpacaApi from "api/alpaca";
 import { MoreHorizontalIcon, TrashIcon, EditIcon } from "utils/icons";
 import DeleteModal from "./DeleteModal";
@@ -21,6 +23,8 @@ type Props = {
 const WatchlistMenu = ({ id, name }: Props) => {
   const [deleting, setDeleting] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
 
   const menuBg = useColorModeValue("gray.50", "gray.800");
   const iconBoxSize = "16px";
@@ -37,6 +41,8 @@ const WatchlistMenu = ({ id, name }: Props) => {
 
     setDeleteModalOpen(false);
     setDeleting(false);
+
+    dispatch(watchlistActions.deleteWatchlist(id));
   };
 
   return (
@@ -49,12 +55,7 @@ const WatchlistMenu = ({ id, name }: Props) => {
           icon={<MoreHorizontalIcon boxSize="16px" />}
         />
 
-        <MenuList
-          fontSize="sm"
-          bg={menuBg}
-          py={0}
-          //
-        >
+        <MenuList fontSize="sm" bg={menuBg} py={0}>
           <MenuItem py={2} icon={<EditIcon boxSize={iconBoxSize} />}>
             Edit Stocks
           </MenuItem>
