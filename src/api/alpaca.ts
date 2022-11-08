@@ -10,7 +10,7 @@ if (token) {
 
 console.log("\nTOKEN AFTER:", token);
 
-export const api = axios.create({
+const api = axios.create({
   baseURL: "https://api.alpaca.markets/v2",
   headers: {
     Authorization: token,

@@ -22,7 +22,8 @@ import {
 } from "@chakra-ui/react";
 
 import { type IAsset } from "utils/types/asset";
-import alpacaApi from "api/alpaca";
+import { alpaca } from "api";
+// import alpacaApi from "api/alpaca";
 
 type Props = {
   isOpen: boolean;
@@ -31,6 +32,7 @@ type Props = {
 
 const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   const [name, setName] = useState("");
+  const [fetching, setFetching] = useState(true);
   const [loading, setLoading] = useState(false);
   const [allAssets, setAllAssets] = useState<any[]>();
   const [addedSymbols, setAddedSymbols] = useState<string[]>([]);
@@ -44,11 +46,11 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   useEffect(() => {
     const fetchAssets = async () => {
       try {
-        const response = await alpacaApi.get("/assets", {
+        const response = await alpaca.get("/assets", {
           params: {
             status: "active",
-            // docs say us_equity is default, however as of 11/08/22,
-            //  crypto is still being returned if us_equity is not specified
+            // docs say us_equity is default, but as of 11/08/22, crypto
+            //  is still being returned if us_equity is not specified
             asset_class: "us_equity",
           },
         });
@@ -69,6 +71,8 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
       } catch (e) {
         console.log("FAILED TO FETCH ASSETS:", e);
       }
+
+      setFetching(false);
     };
 
     fetchAssets();
@@ -111,6 +115,31 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
     return isIncluded;
   };
 
+  type Body = {
+    name: string;
+    symbols?: string[];
+  };
+
+  const createWatchlist = async () => {
+    if (!name) return;
+
+    setLoading(true);
+    try {
+      const headers = { "Content-Type": "application/json" };
+      const body: Body = { name };
+      if (addedSymbols && addedSymbols.length) {
+        body["symbols"] = addedSymbols;
+      }
+
+      const response = await alpaca.post("/watchlists", body, { headers });
+      console.log("CREATE RESPONSE.DATA:", response.data);
+    } catch (e) {
+      console.log("FAILED TO CREATE WATCHLIST:", e);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} allowPinchZoom>
       <ModalOverlay />
@@ -133,6 +162,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
               <FormControl isInvalid={!!addSymbolError}>
                 <FormLabel>Tickers</FormLabel>
                 <Input
+                  isDisabled={fetching}
                   variant="neutral-outline"
                   value={addSymbolValue}
                   onChange={(e) => {
@@ -174,7 +204,12 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
         <ModalFooter>
           <Button onClick={onClose}>Cancel</Button>
 
-          <Button isLoading={loading} variant="solid-blue" ml="1rem">
+          <Button
+            onClick={createWatchlist}
+            isLoading={loading}
+            variant="solid-blue"
+            ml="1rem"
+          >
             Save
           </Button>
         </ModalFooter>
