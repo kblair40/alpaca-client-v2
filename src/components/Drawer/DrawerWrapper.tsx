@@ -34,7 +34,7 @@ const DrawerWrapper = ({ children, isOpen }: Props) => {
     <motion.div
       animate={isOpen ? "open" : "closed"}
       variants={variants}
-      style={{ width, height }}
+      style={{ width, height, minWidth: width }}
       initial={false}
       className="my-drawer"
     >

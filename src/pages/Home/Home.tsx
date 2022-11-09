@@ -24,6 +24,9 @@ const Home = () => {
 
   return (
     <Box
+      w="100%"
+      maxW="100vw"
+      overflowX="hidden"
       h="100%"
       sx={{
         ".my-drawer": {
@@ -62,6 +65,7 @@ const Home = () => {
           <Box
             // border="1px solid green"
             w="100%"
+            maxW="calc(100vw - 220px)"
             p="1rem"
           >
             <Chart />
