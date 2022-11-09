@@ -27,7 +27,7 @@ const DrawerWrapper = ({ children, isOpen }: Props) => {
     })!,
   };
 
-  const width = useBreakpointValue({ base: "100vw", md: "220px" });
+  const width = useBreakpointValue({ base: "100vw", md: "100%" });
   const height = useBreakpointValue({ base: "180px", md: "100vh" });
 
   return (

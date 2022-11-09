@@ -5,12 +5,12 @@ import {
   useColorMode,
   Flex,
 } from "@chakra-ui/react";
+import { Scrollbars } from "react-custom-scrollbars";
 
 // import Authenticate from "components/Authenticate";
 import Drawer from "components/Drawer";
 import Chart from "components/Chart";
 import useSelector from "hooks/useSelector";
-import React from "react";
 
 const Home = () => {
   const { authenticated } = useSelector((st) => st.user);
@@ -27,6 +27,10 @@ const Home = () => {
       w="100%"
       maxW="100vw"
       overflowX="hidden"
+      // new
+      overflowY="hidden"
+      maxH="calc(100vh - 60px)"
+      // end new
       h="100%"
       sx={{
         ".my-drawer": {
@@ -42,17 +46,16 @@ const Home = () => {
           }),
           backgroundColor: isDark ? "gray.900" : "gray.50",
           borderColor: isDark ? gray["700"] : gray["100"],
-          padding: useBreakpointValue({
-            base: "1rem .75rem",
-            md: "1rem .75rem",
-          }),
+          // padding: useBreakpointValue({
+          //   base: ".5rem .75rem",
+          //   md: ".5rem 0 .5rem .75rem",
+          // }),
           left: useBreakpointValue({ base: "unset", md: "-100%" }),
           bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
           // new
           maxHeight: "calc(100vh - 60px)",
-          overflowY: "auto",
+          // overflowY: "hidden",
           overflowX: "hidden",
-          // position: "absolute",
         },
       }}
     >
@@ -61,7 +64,9 @@ const Home = () => {
         //
         // border="1px solid white"
         >
-          <Drawer />
+          <Box maxWidth="260px" w="100%" overflowX="hidden" py="4px">
+            <Drawer />
+          </Box>
           <Box
             // border="1px solid green"
             w="100%"

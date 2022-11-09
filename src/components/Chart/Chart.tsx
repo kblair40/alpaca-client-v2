@@ -24,7 +24,7 @@ const Chart = () => {
       <ChartHeader />
 
       <Box
-        mt="1rem"
+        mt="2rem"
         // border="1px solid #aaa"
         w="100%"
         h={"300px"}
