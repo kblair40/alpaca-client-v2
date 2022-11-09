@@ -7,7 +7,14 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useColorMode, useTheme } from "@chakra-ui/react";
+import {
+  useColorMode,
+  useTheme,
+  useColorModeValue,
+  Box,
+  Text,
+  Flex,
+} from "@chakra-ui/react";
 
 import useSelector from "hooks/useSelector";
 import { getMin, getMax } from "./utils/getMinMax";
@@ -63,8 +70,10 @@ const LineChart = ({ data }: Props) => {
           x={0}
           y={0}
           dy={16}
-          textAnchor="end"
+          // textAnchor="end"
+          textAnchor="middle"
           fill={tickLabelColor}
+          style={{ fontSize: "13px" }}
           // transform="rotate(-35)"
         >
           {date.toLocaleString("en-US", options || {})}
@@ -76,8 +85,6 @@ const LineChart = ({ data }: Props) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <ReLineChart
-        // width={500}
-        // height={300}
         data={data}
         margin={{
           top: 5,
@@ -91,7 +98,7 @@ const LineChart = ({ data }: Props) => {
           dataKey="t"
           tick={renderCustomAxisTick}
           interval="preserveStartEnd"
-          // interval={0}
+          // interval={3}
         />
         <YAxis
           type="number"
@@ -100,12 +107,12 @@ const LineChart = ({ data }: Props) => {
             (dataMax: number) => getMax(dataMax),
           ]}
         />
-        <Tooltip />
+        <Tooltip content={<CustomTooltip />} />
         <Line
           type="monotone"
           dataKey="o"
           stroke={lineColor}
-          activeDot={{ r: 8 }}
+          activeDot={{ r: 5 }}
         />
       </ReLineChart>
     </ResponsiveContainer>
@@ -113,3 +120,38 @@ const LineChart = ({ data }: Props) => {
 };
 
 export default LineChart;
+
+type TooltipProps = {
+  active?: boolean;
+  payload?: any;
+  label?: string;
+};
+
+const CustomTooltip = ({ active, payload, label }: TooltipProps) => {
+  const bg = useColorModeValue("gray.50", "gray.700");
+  if (active && payload && payload.length) {
+    return (
+      <Box className="custom-tooltip" bg={bg} p=".75rem" rounded="lg">
+        <Text fontWeight="500" className="label">{`${new Date(
+          label ? label : ""
+        )
+          .toLocaleString("en-US", {
+            month: "2-digit",
+            year: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+          .split(", ")
+          .join(" at ")}`}</Text>
+
+        <Flex mt=".25rem">
+          <Text fontWeight="600">Price:&nbsp; </Text>
+          <Text fontWeight="600">${payload[0].value?.toFixed(3)}</Text>
+        </Flex>
+      </Box>
+    );
+  }
+
+  return null;
+};
