@@ -9,6 +9,7 @@ import { latest } from "immer/dist/internal";
 const emptyTickerData = {
   symbol: "n/a",
   exchange: "",
+  name: "",
 };
 const emptyPerformance = {
   numeric: null,
@@ -77,43 +78,40 @@ const ChartHeader = () => {
 
   return (
     <Flex direction="column">
-      <Flex
-        align="end"
-        lineHeight={1}
-        // border="1px solid white"
-      >
+      <Flex align="end" lineHeight={1}>
         <Text fontSize="xl" fontWeight="600">
           {tickerData.symbol}
         </Text>
 
         <Text
-          mx="1rem"
+          ml="1rem"
+          mr=".5rem"
           fontWeight="500"
-          fontSize="sm"
           color={perfTextColors.neutral}
         >
           {lastPrice ? `$${lastPrice.price}` : null}
         </Text>
 
-        <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
-          As of {lastPrice ? `${lastPrice.date} at ${lastPrice.time}` : null}
+        <Text
+          fontWeight="500"
+          fontSize="xs"
+          variant="secondary"
+          fontStyle="italic"
+        >
+          Last updated{" "}
+          {lastPrice ? `${lastPrice.date} at ${lastPrice.time}` : null}
         </Text>
       </Flex>
 
-      <Text fontWeight="300">{tickerData.exchange}</Text>
-
-      {/* <Flex direction="column">
-        <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
-          {lastPrice ? `$${lastPrice.price}` : null}
+      <Flex mt="8px">
+        <Text fontWeight="500" fontSize="sm">
+          {tickerData.exchange}
         </Text>
-
-        <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
-          As of{" "}
-          {lastPrice
-            ? `${new Date(lastPrice.timestamp).toLocaleString()}`
-            : null}
+        <Text mx=".5rem">&bull;</Text>
+        <Text fontWeight="500" fontSize="sm">
+          {tickerData.name}
         </Text>
-      </Flex> */}
+      </Flex>
 
       <Flex>
         <Text mr="1rem" fontWeight="500" fontSize="sm" color={textColor}>

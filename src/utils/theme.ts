@@ -48,9 +48,27 @@ const theme = extendTheme({
       }),
     },
     Text: {
-      baseStyle: ({ colorMode: cm }: any) => ({
-        color: cm === "dark" ? "gray.50" : "gray.800",
-      }),
+      baseStyle: ({ colorMode: cm, variant }: any) => {
+        const secondary = { light: "gray.600", dark: "gray.300" };
+        const primary = { light: "gray.800", dark: "gray.50" };
+        const colors: { [key: string]: { [key: string]: string } } = {
+          secondary,
+          primary,
+        };
+        if (variant === "secondary") {
+          console.log("\nTHEME TEXT COLOR:", colors[variant][cm]);
+          console.log({ colors, variant, cm }, "\n\n");
+        }
+        return {
+          color: colors[variant][cm],
+        };
+      },
+      defaultProps: {
+        variant: "primary",
+      },
+      // baseStyle: ({ colorMode: cm }: any) => ({
+      //   color: cm === "dark" ? "gray.50" : "gray.800",
+      // }),
     },
     Button: {
       variants: {
