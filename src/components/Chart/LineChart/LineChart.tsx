@@ -41,7 +41,7 @@ const LineChart = ({ data }: Props) => {
     const date = new Date(payload.value);
     if (timeframe === "1D") {
       let newOptions = { hour: "2-digit", minute: "2-digit" };
-      options = { ...options, newOptions };
+      options = { ...options, ...newOptions };
     } else if (timeframe === "1W") {
       options = { ...options, weekday: "long" };
     } else {
