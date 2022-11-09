@@ -62,9 +62,6 @@ const theme = extendTheme({
       defaultProps: {
         variant: "primary",
       },
-      // baseStyle: ({ colorMode: cm }: any) => ({
-      //   color: cm === "dark" ? "gray.50" : "gray.800",
-      // }),
     },
     Button: {
       variants: {
