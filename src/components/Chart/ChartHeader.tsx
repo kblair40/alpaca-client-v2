@@ -4,6 +4,7 @@ import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { fetchTickerData } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
+import { latest } from "immer/dist/internal";
 
 const emptyTickerData = {
   symbol: "n/a",
@@ -24,15 +25,15 @@ const ChartHeader = () => {
   const [dayPerformance, setDayPerformance] =
     useState<Performance>(emptyPerformance);
   const [isGain, setIsGain] = useState<boolean | null>(null);
+  const [lastPrice, setLastPrice] = useState<null | {
+    timestamp: string;
+    price: string;
+  }>();
 
   const perfTextColors = useColorModeValue(
     { positive: "green.500", negative: "red.500", neutral: "gray.700" },
     { positive: "green.300", negative: "red.300", neutral: "gray.50" }
   );
-
-  // const positiveColor = useColorModeValue("green.300", "green.500");
-  // const negativeColor = useColorModeValue("red.300", "red.500");
-  // const neutralColor = useColorModeValue("", "");
 
   const { ticker, status, error, data } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
@@ -44,12 +45,13 @@ const ChartHeader = () => {
       setSnapshot(data.snapshot);
       const { latestQuote, dailyBar } = data.snapshot;
       if (latestQuote && dailyBar) {
-        let dayOpen = dailyBar.o;
-        let curPrice = latestQuote.ap; // ask price
-        let perfPercent = (((curPrice - dayOpen) / dayOpen) * 100).toFixed(3);
-        let perfNumeric = (curPrice - dayOpen).toFixed(3);
+        const dayOpen = dailyBar.o;
+        const curPrice = latestQuote.ap; // ask price
+        const perfPercent = (((curPrice - dayOpen) / dayOpen) * 100).toFixed(3);
+        const perfNumeric = (curPrice - dayOpen).toFixed(3);
         setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
         setIsGain(parseFloat(perfNumeric) > 0);
+        setLastPrice({ price: curPrice.toFixed(3), timestamp: latestQuote.t });
       }
     }
   }, [status, data]);
@@ -69,18 +71,53 @@ const ChartHeader = () => {
 
   return (
     <Flex direction="column">
-      <Text fontSize="xl" fontWeight="600">
-        {tickerData.symbol}
-      </Text>
+      <Flex
+        align="end"
+        lineHeight={1}
+        // border="1px solid white"
+      >
+        <Text fontSize="xl" fontWeight="600">
+          {tickerData.symbol}
+        </Text>
+
+        <Text
+          mx="1rem"
+          fontWeight="500"
+          fontSize="sm"
+          color={perfTextColors.neutral}
+        >
+          {lastPrice ? `$${lastPrice.price}` : null}
+        </Text>
+
+        <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
+          As of{" "}
+          {lastPrice
+            ? `${new Date(lastPrice.timestamp).toLocaleString()}`
+            : null}
+        </Text>
+      </Flex>
 
       <Text fontWeight="300">{tickerData.exchange}</Text>
 
-      <Flex>
-        <Text fontWeight="500" fontSize="sm" color={textColor}>
-          {dayPerformance.numeric ? `$${dayPerformance.numeric}` : null}
+      {/* <Flex direction="column">
+        <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
+          {lastPrice ? `$${lastPrice.price}` : null}
         </Text>
 
-        <Text ml="1rem" fontWeight="500" fontSize="sm" color={textColor}>
+        <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
+          As of{" "}
+          {lastPrice
+            ? `${new Date(lastPrice.timestamp).toLocaleString()}`
+            : null}
+        </Text>
+      </Flex> */}
+
+      <Flex>
+        <Text mr="1rem" fontWeight="500" fontSize="sm" color={textColor}>
+          {dayPerformance.numeric ? `${dayPerformance.numeric}` : null}
+        </Text>
+
+        <Text fontWeight="500" fontSize="sm" color={textColor}>
           {dayPerformance.percent ? `${dayPerformance.percent}%` : null}
         </Text>
       </Flex>
@@ -89,11 +126,3 @@ const ChartHeader = () => {
 };
 
 export default ChartHeader;
-
-// t(pin):"2022-11-09T16:34:21.801274112Z"
-// ax(pin):"V"
-// ap(pin):29.44
-// as(pin):4
-// bx(pin):"V"
-// bp(pin):28
-// bs(pin):5
