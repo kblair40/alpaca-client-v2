@@ -1,15 +1,22 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 
-type Props = {};
+import useSelector from "hooks/useSelector";
 
-const ChartHeader = (props: Props) => {
+const emptyData = {
+  symbol: "n/a",
+  exchange: "",
+};
+
+const ChartHeader = () => {
+  const { ticker } = useSelector((st) => st.chart);
+
   return (
     <Flex direction="column">
       <Text fontSize="xl" fontWeight="600">
-        AAPL
+        {ticker ? ticker.symbol : "n/a"}
       </Text>
 
-      <Text fontWeight="300">NYSE</Text>
+      <Text fontWeight="300">{ticker ? ticker.exchange : ""}</Text>
     </Flex>
   );
 };

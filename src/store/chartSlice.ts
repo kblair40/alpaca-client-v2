@@ -41,7 +41,7 @@ const chartSlice = createSlice({
     setTicker(state, action) {
       state.ticker = action.payload;
     },
-    clear(state) {
+    clearChart(state) {
       state.data = [];
       state.ticker = null;
       state.status = null;
