@@ -84,8 +84,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   }, []);
 
   const handleAddTicker = (symbol: string) => {
-    setAddedSymbols((prev) => [...prev, symbol]);
-    // handleKeyDown performs null check.  '!' is fine here.
+    setAddedSymbols((prev) => [...prev, symbol.toUpperCase()]);
     setAddSymbolValue("");
   };
 
@@ -136,7 +135,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
       }
 
       const response = await alpaca.post("/watchlists", body);
-      console.log("CREATE RESPONSE.DATA:", response.data);
+      // console.log("CREATE RESPONSE.DATA:", response.data);
       dispatch(watchlistActions.addWatchlist(response.data));
       onClose();
     } catch (e: any) {
