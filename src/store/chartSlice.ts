@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { type IWatchlistAsset } from "utils/types/watchlist";
 
 import { alpaca } from "api";
 
@@ -23,7 +24,7 @@ export const fetchTickerData = createAsyncThunk(
 
 type SliceState = {
   data: any;
-  symbol: string;
+  ticker: IWatchlistAsset | null;
   status: null | "loading" | "completed" | "failed";
   error: boolean;
 };
@@ -32,14 +33,17 @@ const chartSlice = createSlice({
   name: "chart",
   initialState: {
     data: [],
-    symbol: "",
+    ticker: {},
     status: null,
     error: false,
   } as SliceState,
   reducers: {
-    clear(state, action) {
+    setTicker(state, action) {
+      state.ticker = action.payload;
+    },
+    clear(state) {
       state.data = [];
-      state.symbol = "";
+      state.ticker = null;
       state.status = null;
       state.error = false;
     },
