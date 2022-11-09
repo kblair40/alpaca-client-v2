@@ -148,6 +148,16 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
     setLoading(false);
   };
 
+  const removeSymbol = (symbol: string) => {
+    let symbolsCopy = [...addedSymbols];
+    let symbolIdx = symbolsCopy.findIndex((sym) => sym === symbol);
+    if (symbolIdx !== -1) {
+      symbolsCopy.splice(symbolIdx, 1);
+    }
+
+    setAddedSymbols(symbolsCopy);
+  };
+
   const nameInvalid =
     !!createError && createError.split(" ").includes("unique");
   // console.log("IS INVALID:", nameInvalid);
@@ -217,7 +227,10 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
                   ? addedSymbols.map((symbol, i) => {
                       return (
                         <WrapItem key={i}>
-                          <SymbolChip symbol={symbol} />
+                          <SymbolChip
+                            symbol={symbol}
+                            onClickRemove={removeSymbol}
+                          />
                         </WrapItem>
                       );
                     })
@@ -246,7 +259,12 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 
 export default CreateWatchlistModal;
 
-const SymbolChip = ({ symbol }: { symbol: string }) => {
+type ChipProps = {
+  symbol: string;
+  onClickRemove: (symbol: string) => void;
+};
+
+const SymbolChip = ({ symbol, onClickRemove }: ChipProps) => {
   const bg = useColorModeValue("gray.200", "gray.700");
   return (
     <Flex
@@ -270,7 +288,7 @@ const SymbolChip = ({ symbol }: { symbol: string }) => {
         {symbol}
       </Box>
 
-      <CloseButton size="sm" ml="4px" />
+      <CloseButton onClick={() => onClickRemove(symbol)} size="sm" ml="4px" />
     </Flex>
   );
 };
