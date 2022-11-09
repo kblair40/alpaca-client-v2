@@ -14,12 +14,11 @@ type Props = {
   performance: Performance;
   status?: "loading" | "completed" | "failed" | null;
 };
-// 100 x 26 (px)
+
 const PerformanceChip = ({ performance, status }: Props) => {
   let posBg = useColorModeValue("green.700", "green.100");
   let negBg = useColorModeValue("red.700", "red.200");
   let neutralBg = useColorModeValue("gray.200", "gray.700");
-
   let posText = useColorModeValue("green.100", "green.700");
   let negText = useColorModeValue("red.200", "red.700");
 
@@ -60,6 +59,7 @@ const PerformanceChip = ({ performance, status }: Props) => {
       </Center>
     );
   }
+
   return null;
 };
 
