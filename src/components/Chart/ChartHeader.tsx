@@ -114,7 +114,7 @@ const ChartHeader = () => {
       </Flex>
 
       {dayPerformance && (dayPerformance.numeric || dayPerformance.percent) ? (
-        <PerformanceChip performance={dayPerformance} />
+        <PerformanceChip performance={dayPerformance} status={status} />
       ) : null}
     </Flex>
   );
