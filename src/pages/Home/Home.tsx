@@ -44,6 +44,7 @@ const Home = () => {
           bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
           // new
           maxHeight: "calc(100vh - 60px)",
+          overflowY: "auto",
         },
       }}
     >
