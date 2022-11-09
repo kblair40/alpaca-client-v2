@@ -82,7 +82,7 @@ const ChartHeader = () => {
   return (
     <Flex direction="column">
       <Flex align="end" lineHeight={1}>
-        <Text fontSize="xl" fontWeight="600">
+        <Text fontSize="2xl" fontWeight="700">
           {tickerData.symbol}
         </Text>
 

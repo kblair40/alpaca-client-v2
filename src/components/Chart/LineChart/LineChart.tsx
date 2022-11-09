@@ -8,6 +8,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useColorMode, useTheme } from "@chakra-ui/react";
+
+import useSelector from "hooks/useSelector";
 import { getMin, getMax } from "./utils/getMinMax";
 
 type Props = {
@@ -20,7 +22,56 @@ const LineChart = ({ data }: Props) => {
 
   const { colors } = useTheme();
 
-  const lineColor = isDark ? colors.gray["300"] : colors.gray["700"];
+  const lineColor = isDark ? colors.gray["200"] : colors.gray["700"];
+  const tickLabelColor = isDark ? colors.gray["100"] : colors.gray["700"];
+
+  const { timeframe } = useSelector((st) => st.chart);
+
+  const renderCustomAxisTick = ({
+    x,
+    y,
+    payload,
+  }: {
+    x: number;
+    y: number;
+    payload: any;
+  }) => {
+    console.log("TICK DATA:", { x, y, payload });
+    let options: any = { hour12: true };
+    const date = new Date(payload.value);
+
+    switch (timeframe) {
+      case "1D":
+        options = {
+          ...options,
+          hour: "2-digit",
+          minute: "2-digit",
+        };
+        break;
+      case "1W":
+        options = { ...options, weekday: "long" };
+        break;
+      case "1M":
+      case "6M":
+      case "1Y":
+        options = { ...options, month: "short", day: "2-digit" };
+    }
+
+    return (
+      <g transform={`translate(${x},${y})`}>
+        <text
+          x={0}
+          y={0}
+          dy={16}
+          textAnchor="end"
+          fill={tickLabelColor}
+          // transform="rotate(-35)"
+        >
+          {date.toLocaleString("en-US", options || {})}
+        </text>
+      </g>
+    );
+  };
 
   return (
     <ResponsiveContainer width="100%" height="100%">
@@ -38,9 +89,10 @@ const LineChart = ({ data }: Props) => {
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
           dataKey="t"
+          tick={renderCustomAxisTick}
+          interval="preserveStartEnd"
           // interval={0}
         />
-        {/* <YAxis type="number" domain={["dataMin", "dataMax"]} /> */}
         <YAxis
           type="number"
           domain={[
