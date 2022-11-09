@@ -53,9 +53,9 @@ const ChartHeader = () => {
         setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
         setIsGain(parseFloat(perfNumeric) > 0);
         let rawDate = new Date(latestQuote.t).toLocaleString();
-        console.log("RAW DATE:", rawDate);
+        // console.log("RAW DATE:", rawDate);
         let [date, time] = rawDate.split(",");
-        console.log("DATETIME:", { date, time });
+        // console.log("DATETIME:", { date, time });
 
         setLastPrice({ price: curPrice.toFixed(3), date, time });
       }
