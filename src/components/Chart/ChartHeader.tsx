@@ -10,13 +10,15 @@ const emptyData = {
 const ChartHeader = () => {
   const { ticker } = useSelector((st) => st.chart);
 
+  const data = ticker ? ticker : emptyData;
+
   return (
     <Flex direction="column">
       <Text fontSize="xl" fontWeight="600">
-        {ticker ? ticker.symbol : "n/a"}
+        {data.symbol}
       </Text>
 
-      <Text fontWeight="300">{ticker ? ticker.exchange : ""}</Text>
+      <Text fontWeight="300">{data.exchange}</Text>
     </Flex>
   );
 };
