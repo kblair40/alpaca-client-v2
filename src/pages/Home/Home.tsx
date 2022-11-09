@@ -37,14 +37,15 @@ const Home = () => {
           backgroundColor: isDark ? "gray.900" : "gray.50",
           borderColor: isDark ? gray["700"] : gray["100"],
           padding: useBreakpointValue({
-            base: ".5rem",
-            md: "1rem .5rem",
+            base: "1rem .75rem",
+            md: "1rem .75rem",
           }),
           left: useBreakpointValue({ base: "unset", md: "-100%" }),
           bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
           // new
           maxHeight: "calc(100vh - 60px)",
           overflowY: "auto",
+          overflowX: "hidden",
         },
       }}
     >
