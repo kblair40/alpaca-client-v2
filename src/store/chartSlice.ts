@@ -10,7 +10,8 @@ export const fetchTickerData = createAsyncThunk(
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
     if (isAuthenticated) {
       try {
-        const response = await alpaca.get(`/price/${symbol}/latest`);
+        // const response = await alpaca.get(`/price/${symbol}/latest`);
+        const response = await alpaca.get(`/price/${symbol}`);
         console.log("\n\nPRICE RESPONSE:", response.data);
         if (response && response.data) {
           return response.data;
@@ -34,8 +35,8 @@ type SliceState = {
 const chartSlice = createSlice({
   name: "chart",
   initialState: {
-    data: [],
-    ticker: {},
+    data: null,
+    ticker: null,
     status: null,
     error: false,
   } as SliceState,
@@ -59,10 +60,11 @@ const chartSlice = createSlice({
       .addCase(fetchTickerData.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        // console.log("FULFILLED DATA:", data);
+        console.log("FULFILLED DATA:", data);
 
         if (data) {
           state.data = data;
+          if (state.error) state.error = false;
         } else {
           state.error = true;
           state.status = "failed";
