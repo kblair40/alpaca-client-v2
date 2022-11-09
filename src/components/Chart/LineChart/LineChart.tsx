@@ -5,10 +5,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { useColorMode, useTheme } from "@chakra-ui/react";
+import { getMin, getMax } from "./utils/getMinMax";
 
 type Props = {
   data: any;
@@ -36,10 +36,19 @@ const LineChart = ({ data }: Props) => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="t" />
-        <YAxis />
+        <XAxis
+          dataKey="t"
+          // interval={0}
+        />
+        {/* <YAxis type="number" domain={["dataMin", "dataMax"]} /> */}
+        <YAxis
+          type="number"
+          domain={[
+            (dataMin: number) => getMin(dataMin),
+            (dataMax: number) => getMax(dataMax),
+          ]}
+        />
         <Tooltip />
-        <Legend />
         <Line
           type="monotone"
           dataKey="o"
