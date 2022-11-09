@@ -7,14 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import {
-  useColorMode,
-  useTheme,
-  useColorModeValue,
-  Box,
-  Text,
-  Flex,
-} from "@chakra-ui/react";
+import { useColorMode, useTheme } from "@chakra-ui/react";
 
 import CustomTooltip from "./CustomTooltip";
 import useSelector from "hooks/useSelector";
@@ -44,25 +37,15 @@ const LineChart = ({ data }: Props) => {
     y: number;
     payload: any;
   }) => {
-    console.log("TICK DATA:", { x, y, payload });
     let options: any = { hour12: true };
     const date = new Date(payload.value);
-
-    switch (timeframe) {
-      case "1D":
-        options = {
-          ...options,
-          hour: "2-digit",
-          minute: "2-digit",
-        };
-        break;
-      case "1W":
-        options = { ...options, weekday: "long" };
-        break;
-      case "1M":
-      case "6M":
-      case "1Y":
-        options = { ...options, month: "short", day: "2-digit" };
+    if (timeframe === "1D") {
+      let newOptions = { hour: "2-digit", minute: "2-digit" };
+      options = { ...options, newOptions };
+    } else if (timeframe === "1W") {
+      options = { ...options, weekday: "long" };
+    } else {
+      options = { ...options, month: "short", day: "2-digit" };
     }
 
     return (
