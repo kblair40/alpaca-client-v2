@@ -5,6 +5,7 @@ import { fetchTickerData } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
 import PerformanceChip from "./PerformanceChip";
+import SelectTimeframe from "./SelectTimeframe";
 
 const emptyTickerData = {
   symbol: "n/a",
@@ -116,6 +117,8 @@ const ChartHeader = () => {
       {dayPerformance && (dayPerformance.numeric || dayPerformance.percent) ? (
         <PerformanceChip performance={dayPerformance} status={status} />
       ) : null}
+
+      <SelectTimeframe />
     </Flex>
   );
 };

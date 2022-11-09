@@ -30,6 +30,7 @@ type SliceState = {
   ticker: IWatchlistAsset | null;
   status: null | "loading" | "completed" | "failed";
   error: boolean;
+  timeframe: string;
 };
 
 const chartSlice = createSlice({
@@ -39,10 +40,14 @@ const chartSlice = createSlice({
     ticker: null,
     status: null,
     error: false,
+    timeframe: "1D",
   } as SliceState,
   reducers: {
     setTicker(state, action) {
       state.ticker = action.payload;
+    },
+    changeTimeframe(state, action) {
+      state.timeframe = action.payload;
     },
     clearChart(state) {
       state.data = [];
