@@ -1,9 +1,10 @@
-// import React from "react";
+import { useRef } from "react";
 import { Button, ButtonGroup, useColorModeValue } from "@chakra-ui/react";
 
-import { chartActions } from "store/chartSlice";
+import { chartActions, fetchTickerData } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
+import { useEffect } from "react";
 
 const TIMEFRAMES = [
   { label: "1D", value: "1D" },
@@ -17,12 +18,23 @@ const SelectTimeframe = () => {
   const activeBg = useColorModeValue("gray.200", "gray.600");
   const inactiveBg = useColorModeValue("gray.200", "gray.700");
 
-  const { timeframe } = useSelector((st) => st.chart);
+  const { timeframe, ticker } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 
   const handleClick = (tf: string) => {
     dispatch(chartActions.changeTimeframe(tf));
   };
+
+  const tfRef = useRef<string>();
+  useEffect(() => {
+    if (timeframe && ticker && ticker.symbol) {
+      if (timeframe !== tfRef.current) {
+        tfRef.current = timeframe;
+        // console.log("FETCHING NEW DATA");
+        dispatch(fetchTickerData({ symbol: ticker.symbol, timeframe }));
+      }
+    }
+  }, [timeframe, ticker]);
 
   return (
     <ButtonGroup isAttached mt="1rem" size="sm">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
 
 import { fetchTickerData } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
@@ -38,7 +38,7 @@ const ChartHeader = () => {
     { positive: "green.300", negative: "red.300", neutral: "gray.50" }
   );
 
-  const { ticker, status, error, data } = useSelector((st) => st.chart);
+  const { ticker, status, timeframe, data } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 
   const tickerData = ticker ? ticker : emptyTickerData;
@@ -66,7 +66,9 @@ const ChartHeader = () => {
 
   useEffect(() => {
     if (ticker) {
-      dispatch(fetchTickerData(ticker.symbol));
+      dispatch(
+        fetchTickerData({ symbol: ticker.symbol, timeframe: timeframe })
+      );
     }
   }, [ticker, dispatch]);
 
