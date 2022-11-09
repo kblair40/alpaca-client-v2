@@ -34,7 +34,7 @@ const SelectTimeframe = () => {
         dispatch(fetchTickerData({ symbol: ticker.symbol, timeframe }));
       }
     }
-  }, [timeframe, ticker]);
+  }, [timeframe, ticker, dispatch]);
 
   return (
     <ButtonGroup isAttached mt="1rem" size="sm">
