@@ -5,10 +5,6 @@ import { chartActions } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
 
-// type Timeframe = "1D";
-
-type Props = {};
-
 const TIMEFRAMES = [
   { label: "1D", value: "1D" },
   { label: "1W", value: "1W" },
@@ -17,19 +13,28 @@ const TIMEFRAMES = [
   { label: "1Y", value: "1Y" },
 ];
 
-const SelectTimeframe = (props: Props) => {
-  const activeBg = useColorModeValue("gray.200", "gray.500");
+const SelectTimeframe = () => {
+  const activeBg = useColorModeValue("gray.200", "gray.600");
   const inactiveBg = useColorModeValue("gray.200", "gray.700");
 
+  const { timeframe } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
+
+  const handleClick = (tf: string) => {
+    dispatch(chartActions.changeTimeframe(tf));
+  };
 
   return (
     <ButtonGroup isAttached mt="1rem" size="sm">
       {TIMEFRAMES.map((tf, i) => {
         return (
           <Button
+            variant="solid-neutral"
             borderRight={i !== 4 ? "1px solid" : "none"}
             borderColor={"gray.600"}
+            bg={timeframe === tf.value ? activeBg : inactiveBg}
+            _active={{ bg: undefined }}
+            onClick={() => handleClick(tf.value)}
             key={i}
           >
             {tf.label}
