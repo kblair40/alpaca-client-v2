@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Modal,
   ModalHeader,
@@ -21,21 +21,25 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 
-import useFetchAssets from "hooks/useFetchAssets";
 import useDispatch from "hooks/useDispatch";
 import { watchlistActions } from "store/watchlistSlice";
+import { type IAsset } from "utils/types/asset";
 import { alpaca } from "api";
+import alpacaApi from "api/alpaca";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
 
-const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
+const EditWatchlistModal = ({ isOpen, onClose }: Props) => {
   const [name, setName] = useState("");
+  const [fetching, setFetching] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [allAssets, setAllAssets] = useState<any[]>();
   const [addedSymbols, setAddedSymbols] = useState<string[]>([]);
   const [addSymbolValue, setAddSymbolValue] = useState("");
+  const [addSymbolError, setAddSymbolError] = useState("");
   const [createError, setCreateError] = useState("");
 
   const dispatch = useDispatch();
@@ -44,13 +48,40 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   const helperTextColor = useColorModeValue("gray.700", "gray.200");
   const errorColor = useColorModeValue("red.600", "red.300");
 
-  const {
-    loading: fetching,
-    error,
-    addSymbolError,
-    validateAsset,
-    setAddSymbolError,
-  } = useFetchAssets();
+  useEffect(() => {
+    const fetchAssets = async () => {
+      try {
+        const response = await alpacaApi.get("/assets", {
+          params: {
+            status: "active",
+            // docs say us_equity is default, but as of 11/08/22, crypto
+            //  is still being returned if us_equity is not specified
+            asset_class: "us_equity",
+          },
+        });
+        // console.log("ASSETS RESPONSE.DATA:", response.data);
+
+        if (response.data) {
+          let tradableAssets: string[] = [];
+
+          response.data.forEach((asset: IAsset) => {
+            if (asset.tradable) {
+              tradableAssets.push(asset.symbol);
+            }
+          });
+
+          // console.log("COUNT:", tradableAssets.length);
+          setAllAssets(tradableAssets);
+        }
+      } catch (e) {
+        console.log("FAILED TO FETCH ASSETS:", e);
+      }
+
+      setFetching(false);
+    };
+
+    fetchAssets();
+  }, []);
 
   const handleAddTicker = (symbol: string) => {
     setAddedSymbols((prev) => [...prev, symbol.toUpperCase()]);
@@ -69,10 +100,23 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
         );
       }
 
-      if (addSymbolValue.length && validateAsset(addSymbolValue)) {
+      if (addSymbolValue.length && isValid(addSymbolValue)) {
         handleAddTicker(addSymbolValue);
       }
     }
+  };
+
+  const isValid = (symbol: string) => {
+    const isIncluded = allAssets?.includes(symbol.toUpperCase());
+    console.log(`${symbol} is included? ${isIncluded}`);
+    if (isIncluded) {
+      return true;
+    } else {
+      setAddSymbolError(
+        `Could not find an equity with the symbol ${symbol.toUpperCase()}`
+      );
+    }
+    return isIncluded;
   };
 
   type Body = {
@@ -116,6 +160,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
 
   const nameInvalid =
     !!createError && createError.split(" ").includes("unique");
+  // console.log("IS INVALID:", nameInvalid);
 
   const errorMsgProps = {
     color: errorColor,
@@ -212,7 +257,7 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
   );
 };
 
-export default CreateWatchlistModal;
+export default EditWatchlistModal;
 
 type ChipProps = {
   symbol: string;
