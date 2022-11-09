@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Text, useColorModeValue, Box } from "@chakra-ui/react";
 
 import { fetchTickerData } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
 import PerformanceChip from "./PerformanceChip";
 import SelectTimeframe from "./SelectTimeframe";
+import BuySellButtons from "./BuySellButtons";
 
 const emptyTickerData = {
   symbol: "n/a",
@@ -116,9 +117,18 @@ const ChartHeader = () => {
         </Text>
       </Flex>
 
-      {dayPerformance && (dayPerformance.numeric || dayPerformance.percent) ? (
-        <PerformanceChip performance={dayPerformance} status={status} />
-      ) : null}
+      <Flex align="center" my="4px">
+        {dayPerformance &&
+        (dayPerformance.numeric || dayPerformance.percent) ? (
+          <Box w="140px">
+            <PerformanceChip performance={dayPerformance} status={status} />
+          </Box>
+        ) : null}
+
+        <Box ml="2rem">
+          <BuySellButtons />
+        </Box>
+      </Flex>
 
       <SelectTimeframe />
     </Flex>

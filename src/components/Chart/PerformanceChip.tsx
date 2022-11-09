@@ -6,7 +6,6 @@ import {
   Spinner,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
 
 import { type Performance } from "./ChartHeader";
 
@@ -20,7 +19,7 @@ const PerformanceChip = ({ performance, status }: Props) => {
   let negBg = useColorModeValue("red.700", "red.200");
   let neutralBg = useColorModeValue("gray.200", "gray.700");
   let posText = useColorModeValue("green.100", "green.700");
-  let negText = useColorModeValue("red.200", "red.700");
+  let negText = useColorModeValue("red.100", "red.800");
 
   if (status === "loading") {
     return (
@@ -46,7 +45,7 @@ const PerformanceChip = ({ performance, status }: Props) => {
       <Center
         w="max-content"
         lineHeight={1}
-        p="6px"
+        p="4px 8px"
         rounded="full"
         bg={isGain ? posBg : negBg}
       >
