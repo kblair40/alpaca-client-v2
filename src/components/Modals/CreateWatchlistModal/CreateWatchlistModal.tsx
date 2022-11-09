@@ -19,6 +19,7 @@ import {
   CloseButton,
   Wrap,
   WrapItem,
+  Text,
 } from "@chakra-ui/react";
 
 import useFetchAssets from "hooks/useFetchAssets";
@@ -149,11 +150,11 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
             </FormControl>
 
             <Box>
-              <FormControl isInvalid={!!addSymbolError}>
+              <FormControl isInvalid={!!addSymbolError || !!error}>
                 <FormLabel>Tickers</FormLabel>
                 <Input
-                  isDisabled={fetching}
-                  isInvalid={!!addSymbolError}
+                  isDisabled={fetching || Boolean(error)}
+                  isInvalid={!!addSymbolError || !!error}
                   variant="neutral-outline"
                   value={addSymbolValue}
                   onChange={(e) => {
@@ -162,7 +163,17 @@ const CreateWatchlistModal = ({ isOpen, onClose }: Props) => {
                   }}
                   onKeyDown={handleKeyDown}
                 />
-                {!addSymbolError ? (
+
+                {error ? (
+                  <Text
+                    mt="1.5rem"
+                    fontSize="15px"
+                    textAlign="center"
+                    color={errorColor}
+                  >
+                    {error}
+                  </Text>
+                ) : !addSymbolError ? (
                   <FormHelperText
                     mt="4px"
                     fontSize="13px"
