@@ -4,7 +4,7 @@ import { Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
 import { fetchTickerData } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
-import { latest } from "immer/dist/internal";
+import PerformanceChip from "./PerformanceChip";
 
 const emptyTickerData = {
   symbol: "n/a",
@@ -16,10 +16,10 @@ const emptyPerformance = {
   percent: null,
 };
 
-interface Performance {
+export type Performance = {
   numeric: string | null;
   percent: string | null;
-}
+};
 
 const ChartHeader = () => {
   const [snapshot, setSnapshot] = useState<any>();
@@ -103,7 +103,7 @@ const ChartHeader = () => {
         </Text>
       </Flex>
 
-      <Flex mt="8px">
+      <Flex mt="8px" mb=".5rem">
         <Text fontWeight="500" fontSize="sm">
           {tickerData.exchange}
         </Text>
@@ -113,15 +113,9 @@ const ChartHeader = () => {
         </Text>
       </Flex>
 
-      <Flex>
-        <Text mr="1rem" fontWeight="500" fontSize="sm" color={textColor}>
-          {dayPerformance.numeric ? `${dayPerformance.numeric}` : null}
-        </Text>
-
-        <Text fontWeight="500" fontSize="sm" color={textColor}>
-          {dayPerformance.percent ? `${dayPerformance.percent}%` : null}
-        </Text>
-      </Flex>
+      {dayPerformance && (dayPerformance.numeric || dayPerformance.percent) ? (
+        <PerformanceChip performance={dayPerformance} />
+      ) : null}
     </Flex>
   );
 };
