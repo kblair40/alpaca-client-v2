@@ -5,19 +5,21 @@ import { alpaca } from "api";
 
 export const fetchTickerData = createAsyncThunk(
   "chart/fetchTickerData",
-  async () => {
-    // const isAuthenticated = !!window.localStorage.getItem("auth-token");
-    // if (isAuthenticated) {
-    //   try {
-    //     const response = await alpaca.get(`/watchlists`);
-    //     if (response && response.data) {
-    //       return response.data;
-    //     }
-    //   } catch (err) {
-    //     console.log("FAILED:", err);
-    //     return null;
-    //   }
-    // }
+  async (symbol: string) => {
+    if (!symbol) return;
+    const isAuthenticated = !!window.localStorage.getItem("auth-token");
+    if (isAuthenticated) {
+      try {
+        const response = await alpaca.get(`/price/${symbol}/latest`);
+        console.log("\n\nPRICE RESPONSE:", response.data);
+        if (response && response.data) {
+          return response.data;
+        }
+      } catch (err) {
+        console.log("FAILED TO FETCH PRICE:", err);
+        return null;
+      }
+    }
     return {};
   }
 );

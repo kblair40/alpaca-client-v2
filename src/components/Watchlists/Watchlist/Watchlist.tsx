@@ -10,6 +10,7 @@ import {
 import { IWatchlist, IWatchlistAsset } from "utils/types/watchlist";
 import WatchlistMenu from "./WatchlistMenu";
 import useDispatch from "hooks/useDispatch";
+import useSelector from "hooks/useSelector";
 import { chartActions } from "store/chartSlice";
 
 type Props = {
@@ -21,6 +22,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
   const isDark = colorMode === "dark";
 
   const dispatch = useDispatch();
+  const { prices } = useSelector((st) => st.watchlist);
 
   // const positiveColor = isDark ? "green.300" : "green.500";
   const negativeColor = isDark ? "red.300" : "red.500";
@@ -40,8 +42,9 @@ const Watchlist = ({ watchlist: wl }: Props) => {
       </Flex>
 
       <Stack mt=".75rem">
-        {wl.assets && wl.assets.length ? (
+        {wl.assets && wl.assets.length && prices ? (
           wl.assets.map((asset, i) => {
+            let price = `$${prices[asset.symbol]?.ap.toFixed(2)}`;
             return (
               <Flex
                 key={i}
@@ -61,7 +64,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
                   fontSize="xs"
                   fontWeight="500"
                 >
-                  $83.473
+                  {price}
                 </Text>
 
                 <Text

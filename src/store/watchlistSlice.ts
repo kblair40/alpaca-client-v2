@@ -9,7 +9,7 @@ export const fetchWatchlists = createAsyncThunk(
     if (isAuthenticated) {
       try {
         const response = await alpaca.get(`/watchlists`);
-        // console.log("USER DATA:", response.data);
+        console.log("WATCHLIST DATA:", response.data);
         if (response && response.data) {
           return response.data;
         }
@@ -23,6 +23,7 @@ export const fetchWatchlists = createAsyncThunk(
 
 type SliceState = {
   data: any[];
+  prices: any;
   status: null | "loading" | "completed" | "failed";
   error: boolean;
 };
@@ -31,6 +32,7 @@ const watchlistSlice = createSlice({
   name: "watchlist",
   initialState: {
     data: [],
+    prices: null,
     status: null,
     error: false,
   } as SliceState,
@@ -57,15 +59,23 @@ const watchlistSlice = createSlice({
       })
       .addCase(fetchWatchlists.fulfilled, (state, action) => {
         state.status = "completed";
-        const data = action.payload;
+        // const data = action.payload;
         // console.log("FULFILLED DATA:", data);
+        const { watchlists, prices } = action.payload;
 
-        if (data) {
-          state.data = data;
+        if (watchlists) {
+          state.data = watchlists;
+          state.prices = prices;
         } else {
           state.error = true;
           state.status = "failed";
         }
+        // if (data) {
+        //   state.data = data;
+        // } else {
+        //   state.error = true;
+        //   state.status = "failed";
+        // }
       })
       .addCase(fetchWatchlists.rejected, (state) => {
         state.status = "failed";
