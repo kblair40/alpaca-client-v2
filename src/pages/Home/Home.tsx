@@ -3,11 +3,14 @@ import {
   useBreakpointValue,
   useTheme,
   useColorMode,
+  Flex,
 } from "@chakra-ui/react";
 
 // import Authenticate from "components/Authenticate";
 import Drawer from "components/Drawer";
+import Chart from "components/Chart";
 import useSelector from "hooks/useSelector";
+import React from "react";
 
 const Home = () => {
   const { authenticated } = useSelector((st) => st.user);
@@ -46,13 +49,24 @@ const Home = () => {
           maxHeight: "calc(100vh - 60px)",
           overflowY: "auto",
           overflowX: "hidden",
+          // position: "absolute",
         },
       }}
     >
       {authenticated.local ? (
-        <Box position="relative">
+        <Flex
+        //
+        // border="1px solid white"
+        >
           <Drawer />
-        </Box>
+          <Box
+            // border="1px solid green"
+            w="100%"
+            p="1rem"
+          >
+            <Chart />
+          </Box>
+        </Flex>
       ) : null}
     </Box>
   );
