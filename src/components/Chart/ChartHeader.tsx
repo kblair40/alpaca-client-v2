@@ -49,7 +49,7 @@ const ChartHeader = () => {
       const { latestQuote, dailyBar } = data.snapshot;
       if (latestQuote && dailyBar) {
         const dayOpen = dailyBar.o;
-        const curPrice = latestQuote.ap; // ask price
+        const curPrice = latestQuote.bp; // ask price
         const perfPercent = (((curPrice - dayOpen) / dayOpen) * 100).toFixed(3);
         const perfNumeric = (curPrice - dayOpen).toFixed(3);
         setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
