@@ -55,10 +55,6 @@ const theme = extendTheme({
           secondary,
           primary,
         };
-        if (variant === "secondary") {
-          console.log("\nTHEME TEXT COLOR:", colors[variant][cm]);
-          console.log({ colors, variant, cm }, "\n\n");
-        }
         return {
           color: colors[variant][cm],
         };
