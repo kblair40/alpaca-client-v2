@@ -26,7 +26,8 @@ const ChartHeader = () => {
     useState<Performance>(emptyPerformance);
   const [isGain, setIsGain] = useState<boolean | null>(null);
   const [lastPrice, setLastPrice] = useState<null | {
-    timestamp: string;
+    date: string;
+    time: string;
     price: string;
   }>();
 
@@ -51,7 +52,12 @@ const ChartHeader = () => {
         const perfNumeric = (curPrice - dayOpen).toFixed(3);
         setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
         setIsGain(parseFloat(perfNumeric) > 0);
-        setLastPrice({ price: curPrice.toFixed(3), timestamp: latestQuote.t });
+        let rawDate = new Date(latestQuote.t).toLocaleString();
+        console.log("RAW DATE:", rawDate);
+        let [date, time] = rawDate.split(",");
+        console.log("DATETIME:", { date, time });
+
+        setLastPrice({ price: curPrice.toFixed(3), date, time });
       }
     }
   }, [status, data]);
@@ -90,10 +96,7 @@ const ChartHeader = () => {
         </Text>
 
         <Text fontWeight="500" fontSize="sm" color={perfTextColors.neutral}>
-          As of{" "}
-          {lastPrice
-            ? `${new Date(lastPrice.timestamp).toLocaleString()}`
-            : null}
+          As of {lastPrice ? `${lastPrice.date} at ${lastPrice.time}` : null}
         </Text>
       </Flex>
 
