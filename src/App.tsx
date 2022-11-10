@@ -1,15 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { Box, useColorModeValue } from "@chakra-ui/react";
+import { Box, useColorModeValue, Center, Spinner } from "@chakra-ui/react";
 
 import { fetchUser } from "store/userSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
-import Portfolio from "./pages/Portfolio";
-import Admin from "./pages/Admin";
+import Home from "pages/Home";
+import Dashboard from "pages/Dashboard";
+import Portfolio from "pages/Portfolio";
 import Navbar from "components/Navbar";
+// import Admin from "./pages/Admin";
+const Admin = lazy(() => import("pages/Admin"));
 
 function App() {
   const mainBg = useColorModeValue("#fff", "gray.900");
@@ -38,7 +39,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route
+            path="/admin"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Admin />
+              </Suspense>
+            }
+          />
         </Routes>
       </Box>
     </Box>
@@ -46,3 +54,9 @@ function App() {
 }
 
 export default App;
+
+const Loading = () => (
+  <Center h="calc(100vh - 60px)">
+    <Spinner />
+  </Center>
+);
