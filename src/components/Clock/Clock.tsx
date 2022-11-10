@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, useColorModeValue } from "@chakra-ui/react";
 
 import { type Clock as IClock } from "utils/types/clock";
 import { fetchCalendarData } from "store/calendarSlice";
@@ -28,14 +28,25 @@ const Clock = () => {
     }
   }, [data]);
 
+  const posColor = useColorModeValue("green.600", "green.300");
+  const negColor = useColorModeValue("red.600", "red.300");
+  const neutralColor = useColorModeValue("gray.700", "gray.200");
+
   return (
     <Box
-      color="white"
+      // color="white"
       position="fixed"
       top="3.75rem"
       right="1rem"
       zIndex={100000}
       lineHeight={1}
+      color={
+        clockData && clockData.is_open
+          ? posColor
+          : clockData && !clockData.is_open
+          ? negColor
+          : neutralColor
+      }
     >
       {timeTo ? timeTo : ""}
     </Box>
