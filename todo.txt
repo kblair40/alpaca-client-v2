@@ -6,3 +6,4 @@ Ideas/Nice-To-Haves
 1. Gradient for Skeleton component
     - Ideally set in theme.ts
     - Look at how startColor and endColor props work
+    - Also look at fadeDuration prop

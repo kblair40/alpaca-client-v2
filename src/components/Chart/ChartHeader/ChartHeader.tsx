@@ -149,7 +149,7 @@ const ChartHeader = () => {
         ) : null}
 
         <Box ml="2rem">
-          <BuySellButtons isDisabled={!isLoaded} />
+          <BuySellButtons />
         </Box>
       </Flex>
 

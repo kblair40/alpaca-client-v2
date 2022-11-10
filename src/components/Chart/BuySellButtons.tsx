@@ -3,13 +3,10 @@ import { Button, Flex } from "@chakra-ui/react";
 import useSelector from "hooks/useSelector";
 import React from "react";
 
-type Props = {
-  isDisabled: boolean;
-};
-// @ts-ignore
-const BuySellButtons = ({ isDisabled }: Props) => {
-  const data = useSelector((st) => st.chart);
+const BuySellButtons = () => {
+  const { status, data } = useSelector((st) => st.chart);
 
+  const isDisabled = status === "completed";
   return (
     <React.Fragment>
       <Flex align="center">
