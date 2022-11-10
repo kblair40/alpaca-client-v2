@@ -33,15 +33,7 @@ export const fetchCalendarData = createAsyncThunk(
           calendar: calendarResponse.data,
           clock: clockResponse.data,
         });
-
-        // const getCalendar = alpacaApi.get("/calendar", calParams);
-        // const response = await alpacaApi.get(`/price/${data.symbol}`, {
-        //   params: { timeframe: data.timeframe },
-        // });
-        // console.log("\n\nPRICE RESPONSE:", response.data);
-        // if (response && response.data) {
-        //   return response.data;
-        // }
+        // retur
       } catch (err) {
         console.log("FAILED TO FETCH PRICE:", err);
         return null;
@@ -53,34 +45,21 @@ export const fetchCalendarData = createAsyncThunk(
 
 type SliceState = {
   data: any;
-  ticker: IWatchlistAsset | null;
   status: null | "loading" | "completed" | "failed";
   error: boolean;
-  timeframe: string;
 };
 
-const chartSlice = createSlice({
-  name: "chart",
+const calendarSlice = createSlice({
+  name: "calendar",
   initialState: {
     data: null,
-    ticker: null,
     status: null,
     error: false,
-    timeframe: "1D",
   } as SliceState,
   reducers: {
-    setTicker(state, action) {
-      state.ticker = action.payload;
-    },
-    changeTimeframe(state, action) {
-      state.timeframe = action.payload;
-    },
-    clearChart(state) {
-      state.data = [];
-      state.ticker = null;
-      state.status = null;
-      state.error = false;
-    },
+    // setTicker(state, action) {
+    //   state.ticker = action.payload;
+    // },
   },
 
   extraReducers(builder) {
@@ -108,6 +87,6 @@ const chartSlice = createSlice({
   },
 });
 
-export const chartActions = chartSlice.actions;
+export const calendarActions = calendarSlice.actions;
 
-export default chartSlice.reducer;
+export default calendarSlice.reducer;
