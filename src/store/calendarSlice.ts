@@ -9,8 +9,10 @@ const getStartAndEnd = () => {
   const oneYearInFuture = new Date();
   oneYearInFuture.setFullYear(oneYearInFuture.getFullYear() + 1);
 
-  let start = oneYearAgo.getTime();
-  let end = oneYearInFuture.getTime();
+  // let start = oneYearAgo.getTime();
+  // let end = oneYearInFuture.getTime();
+  let start = oneYearAgo.toISOString();
+  let end = oneYearInFuture.toISOString();
 
   return { params: { start, end } };
 };
@@ -34,7 +36,7 @@ export const fetchCalendarData = createAsyncThunk(
         });
         // retur
       } catch (err) {
-        console.log("FAILED TO FETCH PRICE:", err);
+        console.log("FAILED TO FETCH CALENDAR:", err);
         return null;
       }
     }

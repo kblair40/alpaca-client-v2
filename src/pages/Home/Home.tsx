@@ -5,11 +5,11 @@ import {
   useColorMode,
   Flex,
 } from "@chakra-ui/react";
-import { Scrollbars } from "react-custom-scrollbars";
 
 // import Authenticate from "components/Authenticate";
 import Drawer from "components/Drawer";
 import Chart from "components/Chart";
+import Calendar from "components/Calendar";
 import useSelector from "hooks/useSelector";
 
 const Home = () => {
@@ -75,6 +75,8 @@ const Home = () => {
           >
             <Chart />
           </Box>
+
+          <Calendar />
         </Flex>
       ) : null}
     </Box>
