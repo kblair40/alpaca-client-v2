@@ -30,7 +30,7 @@ type SliceState = {
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    data: {},
+    data: null,
     status: null,
     error: false,
     authenticated: {
