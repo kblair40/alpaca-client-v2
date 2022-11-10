@@ -28,7 +28,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
   const marketIsOpen = clockData && clockData.clock && clockData.clock.is_open;
 
   const { isTradingDay, isAfterClose, isBeforeOpen } = useCalendar();
-  // const positiveColor = isDark ? "green.300" : "green.500";
+  const positiveColor = isDark ? "green.300" : "green.500";
   const negativeColor = isDark ? "red.300" : "red.500";
   const mainBg = isDark ? "gray.800" : "gray.50";
 
@@ -36,32 +36,45 @@ const Watchlist = ({ watchlist: wl }: Props) => {
     dispatch(chartActions.setTicker(ticker));
   };
 
-  const getPrice = (symbol: string) => {
-    if (!prices || !prices[symbol]) return undefined;
+  const getAssetPerformance = (
+    symbol: string
+  ): [null, null] | [string, number] => {
+    if (!prices || !prices[symbol]) return [null, null];
     let priceData = prices[symbol];
-    console.log("\n\nRELEVANT PRICE DATA:", symbol, priceData);
-    let price, performance;
+    // console.log("\n\nRELEVANT PRICE DATA:", symbol, priceData);
+    let price, startPrice, endPrice;
     if (isTradingDay && !isBeforeOpen && isAfterClose) {
       // it's a trading day, but the market is now closed
       // use close price from dailyBar for price
-
       price = priceData.dailyBar?.c;
+      startPrice = priceData.dailyBar?.o;
+      endPrice = priceData.dailyBar?.c;
     } else if (isTradingDay && isBeforeOpen) {
       // It is a trading day, but the market has not yet opened.
       // use close price from prevDailyBar
       price = priceData.prevDailyBar.c;
+      startPrice = priceData.prevDailyBar?.o;
+      endPrice = priceData.prevDailyBar?.c;
     } else if (isTradingDay && !isAfterClose && !isBeforeOpen && marketIsOpen) {
       // The market is currently open, use close price from minuteBar
       price = priceData.minuteBar.c;
+      startPrice = priceData.dailyBar?.o;
+      endPrice = priceData.minuteBar?.c;
     } else if (!marketIsOpen && !isTradingDay) {
       // Today is not a day the market will/did open
       // I think prevDailyBar.c makes most sense, but it's possible it won't work...
       //   ex. on Sunday, would it return price data from Saturday? Because that won't work.
       //   TODO: Find answer to question above
       price = priceData.prevDailyBar.c;
+      startPrice = priceData.prevDailyBar?.o;
+      endPrice = priceData.prevDailyBar?.c;
     }
 
-    return price;
+    const performance = ((startPrice - endPrice) / startPrice) * 100;
+    console.log("PERFORMANCE:", performance);
+
+    return [price, parseFloat(performance.toFixed(2))];
+    // return price;
   };
 
   return (
@@ -76,7 +89,9 @@ const Watchlist = ({ watchlist: wl }: Props) => {
       <Stack mt=".75rem">
         {wl.assets && wl.assets.length && prices ? (
           wl.assets.map((asset, i) => {
-            let price = getPrice(asset.symbol);
+            let [price, performance] = getAssetPerformance(asset.symbol);
+            // let price = getPrice(asset.symbol);
+
             // let price = `$${prices[asset.symbol]?.ap?.toFixed(2)}`;
             return (
               <Flex
@@ -97,17 +112,21 @@ const Watchlist = ({ watchlist: wl }: Props) => {
                   fontSize="xs"
                   fontWeight="500"
                 >
-                  {`$${price}`}
+                  {`$${price || "n/a"}`}
                 </Text>
 
                 <Text
-                  color={negativeColor}
+                  color={
+                    performance && performance >= 0
+                      ? positiveColor
+                      : negativeColor
+                  }
                   flex={1}
                   fontSize="xs"
                   fontWeight="500"
                   textAlign="right"
                 >
-                  -0.19%
+                  {performance ? `${performance}%` : "n/a"}
                 </Text>
               </Flex>
             );
