@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Flex, Text, useColorModeValue, Box } from "@chakra-ui/react";
+import { Flex, Text, useColorModeValue, Box, Skeleton } from "@chakra-ui/react";
 
 import { type IWatchlistAsset } from "utils/types/watchlist";
 import { fetchTickerData, chartActions } from "store/chartSlice";
@@ -92,53 +92,61 @@ const ChartHeader = () => {
     }
   }, [ticker, dispatch]);
 
+  const isLoaded = status === "completed";
+
   return (
-    <Flex direction="column">
-      <Flex align="end" lineHeight={1}>
-        <Text fontSize="2xl" fontWeight="700">
-          {tickerData.symbol}
-        </Text>
+    <Flex direction="column" border="1px solid green">
+      <Skeleton isLoaded={isLoaded}>
+        <Flex align="end" lineHeight={1}>
+          <Text fontSize="2xl" fontWeight="700">
+            {tickerData.symbol}
+          </Text>
 
-        <Text
-          ml="1rem"
-          mr=".5rem"
-          fontWeight="500"
-          color={perfTextColors.neutral}
-        >
-          {lastPrice ? `$${lastPrice.price}` : null}
-        </Text>
+          <Text
+            ml="1rem"
+            mr=".5rem"
+            fontWeight="500"
+            color={perfTextColors.neutral}
+          >
+            {lastPrice ? `$${lastPrice.price}` : null}
+          </Text>
 
-        <Text
-          fontWeight="500"
-          fontSize="xs"
-          variant="secondary"
-          fontStyle="italic"
-        >
-          Last updated{" "}
-          {lastPrice ? `${lastPrice.date} at ${lastPrice.time}` : null}
-        </Text>
-      </Flex>
+          <Text
+            fontWeight="500"
+            fontSize="xs"
+            variant="secondary"
+            fontStyle="italic"
+          >
+            Last updated{" "}
+            {lastPrice ? `${lastPrice.date} at ${lastPrice.time}` : null}
+          </Text>
+        </Flex>
+      </Skeleton>
 
-      <Flex mt="8px" mb=".5rem">
-        <Text fontWeight="500" fontSize="sm">
-          {tickerData.exchange}
-        </Text>
-        <Text mx=".5rem">&bull;</Text>
-        <Text fontWeight="500" fontSize="sm">
-          {tickerData.name}
-        </Text>
-      </Flex>
+      <Skeleton isLoaded={isLoaded} mt={isLoaded ? 0 : ".5rem"}>
+        <Flex mb=".5rem" mt={isLoaded ? ".5rem" : 0}>
+          <Text fontWeight="500" fontSize="sm">
+            {tickerData.exchange}
+          </Text>
+          <Text mx=".5rem">&bull;</Text>
+          <Text fontWeight="500" fontSize="sm">
+            {tickerData.name}
+          </Text>
+        </Flex>
+      </Skeleton>
 
       <Flex align="center" my="4px">
         {dayPerformance &&
         (dayPerformance.numeric || dayPerformance.percent) ? (
-          <Box w="140px">
-            <PerformanceChip performance={dayPerformance} status={status} />
-          </Box>
+          <Skeleton w="140px" isLoaded={isLoaded} mr={isLoaded ? 0 : "8px"}>
+            <Box w="140px">
+              <PerformanceChip performance={dayPerformance} status={status} />
+            </Box>
+          </Skeleton>
         ) : null}
 
         <Box ml="2rem">
-          <BuySellButtons />
+          <BuySellButtons isDisabled={!isLoaded} />
         </Box>
       </Flex>
 
