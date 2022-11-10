@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/react";
 
 import { type Clock as IClock } from "utils/types/clock";
 import { fetchCalendarData } from "store/calendarSlice";
+import { getTimeToNextOpenAndClose } from "utils/helpers";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 
@@ -19,6 +20,8 @@ const Clock = () => {
   useEffect(() => {
     if (data && data.clock) {
       setClockData(data.clock);
+      const { next_open, next_close, is_open } = data.clock;
+      getTimeToNextOpenAndClose(next_open, next_close, is_open);
     }
   }, [data]);
 
