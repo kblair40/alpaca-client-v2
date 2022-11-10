@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { type IWatchlistAsset } from "utils/types/watchlist";
 
 // import { alpaca } from "api";
 import alpacaApi from "api/alpaca";

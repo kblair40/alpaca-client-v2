@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import watchlistReducer from "./watchlistSlice";
 import chartReducer from "./chartSlice";
+import calendarReducer from "./calendarSlice";
 
 const store = configureStore({
   reducer: {
     user: userReducer,
     watchlist: watchlistReducer,
     chart: chartReducer,
+    calendar: calendarReducer,
   },
 });
 
