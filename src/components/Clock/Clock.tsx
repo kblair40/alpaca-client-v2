@@ -35,6 +35,7 @@ const Clock = () => {
   return (
     <Box
       // color="white"
+      display="none" // TODO: DELETE THIS LINE
       position="fixed"
       top="3.75rem"
       right="1rem"
