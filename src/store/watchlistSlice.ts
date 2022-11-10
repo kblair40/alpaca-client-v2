@@ -63,6 +63,8 @@ const watchlistSlice = createSlice({
         // console.log("FULFILLED DATA:", data);
         const { watchlists, prices } = action.payload;
 
+        console.log("PRICES:", prices);
+
         if (watchlists) {
           state.data = watchlists;
           state.prices = prices;

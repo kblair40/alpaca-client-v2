@@ -39,8 +39,8 @@ export const fetchCalendarData = createAsyncThunk(
 
         return {
           // This works, but unsure if it will be needed.
-          // calendar: calendarResponse.data,
-          calendar: {},
+          calendar: calendarResponse.data,
+          // calendar: {},
           clock: clockResponse.data,
         };
       } catch (err) {

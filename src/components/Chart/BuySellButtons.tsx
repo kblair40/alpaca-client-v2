@@ -6,7 +6,7 @@ import React from "react";
 const BuySellButtons = () => {
   const { status, data } = useSelector((st) => st.chart);
 
-  const isDisabled = status === "completed";
+  const isDisabled = status !== "completed";
   return (
     <React.Fragment>
       <Flex align="center">
