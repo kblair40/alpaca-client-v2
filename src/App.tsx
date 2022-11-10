@@ -6,11 +6,13 @@ import { fetchUser } from "store/userSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
 import Home from "pages/Home";
-import Dashboard from "pages/Dashboard";
-import Portfolio from "pages/Portfolio";
+// import Dashboard from "pages/Dashboard";
+// import Portfolio from "pages/Portfolio";
 import Navbar from "components/Navbar";
 // import Admin from "./pages/Admin";
 const Admin = lazy(() => import("pages/Admin"));
+const Portfolio = lazy(() => import("pages/Portfolio"));
+const Dashboard = lazy(() => import("pages/Dashboard"));
 
 function App() {
   const mainBg = useColorModeValue("#fff", "gray.900");
@@ -37,8 +39,22 @@ function App() {
       <Box h="calc(100vh - 60px)" w="100%" position="relative" top="60px">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/portfolio"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Portfolio />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
           <Route
             path="/admin"
             element={
