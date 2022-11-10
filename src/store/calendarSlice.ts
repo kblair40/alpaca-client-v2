@@ -31,21 +31,34 @@ export const fetchCalendarData = createAsyncThunk(
         const [calendarResponse, clockResponse] = await Promise.all(promises);
 
         console.log("CALENDAR RESPONSES:", {
-          calendar: calendarResponse.data,
+          // calendar: calendarResponse.data,
+          calendar: {},
           clock: clockResponse.data,
         });
-        // retur
+
+        return {
+          // This works, but unsure if it will be needed.
+          // calendar: calendarResponse.data,
+          calendar: {},
+          clock: clockResponse.data,
+        };
       } catch (err) {
         console.log("FAILED TO FETCH CALENDAR:", err);
         return null;
       }
     }
-    return {};
   }
 );
 
+type Clock = {
+  timestamp: string;
+  is_open: boolean;
+  next_open: string;
+  next_close: string;
+};
+
 type SliceState = {
-  data: any;
+  data: null | { clock: Clock; calendar: any };
   status: null | "loading" | "completed" | "failed";
   error: boolean;
 };
