@@ -7,7 +7,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 
-import { type Performance } from "./ChartHeader";
+import { type Performance } from "./ChartHeader/ChartHeader";
 
 type Props = {
   performance: Performance;
