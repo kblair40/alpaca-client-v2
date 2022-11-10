@@ -43,10 +43,8 @@ export type Performance = {
 };
 
 const ChartHeader = () => {
-  const [snapshot, setSnapshot] = useState<any>();
   const [dayPerformance, setDayPerformance] =
     useState<Performance>(emptyPerformance);
-  const [isGain, setIsGain] = useState<boolean | null>(null);
   const [lastPrice, setLastPrice] = useState<null | {
     date: string;
     time: string;
@@ -67,7 +65,6 @@ const ChartHeader = () => {
   useEffect(() => {
     if (status === "completed" && data && data.snapshot) {
       const { snapshot } = data;
-      setSnapshot(snapshot);
       const { latestQuote, dailyBar, minuteBar, prevDailyBar } = data.snapshot;
       let localLastPrice: { price: string; date: any; time: any } = {
         price: "",
@@ -86,9 +83,6 @@ const ChartHeader = () => {
           let [date, time] = convertToEasternTime(snapshot.dailyBar.t)
             .toLocaleString()
             .split(",");
-          // let [date, time] = new Date(snapshot.dailyBar.t)
-          //   .toLocaleString()
-          //   .split(",");
           localLastPrice = { price, date, time };
         } else if (isTradingDay && isBeforeOpen) {
           // it's a trading day, but the market has not yet opened
@@ -121,17 +115,6 @@ const ChartHeader = () => {
             numeric: numericPerformance,
           });
         }
-        // const dayOpen = dailyBar.o;
-        // const curPrice = latestQuote.bp; // ask price
-        // const perfPercent = (((curPrice - dayOpen) / dayOpen) * 100).toFixed(3);
-        // const perfNumeric = (curPrice - dayOpen).toFixed(3);
-        // setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
-        // setIsGain(parseFloat(perfNumeric) > 0);
-        // let rawDate = new Date(latestQuote.t).toLocaleString();
-        // // console.log("RAW DATE:", rawDate);
-        // let [date, time] = rawDate.split(",");
-        // // console.log("DATETIME:", { date, time });
-        // setLastPrice({ price: curPrice.toFixed(3), date, time });
       }
       if (localLastPrice) setLastPrice(localLastPrice);
     }
