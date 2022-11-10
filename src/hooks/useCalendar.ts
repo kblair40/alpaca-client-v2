@@ -9,7 +9,7 @@ dayjs.extend(utc);
 
 function useCalendar() {
   const [isTradingDay, setIsTradingDay] = useState<null | boolean>(null);
-  // const [isBeforeOpen, setIsBeforeOpen] = useState<null | boolean>(null);
+  const [isBeforeOpen, setIsBeforeOpen] = useState<null | boolean>(null);
   const [isAfterClose, setIsAfterClose] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
 
@@ -35,6 +35,7 @@ function useCalendar() {
         let notYetOpened = getIsBeforeOpen(open, date);
         console.log("LOCAL NOT YET OPENED:", notYetOpened);
         setIsAfterClose(didClose);
+        setIsBeforeOpen(notYetOpened);
       }
 
       setIsTradingDay(isTradingDay);
@@ -42,7 +43,7 @@ function useCalendar() {
     }
   }, [data, status]);
 
-  return { loading, isTradingDay, isAfterClose };
+  return { loading, isTradingDay, isAfterClose, isBeforeOpen };
 }
 
 export default useCalendar;

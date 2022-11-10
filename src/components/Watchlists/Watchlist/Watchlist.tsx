@@ -6,7 +6,6 @@ import {
   Tooltip,
   useColorMode,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
 
 import { IWatchlist, IWatchlistAsset } from "utils/types/watchlist";
 import WatchlistMenu from "./WatchlistMenu";
@@ -14,7 +13,6 @@ import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import useCalendar from "hooks/useCalendar";
 import { chartActions } from "store/chartSlice";
-import { getDidClose } from "utils/dateHelpers";
 
 type Props = {
   watchlist: IWatchlist;
@@ -29,7 +27,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
   const { data: clockData } = useSelector((st) => st.calendar);
   const marketIsOpen = clockData && clockData.clock && clockData.clock.is_open;
 
-  const { isTradingDay } = useCalendar();
+  const { isTradingDay, isAfterClose, isBeforeOpen } = useCalendar();
   // const positiveColor = isDark ? "green.300" : "green.500";
   const negativeColor = isDark ? "red.300" : "red.500";
   const mainBg = isDark ? "gray.800" : "gray.50";
@@ -38,26 +36,29 @@ const Watchlist = ({ watchlist: wl }: Props) => {
     dispatch(chartActions.setTicker(ticker));
   };
 
-  const getPerformance = (symbol: string) => {
-    // use dailyBar.o as starting point if marketIsOpen
-  };
-
   const getPrice = (symbol: string) => {
     if (!prices || !prices[symbol]) return undefined;
     let priceData = prices[symbol];
     console.log("\n\nRELEVANT PRICE DATA:", symbol, priceData);
-    let price;
-    if (marketIsOpen) {
-      price = priceData.minuteBar?.c;
-    } else if (!marketIsOpen && isTradingDay) {
-      // It is a trading day, but the market is closed.
-      // It must be either before the time the market opens, or time after market closes
-      // let didClose = getDidClose();
-      // let isBeforeOpen = false;
-      // if (clockData?.clock && clockData.clock.next_open) {
-      //   const { next_open, next_close } = clockData.clock;
-      //   if (dayjs().isBefore(next_open)) isBeforeOpen = true;
-      // }
+    let price, performance;
+    if (isTradingDay && !isBeforeOpen && isAfterClose) {
+      // it's a trading day, but the market is now closed
+      // use close price from dailyBar for price
+
+      price = priceData.dailyBar?.c;
+    } else if (isTradingDay && isBeforeOpen) {
+      // It is a trading day, but the market has not yet opened.
+      // use close price from prevDailyBar
+      price = priceData.prevDailyBar.c;
+    } else if (isTradingDay && !isAfterClose && !isBeforeOpen && marketIsOpen) {
+      // The market is currently open, use close price from minuteBar
+      price = priceData.minuteBar.c;
+    } else if (!marketIsOpen && !isTradingDay) {
+      // Today is not a day the market will/did open
+      // I think prevDailyBar.c makes most sense, but it's possible it won't work...
+      //   ex. on Sunday, would it return price data from Saturday? Because that won't work.
+      //   TODO: Find answer to question above
+      price = priceData.prevDailyBar.c;
     }
 
     return price;
