@@ -1,12 +1,29 @@
 import { useEffect, useState } from "react";
 import { Flex, Text, useColorModeValue, Box } from "@chakra-ui/react";
 
-import { fetchTickerData } from "store/chartSlice";
+import { type IWatchlistAsset } from "utils/types/watchlist";
+import { fetchTickerData, chartActions } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
-import PerformanceChip from "./PerformanceChip";
-import SelectTimeframe from "./SelectTimeframe";
-import BuySellButtons from "./BuySellButtons";
+import PerformanceChip from "../PerformanceChip";
+import SelectTimeframe from "../SelectTimeframe";
+import BuySellButtons from "../BuySellButtons";
+
+const DEFAULT_ASSET: IWatchlistAsset = {
+  id: "b0b6dd9d-8b9b-48a9-ba46-b9d54906e415",
+  class: "us_equity",
+  easy_to_borrow: true,
+  exchange: "NASDAQ",
+  symbol: "AAPL",
+  name: "Apple Inc. Common Stock",
+  // @ts-ignore
+  status: "active",
+  tradable: true,
+  marginable: true,
+  maintenance_margin_requirement: 0,
+  shortable: true,
+  fractionable: true,
+};
 
 const emptyTickerData = {
   symbol: "n/a",
@@ -70,15 +87,10 @@ const ChartHeader = () => {
       dispatch(
         fetchTickerData({ symbol: ticker.symbol, timeframe: timeframe })
       );
+    } else {
+      dispatch(chartActions.setTicker(DEFAULT_ASSET));
     }
   }, [ticker, dispatch]);
-
-  let textColor =
-    isGain === null
-      ? perfTextColors.neutral
-      : isGain
-      ? perfTextColors.positive
-      : perfTextColors.negative;
 
   return (
     <Flex direction="column">
