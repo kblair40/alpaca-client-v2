@@ -11,11 +11,11 @@ export const toTitleCase = (str: string, sep: string = " ") => {
 };
 
 const MINUTES_IN_DAY = 60 * 24;
-console.log("MINUTES_IN_DAY:", MINUTES_IN_DAY);
+// console.log("MINUTES_IN_DAY:", MINUTES_IN_DAY);
 
 const getTimeDiff = (start: any, end: any) => {
   let minutesTo = end.diff(start, "minute");
-  console.log("NEXT CLOSE AFTER:", minutesTo);
+  // console.log("NEXT CLOSE AFTER:", minutesTo);
   let daysTo = Math.floor(minutesTo / MINUTES_IN_DAY);
   // console.log("DAYS TO:", daysTo);
   let hoursTo = Math.floor(minutesTo / 60) - 24 * daysTo;
@@ -50,7 +50,7 @@ const getTimeDiff = (start: any, end: any) => {
     }
   }
 
-  console.log("\n\nRES:", res, "\n\n");
+  // console.log("\n\nRES:", res, "\n\n");
   return res;
 };
 

@@ -73,7 +73,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
 
     if (price && startPrice && endPrice) {
       const performance = ((startPrice - endPrice) / startPrice) * 100;
-      console.log("PERFORMANCE:", performance);
+      // console.log("PERFORMANCE:", performance);
 
       return [price, parseFloat(performance.toFixed(2))];
     } else return [null, null];

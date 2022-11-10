@@ -9,7 +9,7 @@ export const fetchWatchlists = createAsyncThunk(
     if (isAuthenticated) {
       try {
         const response = await alpaca.get(`/watchlists`);
-        console.log("WATCHLIST DATA:", response.data);
+        // console.log("WATCHLIST DATA:", response.data);
         if (response && response.data) {
           return response.data;
         }
@@ -63,7 +63,7 @@ const watchlistSlice = createSlice({
         // console.log("FULFILLED DATA:", data);
         const { watchlists, prices } = action.payload;
 
-        console.log("PRICES:", prices);
+        // console.log("PRICES:", prices);
 
         if (watchlists) {
           state.data = watchlists;

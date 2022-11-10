@@ -15,7 +15,7 @@ const Chart = () => {
     if (!data || !data.bars || !data.bars.bars) return;
 
     const { bars } = data;
-    console.log("\nBARS:", bars.bars);
+    // console.log("\nBARS:", bars.bars);
     setFormattedData(bars.bars);
   }, [data]);
 

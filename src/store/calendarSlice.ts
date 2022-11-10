@@ -31,11 +31,11 @@ export const fetchCalendarData = createAsyncThunk(
         promises.push(alpacaApi.get("/clock"));
         const [calendarResponse, clockResponse] = await Promise.all(promises);
 
-        console.log("CALENDAR RESPONSES:", {
-          // calendar: calendarResponse.data,
-          calendar: {},
-          clock: clockResponse.data,
-        });
+        // console.log("CALENDAR RESPONSES:", {
+        //   // calendar: calendarResponse.data,
+        //   calendar: {},
+        //   clock: clockResponse.data,
+        // });
 
         return {
           // This works, but unsure if it will be needed.
@@ -78,7 +78,7 @@ const calendarSlice = createSlice({
       .addCase(fetchCalendarData.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        console.log("FULFILLED DATA:", data);
+        // console.log("FULFILLED DATA:", data);
 
         if (data) {
           state.data = data;

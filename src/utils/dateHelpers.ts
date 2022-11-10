@@ -43,13 +43,13 @@ export const convertToLocalTime = (
   date: string,
   defaultTZ: string = "America/New_York"
 ) => {
-  console.log("LOCAL RCVD:", date);
+  // console.log("LOCAL RCVD:", date);
   const tz = dayjs.tz.guess();
   let defaultDate = dayjs.tz(date, defaultTZ).toDate();
 
-  console.log("LOCAL TZ1:", tz);
+  // console.log("LOCAL TZ1:", tz);
   let tzDate = dayjs.tz(defaultDate, tz ? tz : defaultTZ);
-  console.log("LOCAL TZ", tzDate.format());
+  // console.log("LOCAL TZ", tzDate.format());
 
   return tzDate.toDate();
 };

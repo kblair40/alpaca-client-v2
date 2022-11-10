@@ -14,7 +14,7 @@ export const fetchTickerData = createAsyncThunk(
         const response = await alpaca.get(`/price/${data.symbol}`, {
           params: { timeframe: data.timeframe },
         });
-        console.log("\n\nPRICE RESPONSE:", response.data);
+        // console.log("\n\nPRICE RESPONSE:", response.data);
         if (response && response.data) {
           return response.data;
         }
@@ -67,7 +67,7 @@ const chartSlice = createSlice({
       .addCase(fetchTickerData.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        console.log("FULFILLED DATA:", data);
+        // console.log("FULFILLED DATA:", data);
 
         if (data) {
           state.data = data;
