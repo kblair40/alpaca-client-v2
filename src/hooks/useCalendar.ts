@@ -29,11 +29,11 @@ function useCalendar() {
       }
 
       if (todayDateObj && isTradingDay) {
-        console.log("\n\nTODAY OBJ:", todayDateObj);
+        // console.log("\n\nTODAY OBJ:", todayDateObj);
         const { open, close, date } = todayDateObj;
         let didClose = getDidClose(close, date);
         let notYetOpened = getIsBeforeOpen(open, date);
-        console.log("LOCAL NOT YET OPENED:", notYetOpened);
+        // console.log("LOCAL NOT YET OPENED:", notYetOpened);
         setIsAfterClose(didClose);
         setIsBeforeOpen(notYetOpened);
       }
