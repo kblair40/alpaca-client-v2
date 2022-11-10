@@ -95,7 +95,7 @@ const ChartHeader = () => {
   const isLoaded = status === "completed";
 
   return (
-    <Flex direction="column" border="1px solid green">
+    <Flex direction="column">
       <Skeleton isLoaded={isLoaded}>
         <Flex align="end" lineHeight={1}>
           <Text fontSize="2xl" fontWeight="700">
@@ -123,8 +123,13 @@ const ChartHeader = () => {
         </Flex>
       </Skeleton>
 
-      <Skeleton isLoaded={isLoaded} mt={isLoaded ? 0 : ".5rem"}>
-        <Flex mb=".5rem" mt={isLoaded ? ".5rem" : 0}>
+      <Skeleton
+        isLoaded={isLoaded}
+        my=".5rem"
+        w="100%"
+        maxW={!isLoaded ? "260px" : undefined}
+      >
+        <Flex>
           <Text fontWeight="500" fontSize="sm">
             {tickerData.exchange}
           </Text>
@@ -138,10 +143,8 @@ const ChartHeader = () => {
       <Flex align="center" my="4px">
         {dayPerformance &&
         (dayPerformance.numeric || dayPerformance.percent) ? (
-          <Skeleton w="140px" isLoaded={isLoaded} mr={isLoaded ? 0 : "8px"}>
-            <Box w="140px">
-              <PerformanceChip performance={dayPerformance} status={status} />
-            </Box>
+          <Skeleton w="140px" isLoaded={isLoaded}>
+            <PerformanceChip performance={dayPerformance} status={status} />
           </Skeleton>
         ) : null}
 
