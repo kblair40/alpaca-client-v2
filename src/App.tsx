@@ -8,6 +8,7 @@ import useDispatch from "hooks/useDispatch";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Portfolio from "./pages/Portfolio";
+import Admin from "./pages/Admin";
 import Navbar from "components/Navbar";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </Box>
     </Box>
