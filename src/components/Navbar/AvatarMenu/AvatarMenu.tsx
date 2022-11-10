@@ -12,6 +12,7 @@ import {
   Portal,
 } from "@chakra-ui/react";
 
+import { Link } from "react-router-dom";
 import useSelector from "hooks/useSelector";
 import { ChevronDownIcon } from "utils/icons";
 
@@ -59,6 +60,12 @@ const AvatarMenu = ({ onClickLogout }: Props) => {
             <React.Fragment>
               <MenuItem {...itemStyles}>Settings</MenuItem>
               <MenuItem {...itemStyles}>Account</MenuItem>
+
+              {data && data.access_level === "admin" ? (
+                <Link to="/admin">
+                  <MenuItem {...itemStyles}>Admin</MenuItem>
+                </Link>
+              ) : null}
               <MenuDivider />
             </React.Fragment>
           )}
