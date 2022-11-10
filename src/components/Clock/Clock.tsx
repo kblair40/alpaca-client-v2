@@ -21,7 +21,8 @@ const Clock = () => {
     if (data && data.clock) {
       setClockData(data.clock);
       const { next_open, next_close, is_open } = data.clock;
-      getTimeToNextOpenAndClose(next_open, next_close, is_open);
+      const timeRes = getTimeToNextOpenAndClose(next_open, next_close, is_open);
+      console.log("\n\nTIME RES:", timeRes, "\n\n");
     }
   }, [data]);
 
