@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Box } from "@chakra-ui/react";
 
 import { fetchCalendarData } from "store/calendarSlice";
 import useDispatch from "hooks/useDispatch";
@@ -11,7 +12,11 @@ const Calendar = (props: Props) => {
   useEffect(() => {
     dispatch(fetchCalendarData());
   }, []);
-  return <div>Calendar</div>;
+  return (
+    <Box position="fixed" display={"none"}>
+      Calendar
+    </Box>
+  );
 };
 
 export default Calendar;

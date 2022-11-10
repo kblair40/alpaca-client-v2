@@ -9,7 +9,7 @@ import {
 // import Authenticate from "components/Authenticate";
 import Drawer from "components/Drawer";
 import Chart from "components/Chart";
-import Calendar from "components/Calendar";
+import Clock from "components/Clock";
 import useSelector from "hooks/useSelector";
 
 const Home = () => {
@@ -76,7 +76,7 @@ const Home = () => {
             <Chart />
           </Box>
 
-          <Calendar />
+          <Clock />
         </Flex>
       ) : null}
     </Box>

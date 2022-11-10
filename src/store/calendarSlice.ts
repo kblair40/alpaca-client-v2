@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+import { type Clock } from "utils/types/clock";
 // import { alpaca } from "api";
 import alpacaApi from "api/alpaca";
 
@@ -49,13 +50,6 @@ export const fetchCalendarData = createAsyncThunk(
     }
   }
 );
-
-type Clock = {
-  timestamp: string;
-  is_open: boolean;
-  next_open: string;
-  next_close: string;
-};
 
 type SliceState = {
   data: null | { clock: Clock; calendar: any };
