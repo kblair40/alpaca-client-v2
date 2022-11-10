@@ -14,7 +14,11 @@ const TIMEFRAMES = [
   { label: "1Y", value: "1Y" },
 ];
 
-const SelectTimeframe = () => {
+type Props = {
+  isDisabled: boolean;
+};
+
+const SelectTimeframe = ({ isDisabled }: Props) => {
   const activeBg = useColorModeValue("gray.200", "gray.600");
   const inactiveBg = useColorModeValue("gray.200", "gray.700");
 
@@ -30,14 +34,13 @@ const SelectTimeframe = () => {
     if (timeframe && ticker && ticker.symbol) {
       if (timeframe !== tfRef.current) {
         tfRef.current = timeframe;
-        // console.log("FETCHING NEW DATA");
         dispatch(fetchTickerData({ symbol: ticker.symbol, timeframe }));
       }
     }
   }, [timeframe, ticker, dispatch]);
 
   return (
-    <ButtonGroup isAttached mt="1rem" size="sm">
+    <ButtonGroup isAttached mt="1rem" size="sm" isDisabled={isDisabled}>
       {TIMEFRAMES.map((tf, i) => {
         return (
           <Button

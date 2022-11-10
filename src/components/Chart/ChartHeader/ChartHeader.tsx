@@ -150,7 +150,7 @@ const ChartHeader = () => {
         </Box>
       </Flex>
 
-      <SelectTimeframe />
+      <SelectTimeframe isDisabled={!isLoaded} />
     </Flex>
   );
 };
