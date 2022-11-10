@@ -75,12 +75,14 @@ const ChartHeader = () => {
         time: "",
       };
 
+      let startPrice: number = 0;
+      let endPrice: number = 0;
       if (latestQuote && dailyBar && minuteBar && prevDailyBar) {
         if (isTradingDay && !isBeforeOpen && isAfterClose) {
           // it's a trading day, but the market is now closed
           let price = snapshot.dailyBar.c;
-          let startPrice = snapshot.dailyBar.o;
-          let endPrice = snapshot.dailyBar.c;
+          startPrice = snapshot.dailyBar.o;
+          endPrice = snapshot.dailyBar.c;
           let [date, time] = convertToEasternTime(snapshot.dailyBar.t)
             .toLocaleString()
             .split(",");
@@ -91,8 +93,8 @@ const ChartHeader = () => {
         } else if (isTradingDay && isBeforeOpen) {
           // it's a trading day, but the market has not yet opened
           let price = snapshot.prevDailyBar.c;
-          let startPrice = snapshot.prevDailyBar.o;
-          let endPrice = snapshot.prevDailyBar.c;
+          startPrice = snapshot.prevDailyBar.o;
+          endPrice = snapshot.prevDailyBar.c;
           let [date, time] = new Date(snapshot.prevDailyBar.t)
             .toLocaleString()
             .split(",");
@@ -100,17 +102,24 @@ const ChartHeader = () => {
         } else if (isTradingDay && !isAfterClose && !isBeforeOpen) {
           // The market is currently open, use close price from minuteBar
           let price = snapshot.minuteBar.c;
-          let startPrice = snapshot.minuteBar.o;
-          let endPrice = snapshot.minuteBar.c;
-          let dateValue = snapshot.minuteBar.t;
-          // let [date, time] = getDateAndTime(snapshot.minuteBar.t);
+          startPrice = snapshot.minuteBar.o;
+          endPrice = snapshot.minuteBar.c;
+          // let dateValue = snapshot.minuteBar.t;
           let [date, time] = convertToEasternTime(snapshot.minuteBar.t)
             .toLocaleString()
             .split(",");
-          // let [date, time] = new Date(snapshot.minuteBar.t)
-          //   .toLocaleString()
-          //   .split(",");
           localLastPrice = { price, date, time };
+        }
+        if (startPrice && endPrice) {
+          let numericPerformance = (endPrice - startPrice).toFixed(3);
+          let percentPerformance = (
+            ((startPrice - endPrice) / startPrice) *
+            100
+          ).toFixed(3);
+          setDayPerformance({
+            percent: percentPerformance,
+            numeric: numericPerformance,
+          });
         }
         // const dayOpen = dailyBar.o;
         // const curPrice = latestQuote.bp; // ask price
@@ -127,8 +136,6 @@ const ChartHeader = () => {
       if (localLastPrice) setLastPrice(localLastPrice);
     }
   }, [status, data, isAfterClose, isBeforeOpen, isTradingDay]);
-
-  const getDateAndTime = (date: any) => {};
 
   useEffect(() => {
     if (ticker) {
@@ -166,7 +173,7 @@ const ChartHeader = () => {
             fontStyle="italic"
           >
             Last updated{" "}
-            {lastPrice ? `${lastPrice.date} at ${lastPrice.time}` : null}
+            {lastPrice ? `${lastPrice.date} at ${lastPrice.time} ET` : null}
           </Text>
         </Flex>
       </Skeleton>
