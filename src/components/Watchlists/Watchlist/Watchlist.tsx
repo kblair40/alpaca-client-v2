@@ -40,6 +40,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
     symbol: string
   ): [null, null] | [string, number] => {
     if (!prices || !prices[symbol]) return [null, null];
+
     let priceData = prices[symbol];
     // console.log("\n\nRELEVANT PRICE DATA:", symbol, priceData);
     let price, startPrice, endPrice;
@@ -70,11 +71,12 @@ const Watchlist = ({ watchlist: wl }: Props) => {
       endPrice = priceData.prevDailyBar?.c;
     }
 
-    const performance = ((startPrice - endPrice) / startPrice) * 100;
-    console.log("PERFORMANCE:", performance);
+    if (price && startPrice && endPrice) {
+      const performance = ((startPrice - endPrice) / startPrice) * 100;
+      console.log("PERFORMANCE:", performance);
 
-    return [price, parseFloat(performance.toFixed(2))];
-    // return price;
+      return [price, parseFloat(performance.toFixed(2))];
+    } else return [null, null];
   };
 
   return (

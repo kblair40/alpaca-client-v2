@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-// import utc from "dayjs/plugin/utc";
+import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
-// dayjs.extend(utc);
+dayjs.extend(utc);
 dayjs.extend(timezone);
 
 const ET = "America/New_York";
@@ -30,4 +30,26 @@ export const getIsBeforeOpen = (openTime: string, date: string) => {
   // console.log("LOCAL DIFF", minutesDiff, "minutes");
 
   return minutesDiff <= 0;
+};
+
+export const convertToEasternTime = (date: string) => {
+  let dateET = dayjs.tz(date, ET);
+  // console.log("DATE ET:", dateET.format());
+  // console.log("DATE ET RETURNING:", dateET.toDate());
+  return dateET.toDate();
+};
+
+export const convertToLocalTime = (
+  date: string,
+  defaultTZ: string = "America/New_York"
+) => {
+  console.log("LOCAL RCVD:", date);
+  const tz = dayjs.tz.guess();
+  let defaultDate = dayjs.tz(date, defaultTZ).toDate();
+
+  console.log("LOCAL TZ1:", tz);
+  let tzDate = dayjs.tz(defaultDate, tz ? tz : defaultTZ);
+  console.log("LOCAL TZ", tzDate.format());
+
+  return tzDate.toDate();
 };

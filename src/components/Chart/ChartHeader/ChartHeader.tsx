@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Flex, Text, useColorModeValue, Box, Skeleton } from "@chakra-ui/react";
 
 import { type IWatchlistAsset } from "utils/types/watchlist";
+import { convertToEasternTime } from "utils/dateHelpers";
 import { fetchTickerData, chartActions } from "store/chartSlice";
 import useSelector from "hooks/useSelector";
 import useDispatch from "hooks/useDispatch";
+import useCalendar from "hooks/useCalendar";
 import PerformanceChip from "../PerformanceChip";
 import SelectTimeframe from "../SelectTimeframe";
 import BuySellButtons from "../BuySellButtons";
@@ -59,28 +61,74 @@ const ChartHeader = () => {
   const { ticker, status, timeframe, data } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 
-  const tickerData = ticker ? ticker : emptyTickerData;
+  const { isTradingDay, isAfterClose, isBeforeOpen } = useCalendar();
 
+  const tickerData = ticker ? ticker : emptyTickerData;
   useEffect(() => {
     if (status === "completed" && data && data.snapshot) {
-      setSnapshot(data.snapshot);
-      const { latestQuote, dailyBar } = data.snapshot;
-      if (latestQuote && dailyBar) {
-        const dayOpen = dailyBar.o;
-        const curPrice = latestQuote.bp; // ask price
-        const perfPercent = (((curPrice - dayOpen) / dayOpen) * 100).toFixed(3);
-        const perfNumeric = (curPrice - dayOpen).toFixed(3);
-        setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
-        setIsGain(parseFloat(perfNumeric) > 0);
-        let rawDate = new Date(latestQuote.t).toLocaleString();
-        // console.log("RAW DATE:", rawDate);
-        let [date, time] = rawDate.split(",");
-        // console.log("DATETIME:", { date, time });
+      const { snapshot } = data;
+      setSnapshot(snapshot);
+      const { latestQuote, dailyBar, minuteBar, prevDailyBar } = data.snapshot;
+      let localLastPrice: { price: string; date: any; time: any } = {
+        price: "",
+        date: "",
+        time: "",
+      };
 
-        setLastPrice({ price: curPrice.toFixed(3), date, time });
+      if (latestQuote && dailyBar && minuteBar && prevDailyBar) {
+        if (isTradingDay && !isBeforeOpen && isAfterClose) {
+          // it's a trading day, but the market is now closed
+          let price = snapshot.dailyBar.c;
+          let startPrice = snapshot.dailyBar.o;
+          let endPrice = snapshot.dailyBar.c;
+          let [date, time] = convertToEasternTime(snapshot.dailyBar.t)
+            .toLocaleString()
+            .split(",");
+          // let [date, time] = new Date(snapshot.dailyBar.t)
+          //   .toLocaleString()
+          //   .split(",");
+          localLastPrice = { price, date, time };
+        } else if (isTradingDay && isBeforeOpen) {
+          // it's a trading day, but the market has not yet opened
+          let price = snapshot.prevDailyBar.c;
+          let startPrice = snapshot.prevDailyBar.o;
+          let endPrice = snapshot.prevDailyBar.c;
+          let [date, time] = new Date(snapshot.prevDailyBar.t)
+            .toLocaleString()
+            .split(",");
+          localLastPrice = { price, date, time };
+        } else if (isTradingDay && !isAfterClose && !isBeforeOpen) {
+          // The market is currently open, use close price from minuteBar
+          let price = snapshot.minuteBar.c;
+          let startPrice = snapshot.minuteBar.o;
+          let endPrice = snapshot.minuteBar.c;
+          let dateValue = snapshot.minuteBar.t;
+          // let [date, time] = getDateAndTime(snapshot.minuteBar.t);
+          let [date, time] = convertToEasternTime(snapshot.minuteBar.t)
+            .toLocaleString()
+            .split(",");
+          // let [date, time] = new Date(snapshot.minuteBar.t)
+          //   .toLocaleString()
+          //   .split(",");
+          localLastPrice = { price, date, time };
+        }
+        // const dayOpen = dailyBar.o;
+        // const curPrice = latestQuote.bp; // ask price
+        // const perfPercent = (((curPrice - dayOpen) / dayOpen) * 100).toFixed(3);
+        // const perfNumeric = (curPrice - dayOpen).toFixed(3);
+        // setDayPerformance({ numeric: perfNumeric, percent: perfPercent });
+        // setIsGain(parseFloat(perfNumeric) > 0);
+        // let rawDate = new Date(latestQuote.t).toLocaleString();
+        // // console.log("RAW DATE:", rawDate);
+        // let [date, time] = rawDate.split(",");
+        // // console.log("DATETIME:", { date, time });
+        // setLastPrice({ price: curPrice.toFixed(3), date, time });
       }
+      if (localLastPrice) setLastPrice(localLastPrice);
     }
-  }, [status, data]);
+  }, [status, data, isAfterClose, isBeforeOpen, isTradingDay]);
+
+  const getDateAndTime = (date: any) => {};
 
   useEffect(() => {
     if (ticker) {
