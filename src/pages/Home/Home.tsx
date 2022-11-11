@@ -9,6 +9,7 @@ import {
 // import Authenticate from "components/Authenticate";
 import Drawer from "components/Drawer";
 import Chart from "components/Chart";
+import TickerDetail from "components/TickerDetail";
 import Clock from "components/Clock";
 import useSelector from "hooks/useSelector";
 
@@ -74,6 +75,8 @@ const Home = () => {
             p="1rem"
           >
             <Chart />
+
+            <TickerDetail />
           </Box>
 
           <Clock />
