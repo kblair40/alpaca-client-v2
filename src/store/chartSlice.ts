@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { type IWatchlistAsset } from "utils/types/watchlist";
 
 import { alpaca } from "api";
+import alpacaApi from "api/alpaca";
 
 export const fetchTickerData = createAsyncThunk(
   "chart/fetchTickerData",
@@ -10,14 +11,30 @@ export const fetchTickerData = createAsyncThunk(
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
     if (isAuthenticated) {
       try {
-        // const response = await alpaca.get(`/price/${symbol}/latest`);
-        const response = await alpaca.get(`/price/${data.symbol}`, {
+        // const response = await alpaca.get(`/price/${data.symbol}`, {
+        //   params: { timeframe: data.timeframe },
+        // });
+        const pricePromise = alpaca.get(`/price/${data.symbol}`, {
           params: { timeframe: data.timeframe },
         });
+
+        const assetPromise = alpacaApi.get(`/assets/${data.symbol}`, {
+          params: {
+            status: "active",
+            asset_class: "us_equity",
+          },
+        });
+
+        const [prices, asset] = await Promise.all([pricePromise, assetPromise]);
+
         // console.log("\n\nPRICE RESPONSE:", response.data);
-        if (response && response.data) {
-          return response.data;
+        if (prices && prices.data && asset && asset.data) {
+          // return prices.data;
+          return { prices: prices.data, asset: asset.data };
         }
+        // if (response && response.data) {
+        //   return response.data;
+        // }
       } catch (err) {
         console.log("FAILED TO FETCH PRICE:", err);
         return null;
@@ -30,6 +47,7 @@ export const fetchTickerData = createAsyncThunk(
 type SliceState = {
   data: any;
   ticker: IWatchlistAsset | null;
+  asset: any;
   status: null | "loading" | "completed" | "failed";
   error: boolean;
   timeframe: string;
@@ -40,6 +58,7 @@ const chartSlice = createSlice({
   initialState: {
     data: null,
     ticker: null,
+    asset: null,
     status: null,
     error: false,
     timeframe: "1D",
@@ -70,7 +89,8 @@ const chartSlice = createSlice({
         // console.log("FULFILLED DATA:", data);
 
         if (data) {
-          state.data = data;
+          state.data = data.prices;
+          state.asset = data.asset;
           if (state.error) state.error = false;
         } else {
           state.error = true;

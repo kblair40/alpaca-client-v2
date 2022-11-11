@@ -20,7 +20,7 @@ const useFetchAssets = () => {
             asset_class: "us_equity",
           },
         });
-        // console.log("ASSETS RESPONSE.DATA:", response.data);
+        console.log("ASSETS RESPONSE.DATA:", response.data);
 
         if (response.data) {
           let tradableAssets: string[] = [];
