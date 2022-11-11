@@ -43,8 +43,31 @@ const TickerDetail = () => {
       <Flex>
         <Text fontWeight="600">{ticker ? ticker.symbol : ""}</Text>
       </Flex>
+
+      {corpActionsData && (
+        <DetailSection label="Corporate Actions">
+          <Text textTransform="capitalize">
+            {corpActionsData[0]["ca_type"]}
+          </Text>
+        </DetailSection>
+      )}
     </Box>
   );
 };
 
 export default TickerDetail;
+
+type SectionProps = {
+  label: string;
+  children: React.ReactNode;
+};
+const DetailSection = ({ label, children }: SectionProps) => {
+  return (
+    <Flex direction="column">
+      <Text fontWeight="600" fontSize="lg">
+        {label}
+      </Text>
+      <Box w="100%">{children}</Box>
+    </Flex>
+  );
+};
