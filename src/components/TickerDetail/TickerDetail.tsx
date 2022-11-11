@@ -9,7 +9,7 @@ const TickerDetail = () => {
 
   const bg = useColorModeValue("gray.100", "gray.800");
 
-  const { ticker, data } = useSelector((st) => st.chart);
+  const { ticker, data, asset } = useSelector((st) => st.chart);
 
   useEffect(() => {
     if (data && data.snapshot) {
