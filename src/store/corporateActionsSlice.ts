@@ -2,27 +2,30 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
 
 import alpacaApi from "api/alpaca";
-import api from "api";
 
 export const fetchCorporateActions = createAsyncThunk(
   "corporateActions/fetchCorporateActions",
-  async () => {
+  async (symbol: string = "AAPL") => {
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
     let res = {};
     let ninetyDaysAgo = dayjs().subtract(89, "day").format("YYYY-MM-DD");
-    let now = dayjs().subtract(89, "day").format("YYYY-MM-DD");
+    console.log("NINETY DAYS AGO:", ninetyDaysAgo);
+    let now = dayjs().format("YYYY-MM-DD");
+
     if (isAuthenticated) {
       try {
         const response = await alpacaApi.get(
           `/corporate_actions/announcements`,
           {
             params: {
-              ca_types: ["Dividend"],
+              ca_types: ["Dividend"].join(","),
               since: ninetyDaysAgo,
+              until: now,
+              symbol: symbol,
             },
           }
         );
-        // console.log("USER DATA:", response.data);
+        console.log("CORPORATE ACTIONS DATA:", response.data);
         if (response && response.data) {
           res = response.data;
         }
