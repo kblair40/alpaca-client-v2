@@ -62,16 +62,24 @@ const Home = () => {
     >
       {authenticated.local ? (
         <Flex
-        //
-        // border="1px solid white"
+          //
+          border="1px solid white"
         >
-          <Box maxWidth="260px" w="100%" overflowX="hidden" py="4px">
+          <Box
+            display={{ base: "none", md: "block" }}
+            maxWidth="260px"
+            w="100%"
+            overflowX="hidden"
+            py="4px"
+            border="1px solid green"
+          >
             <Drawer />
           </Box>
+
           <Box
             // border="1px solid green"
             w="100%"
-            maxW="calc(100vw - 220px)"
+            maxW={{ base: "100vw", md: "calc(100vw - 220px)" }}
             p="1rem"
           >
             <Chart />

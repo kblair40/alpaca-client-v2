@@ -5,6 +5,7 @@ import {
   Stack,
   Tooltip,
   useColorMode,
+  // useBreakpointValue,
 } from "@chakra-ui/react";
 
 import { IWatchlist, IWatchlistAsset } from "utils/types/watchlist";
@@ -21,6 +22,8 @@ type Props = {
 const Watchlist = ({ watchlist: wl }: Props) => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
+
+  // const isMd = useBreakpointValue({ base: false, md: true })!;
 
   const dispatch = useDispatch();
   const { prices } = useSelector((st) => st.watchlist);
