@@ -8,24 +8,15 @@ type Props = {
 };
 
 const DrawerWrapper = ({ children, isOpen, position }: Props) => {
-  const variants = {
-    open: useBreakpointValue<{
-      x?: number;
-      opacity: number;
-      y?: number | string;
-    }>({
-      base: { y: "calc(100vh - 180px)", opacity: 1 },
-      md: { y: 0, x: 0, opacity: 1 },
-    })!,
+  const isLeft = position === "left";
 
-    closed: useBreakpointValue<{
-      x?: number | string;
-      opacity: number;
-      y?: number | string;
-    }>({
-      base: { y: "100vh", opacity: 0 },
-      md: { y: 0, x: "-100%", opacity: 0 },
-    })!,
+  const variants = {
+    open: isLeft
+      ? { y: 0, x: 0, opacity: 1 }
+      : { y: "calc(100vh - 180px)", opacity: 1, x: 0 },
+    closed: isLeft
+      ? { y: 0, x: "-100%", opacity: 0 }
+      : { y: "100vh", opacity: 0 },
   };
 
   const width = useBreakpointValue({ base: "100vw", md: "100%" });
@@ -45,3 +36,23 @@ const DrawerWrapper = ({ children, isOpen, position }: Props) => {
 };
 
 export default DrawerWrapper;
+
+// const variants = {
+//   open: useBreakpointValue<{
+//     x?: number;
+//     opacity: number;
+//     y?: number | string;
+//   }>({
+//     base: { y: "calc(100vh - 180px)", opacity: 1 },
+//     md: { y: 0, x: 0, opacity: 1 },
+//   })!,
+
+//   closed: useBreakpointValue<{
+//     x?: number | string;
+//     opacity: number;
+//     y?: number | string;
+//   }>({
+//     base: { y: "100vh", opacity: 0 },
+//     md: { y: 0, x: "-100%", opacity: 0 },
+//   })!,
+// };

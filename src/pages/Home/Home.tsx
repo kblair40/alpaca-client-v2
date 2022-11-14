@@ -23,13 +23,15 @@ const Home = () => {
     colors: { gray },
   } = useTheme();
 
+  const isMd = useBreakpointValue({ base: false, md: true });
+
   return (
     <Box
       w="100%"
       maxW="100vw"
       overflowX="hidden"
       // new
-      overflowY="hidden"
+      overflowY={{ md: "hidden" }}
       maxH="calc(100vh - 60px)"
       // end new
       h="100%"
@@ -52,11 +54,19 @@ const Home = () => {
           //   md: ".5rem 0 .5rem .75rem",
           // }),
           left: useBreakpointValue({ base: "0", md: "-100%" }),
-          bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
+          // bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
+          bottom: useBreakpointValue({ base: "0", md: "unset" }),
+          // right: useBreakpointValue({ base: "0", md: "unset" }),
           // new
-          maxHeight: "calc(100vh - 60px)",
+          // maxHeight: "calc(100vh - 60px)",
+          maxHeight: useBreakpointValue({
+            base: "180px",
+            md: "calc(100vh - 60px)",
+          }),
           // overflowY: "hidden",
           overflowX: "hidden",
+          // new
+          border: "1px solid orange",
         },
       }}
     >
@@ -65,30 +75,42 @@ const Home = () => {
           //
           border="1px solid white"
         >
-          <Box
-            display={{ base: "none", md: "block" }}
-            maxWidth="260px"
-            w="100%"
-            overflowX="hidden"
-            py="4px"
-            border="1px solid green"
-          >
-            <Drawer position="left" />
-          </Box>
+          {isMd && (
+            <Box
+              // display={{ base: "none", md: "block" }}
+              maxWidth="260px"
+              w="100%"
+              overflowX="hidden"
+              py="4px"
+              // border="1px solid green"
+            >
+              <Drawer position="left" />
+            </Box>
+          )}
 
           <Box
-            // border="1px solid green"
+            // border="1px solid red"
             w="100%"
             maxW={{ base: "100vw", md: "calc(100vw - 220px)" }}
-            p="1rem"
           >
-            <Chart />
+            <Box p={{ base: "0 1rem", md: "1rem" }}>
+              <Chart />
 
-            <TickerDetail />
-
-            <Box w="100%" display={{ base: "block", md: "none" }}>
-              <Drawer position="bottom" />
+              <TickerDetail />
             </Box>
+
+            {!isMd && (
+              <Box
+                border="1px solid green"
+                w="100%"
+                // display={{ base: "block", md: "none" }}
+                // position="fixed"
+                // bottom={0}
+                h="180px"
+              >
+                <Drawer position="bottom" />
+              </Box>
+            )}
           </Box>
 
           <Clock />

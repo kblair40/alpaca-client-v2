@@ -28,7 +28,8 @@ const Drawer = ({ position }: Props) => {
   return (
     <React.Fragment>
       {/* <DrawerWrapper isOpen={isOpen}> */}
-      <DrawerWrapper isOpen={isMd} position={position}>
+      {/* <DrawerWrapper isOpen={isMd} position={position}> */}
+      <DrawerWrapper isOpen={true} position={position}>
         <Scrollbars
           thumbSize={20}
           thumbMinSize={20}
