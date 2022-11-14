@@ -51,7 +51,7 @@ const Home = () => {
           //   base: ".5rem .75rem",
           //   md: ".5rem 0 .5rem .75rem",
           // }),
-          left: useBreakpointValue({ base: "unset", md: "-100%" }),
+          left: useBreakpointValue({ base: "0", md: "-100%" }),
           bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
           // new
           maxHeight: "calc(100vh - 60px)",
@@ -73,7 +73,7 @@ const Home = () => {
             py="4px"
             border="1px solid green"
           >
-            <Drawer />
+            <Drawer position="left" />
           </Box>
 
           <Box
@@ -85,6 +85,10 @@ const Home = () => {
             <Chart />
 
             <TickerDetail />
+
+            <Box w="100%" display={{ base: "block", md: "none" }}>
+              <Drawer position="bottom" />
+            </Box>
           </Box>
 
           <Clock />

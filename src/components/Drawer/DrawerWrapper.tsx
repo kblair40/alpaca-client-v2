@@ -4,9 +4,10 @@ import { useBreakpointValue } from "@chakra-ui/react";
 type Props = {
   children: JSX.Element;
   isOpen: boolean;
+  position?: "left" | "bottom";
 };
 
-const DrawerWrapper = ({ children, isOpen }: Props) => {
+const DrawerWrapper = ({ children, isOpen, position }: Props) => {
   const variants = {
     open: useBreakpointValue<{
       x?: number;

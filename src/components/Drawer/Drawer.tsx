@@ -13,7 +13,11 @@ import TickerPerformance from "components/TickerPerformance";
 import Watchlists from "components/Watchlists";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
-const Drawer = () => {
+type Props = {
+  position: "left" | "bottom";
+};
+
+const Drawer = ({ position }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { colorMode } = useColorMode();
@@ -24,7 +28,7 @@ const Drawer = () => {
   return (
     <React.Fragment>
       {/* <DrawerWrapper isOpen={isOpen}> */}
-      <DrawerWrapper isOpen={isMd}>
+      <DrawerWrapper isOpen={isMd} position={position}>
         <Scrollbars
           thumbSize={20}
           thumbMinSize={20}
