@@ -55,14 +55,18 @@ const Drawer = ({ position }: Props) => {
           >
             <DrawerSection
               label="watchlists"
-              width={{ base: "60%", md: "100%" }}
+              // width={{ base: "60%", md: "100%" }}
+              width={{ base: "100%", md: "100%" }}
+              padding={{ base: "4px 8px", md: "none" }}
             >
               <Watchlists />
             </DrawerSection>
 
             <DrawerSection
               label="index etfs"
-              width={{ base: "40%", md: "100%" }}
+              // width={{ base: "40%", md: "100%" }}
+              width={{ base: "max-content", md: "100%" }}
+              padding={{ base: "4px 8px", md: "none" }}
             >
               <Stack>
                 <TickerPerformance />

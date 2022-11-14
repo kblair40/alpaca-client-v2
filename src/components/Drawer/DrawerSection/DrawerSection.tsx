@@ -8,6 +8,7 @@ type Props = {
   label: "watchlists" | "index etfs";
   children?: React.ReactNode;
   width?: any;
+  padding?: any;
 };
 
 const MENUS = {
@@ -19,9 +20,17 @@ const DrawerSection = ({
   children,
   label,
   width = { base: "100%", md: "unset" },
+  padding = "none",
 }: Props) => {
   return (
-    <Box w={width} border="1px solid white">
+    <Box
+      w={width}
+      // border="1px solid white"
+      padding={padding}
+      // overflowX="auto"
+      // pb={{base: "8"}}
+      //
+    >
       <Flex justify={{ md: "space-between" }} align={{ md: "center" }}>
         <Text
           mr={{ base: "1rem", md: 0 }}
@@ -34,7 +43,15 @@ const DrawerSection = ({
         {MENUS[label]}
       </Flex>
 
-      <Box pt="8px">{children}</Box>
+      <Box
+        pt={{ base: "4px", md: "8px" }}
+        overflowX="auto"
+        border="1px solid white"
+        // w="100%"
+        //
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

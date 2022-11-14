@@ -6,6 +6,8 @@ import {
   Tooltip,
   useColorMode,
   // useBreakpointValue,
+  Wrap,
+  WrapItem,
 } from "@chakra-ui/react";
 
 import { IWatchlist, IWatchlistAsset } from "utils/types/watchlist";
@@ -83,21 +85,101 @@ const Watchlist = ({ watchlist: wl }: Props) => {
   };
 
   return (
-    <Box p="8px 8px 16px" bg={mainBg} w={{ base: "170px", md: "100%" }}>
-      <Flex justify="space-between">
+    <Box
+      p="8px 8px 16px"
+      bg={mainBg}
+      minW={{ base: "170px", md: "100%" }}
+      border="1px solid green"
+      // new
+      h={{ base: "132px", md: "unset" }}
+      w={{ base: "max-content", md: "100%" }}
+    >
+      <Flex
+        border="1px solid orange"
+        h={{ base: "24px", md: "unset" }}
+        justify="space-between"
+      >
         <Text fontSize="sm" fontWeight="600">
           {wl.name || "Unnamed Watchlist"}
         </Text>
         <WatchlistMenu id={wl.id} name={wl.name} />
       </Flex>
 
-      <Stack mt=".75rem">
+      <Wrap
+        h="100%"
+        maxH={{ base: "78px", md: "unset" }}
+        // h={{ base: "78px", md: "unset" }}
+        mt=".75rem"
+        border="1px solid red"
+        // pb="8rem"
+        // maxH="60px"
+        overflowY="hidden"
+      >
         {wl.assets && wl.assets.length && prices ? (
           wl.assets.map((asset, i) => {
             let [price, performance] = getAssetPerformance(asset.symbol);
-            // let price = getPrice(asset.symbol);
+            return (
+              <WrapItem
+                key={i}
+                border=".1px solid white"
+                p="2px"
+                w={{ base: "120px", md: "100%" }}
+                // h={{ base: "33%" }}
+              >
+                <Flex
+                  lineHeight={1}
+                  cursor="pointer"
+                  onClick={() => handleClickTicker(asset)}
+                  w="100%"
+                >
+                  <Tooltip label={asset.name}>
+                    <Text flex={1} fontSize="13px" fontWeight="500">
+                      {asset.symbol}
+                    </Text>
+                  </Tooltip>
 
-            // let price = `$${prices[asset.symbol]?.ap?.toFixed(2)}`;
+                  <Text
+                    textAlign="center"
+                    flex={1}
+                    fontSize="xs"
+                    fontWeight="500"
+                  >
+                    {`$${price || "n/a"}`}
+                  </Text>
+
+                  <Text
+                    color={
+                      performance && performance >= 0
+                        ? positiveColor
+                        : negativeColor
+                    }
+                    flex={1}
+                    fontSize="xs"
+                    fontWeight="500"
+                    textAlign="right"
+                  >
+                    {performance ? `${performance}%` : "n/a"}
+                  </Text>
+                </Flex>
+              </WrapItem>
+            );
+          })
+        ) : (
+          <Text
+            textAlign="center"
+            fontSize="sm"
+            fontWeight="500"
+            letterSpacing={".3px"}
+          >
+            NO ASSETS
+          </Text>
+        )}
+      </Wrap>
+
+      {/* <Stack mt=".75rem">
+        {wl.assets && wl.assets.length && prices ? (
+          wl.assets.map((asset, i) => {
+            let [price, performance] = getAssetPerformance(asset.symbol);
             return (
               <Flex
                 key={i}
@@ -146,7 +228,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
             NO ASSETS
           </Text>
         )}
-      </Stack>
+      </Stack> */}
     </Box>
   );
 };

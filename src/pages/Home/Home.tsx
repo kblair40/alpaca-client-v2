@@ -69,8 +69,8 @@ const Home = () => {
     >
       {authenticated.local ? (
         <Flex
-          //
-          border="1px solid white"
+        //
+        // border="1px solid white"
         >
           {isMd && (
             <Box
@@ -90,7 +90,7 @@ const Home = () => {
             w="100%"
             maxW={{ base: "100vw", md: "calc(100vw - 220px)" }}
           >
-            <Box p={{ base: "0 1rem", md: "1rem" }}>
+            <Box p={{ base: "1rem 1rem 0", md: "1rem" }}>
               <Chart />
 
               <TickerDetail />
@@ -98,7 +98,7 @@ const Home = () => {
 
             {!isMd && (
               <Box
-                border="1px solid green"
+                // border="1px solid green"
                 w="100%"
                 // display={{ base: "block", md: "none" }}
                 // position="fixed"
