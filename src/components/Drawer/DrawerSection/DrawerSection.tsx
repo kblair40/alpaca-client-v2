@@ -23,14 +23,7 @@ const DrawerSection = ({
   padding = "none",
 }: Props) => {
   return (
-    <Box
-      w={width}
-      // border="1px solid white"
-      padding={padding}
-      // overflowX="auto"
-      // pb={{base: "8"}}
-      //
-    >
+    <Box w={width} padding={padding}>
       <Flex justify={{ md: "space-between" }} align={{ md: "center" }}>
         <Text
           mr={{ base: "1rem", md: 0 }}
@@ -43,13 +36,7 @@ const DrawerSection = ({
         {MENUS[label]}
       </Flex>
 
-      <Box
-        pt={{ base: "4px", md: "8px" }}
-        overflowX="auto"
-        border="1px solid white"
-        // w="100%"
-        //
-      >
+      <Box pt={{ base: "4px", md: "8px" }} overflowX="auto">
         {children}
       </Box>
     </Box>

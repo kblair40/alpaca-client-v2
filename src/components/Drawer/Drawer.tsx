@@ -9,7 +9,6 @@ import {
 import DrawerSection from "./DrawerSection";
 import DrawerWrapper from "./DrawerWrapper";
 import TickerPerformance from "components/TickerPerformance";
-// import Watchlists from "components/Watchlists";
 import Watchlists from "components/Watchlists";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
@@ -25,12 +24,13 @@ const Drawer = ({ position }: Props) => {
 
   const isMd = useBreakpointValue({ base: false, md: true })!;
 
+  // 218px
+
   return (
     <React.Fragment>
-      {/* <DrawerWrapper isOpen={isOpen}> */}
-      {/* <DrawerWrapper isOpen={isMd} position={position}> */}
       <DrawerWrapper isOpen={true} position={position}>
         <Scrollbars
+          style={{ overflowX: "hidden" }}
           thumbSize={20}
           thumbMinSize={20}
           hideTracksWhenNotNeeded={true}
@@ -42,9 +42,7 @@ const Drawer = ({ position }: Props) => {
           <Stack
             w="100%"
             maxW="100%"
-            // overflowX="hidden"
             overflowX={{ base: "auto", md: "hidden" }}
-            // overflowY="auto"
             overflowY={{ base: "hidden", md: "auto" }}
             direction={{ base: "row", md: "column" }}
             spacing={{ base: ".5rem", md: "1.5rem" }}
@@ -55,7 +53,6 @@ const Drawer = ({ position }: Props) => {
           >
             <DrawerSection
               label="watchlists"
-              // width={{ base: "60%", md: "100%" }}
               width={{ base: "100%", md: "100%" }}
               padding={{ base: "4px 8px", md: "none" }}
             >
@@ -64,7 +61,6 @@ const Drawer = ({ position }: Props) => {
 
             <DrawerSection
               label="index etfs"
-              // width={{ base: "40%", md: "100%" }}
               width={{ base: "max-content", md: "100%" }}
               padding={{ base: "4px 8px", md: "none" }}
             >

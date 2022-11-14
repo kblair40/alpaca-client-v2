@@ -23,7 +23,7 @@ const Watchlists = () => {
   }
 
   return (
-    <Box border="1px solid purple" overflowX="auto" w="100%">
+    <Box overflowX="auto" w="100%">
       {data && data.length ? (
         <Stack direction={{ base: "row", md: "column" }} overflowX="auto">
           {data.map((wl, i) => {
