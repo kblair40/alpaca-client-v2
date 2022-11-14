@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Button, useColorMode, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  useColorMode,
+  Stack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 
 import DrawerSection from "./DrawerSection";
 import DrawerWrapper from "./DrawerWrapper";
@@ -14,9 +19,12 @@ const Drawer = () => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
+  const isMd = useBreakpointValue({ base: false, md: true })!;
+
   return (
     <React.Fragment>
-      <DrawerWrapper isOpen={isOpen}>
+      {/* <DrawerWrapper isOpen={isOpen}> */}
+      <DrawerWrapper isOpen={isMd}>
         <Scrollbars
           thumbSize={20}
           thumbMinSize={20}
