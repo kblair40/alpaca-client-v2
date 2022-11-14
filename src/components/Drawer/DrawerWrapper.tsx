@@ -13,7 +13,9 @@ const DrawerWrapper = ({ children, isOpen, position }: Props) => {
   const variants = {
     open: isLeft
       ? { y: 0, x: 0, opacity: 1 }
-      : { y: "calc(100vh - 180px)", opacity: 1, x: 0 },
+      : // : { y: "calc(100vh - 180px)", opacity: 1, x: 0 },
+        { y: "-112px", opacity: 1, x: 0 },
+    // { y: 0, opacity: 1, x: 0 },
     closed: isLeft
       ? { y: 0, x: "-100%", opacity: 0 }
       : { y: "100vh", opacity: 0 },

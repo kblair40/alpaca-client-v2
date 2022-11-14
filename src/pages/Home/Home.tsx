@@ -49,24 +49,21 @@ const Home = () => {
           }),
           backgroundColor: isDark ? "gray.900" : "gray.50",
           borderColor: isDark ? gray["700"] : gray["100"],
-          // padding: useBreakpointValue({
-          //   base: ".5rem .75rem",
-          //   md: ".5rem 0 .5rem .75rem",
-          // }),
-          left: useBreakpointValue({ base: "0", md: "-100%" }),
+          // left: useBreakpointValue({ base: "0", md: "-100%" }),
           // bottom: useBreakpointValue({ base: "-100%", md: "unset" }),
-          bottom: useBreakpointValue({ base: "0", md: "unset" }),
-          // right: useBreakpointValue({ base: "0", md: "unset" }),
+          // bottom: useBreakpointValue({ base: "0", md: "unset" }),
           // new
           // maxHeight: "calc(100vh - 60px)",
           maxHeight: useBreakpointValue({
             base: "180px",
             md: "calc(100vh - 60px)",
           }),
+          height: "100%",
           // overflowY: "hidden",
           overflowX: "hidden",
           // new
           border: "1px solid orange",
+          position: useBreakpointValue({ base: "fixed", md: "unset" }),
         },
       }}
     >
@@ -108,6 +105,7 @@ const Home = () => {
                 // bottom={0}
                 h="180px"
               >
+                {/* <Box h="180px" border="1px solid white" /> */}
                 <Drawer position="bottom" />
               </Box>
             )}
