@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  Button,
-  useColorMode,
-  Stack,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import React from "react";
+import { useColorMode, Stack, useBreakpointValue } from "@chakra-ui/react";
 
 import DrawerSection from "./DrawerSection";
 import DrawerWrapper from "./DrawerWrapper";
@@ -17,8 +12,6 @@ type Props = {
 };
 
 const Drawer = ({ position }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
@@ -73,32 +66,8 @@ const Drawer = ({ position }: Props) => {
           </Stack>
         </Scrollbars>
       </DrawerWrapper>
-
-      <OpenCloseButton
-        isOpen={isOpen}
-        toggle={() => setIsOpen((prev) => !prev)}
-      />
     </React.Fragment>
   );
 };
 
 export default Drawer;
-
-type BtnProps = {
-  isOpen: boolean;
-  toggle: () => void;
-};
-
-const OpenCloseButton = ({ isOpen, toggle }: BtnProps) => {
-  return (
-    <Button
-      onClick={toggle}
-      size="xs"
-      position="fixed"
-      bottom="1rem"
-      right="1rem"
-    >
-      {isOpen ? "Close" : "Open"}
-    </Button>
-  );
-};
