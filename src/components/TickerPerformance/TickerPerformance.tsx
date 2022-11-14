@@ -24,7 +24,12 @@ const TickerPerformance = (props: Props) => {
   };
 
   return (
-    <Box borderRadius={{ base: "3px", md: "6px" }} p="8px" bg={bg}>
+    <Box
+      borderRadius={{ base: "3px", md: "6px" }}
+      p="8px"
+      bg={bg}
+      w={{ base: "170px", md: "100%" }}
+    >
       <Flex align="center" justify="space-between">
         <Text {...smTextProps} fontWeight="700">
           AAPL

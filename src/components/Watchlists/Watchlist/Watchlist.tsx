@@ -83,7 +83,7 @@ const Watchlist = ({ watchlist: wl }: Props) => {
   };
 
   return (
-    <Box p="8px 8px 16px" bg={mainBg}>
+    <Box p="8px 8px 16px" bg={mainBg} w={{ base: "170px", md: "100%" }}>
       <Flex justify="space-between">
         <Text fontSize="sm" fontWeight="600">
           {wl.name || "Unnamed Watchlist"}

@@ -42,8 +42,10 @@ const Drawer = ({ position }: Props) => {
           <Stack
             w="100%"
             maxW="100%"
-            overflowX="hidden"
-            overflowY="auto"
+            // overflowX="hidden"
+            overflowX={{ base: "auto", md: "hidden" }}
+            // overflowY="auto"
+            overflowY={{ base: "hidden", md: "auto" }}
             direction={{ base: "row", md: "column" }}
             spacing={{ base: ".5rem", md: "1.5rem" }}
             h="100%"
@@ -51,11 +53,17 @@ const Drawer = ({ position }: Props) => {
             px={{ md: "8px" }}
             pb={{ md: "8px" }}
           >
-            <DrawerSection label="watchlists">
+            <DrawerSection
+              label="watchlists"
+              width={{ base: "60%", md: "100%" }}
+            >
               <Watchlists />
             </DrawerSection>
 
-            <DrawerSection label="index etfs">
+            <DrawerSection
+              label="index etfs"
+              width={{ base: "40%", md: "100%" }}
+            >
               <Stack>
                 <TickerPerformance />
                 <TickerPerformance />

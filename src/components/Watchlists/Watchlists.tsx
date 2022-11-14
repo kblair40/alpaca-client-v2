@@ -25,7 +25,7 @@ const Watchlists = () => {
   return (
     <Box>
       {data && data.length ? (
-        <Stack>
+        <Stack direction={{ base: "row", md: "column" }}>
           {data.map((wl, i) => {
             return <Watchlist key={i} watchlist={wl} />;
           })}
