@@ -6,11 +6,16 @@ import useSelector from "hooks/useSelector";
 import React from "react";
 
 const BuySellButtons = () => {
-  const { status, data } = useSelector((st) => st.chart);
+  const { status, data, ticker, asset } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(orderActions.openModal());
+    if (ticker && ticker.symbol && data && data.snapshot && data.quote) {
+      let tickerSymbol = ticker.symbol;
+      dispatch(
+        orderActions.openModal({ tickerSymbol, asset, priceData: data })
+      );
+    }
   };
 
   const isDisabled = status !== "completed";

@@ -4,6 +4,8 @@ import { type IWatchlistAsset } from "utils/types/watchlist";
 type SliceState = {
   asset: IWatchlistAsset | null; // standard asset object from alpaca;
   showModal: boolean;
+  tickerSymbol: string;
+  priceData: any;
 };
 
 const orderSlice = createSlice({
@@ -11,12 +13,24 @@ const orderSlice = createSlice({
   initialState: {
     asset: null,
     showModal: false,
+    tickerSymbol: "",
+    priceData: null,
   } as SliceState,
   reducers: {
-    openModal(state) {
-      state.showModal = true;
+    openModal(state, action) {
+      const { tickerSymbol, priceData, asset } = action.payload;
+      console.log("Symbol/Data/Asset:", { tickerSymbol, priceData, asset });
+      if (tickerSymbol && priceData && asset) {
+        state.tickerSymbol = tickerSymbol;
+        state.priceData = priceData;
+        state.asset = asset;
+        state.showModal = true;
+      }
     },
     closeModal(state) {
+      state.asset = null;
+      state.tickerSymbol = "";
+      state.priceData = null;
       state.showModal = false;
     },
     setAsset(state, action) {

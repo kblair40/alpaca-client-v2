@@ -11,9 +11,6 @@ export const fetchTickerData = createAsyncThunk(
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
     if (isAuthenticated) {
       try {
-        // const response = await alpaca.get(`/price/${data.symbol}`, {
-        //   params: { timeframe: data.timeframe },
-        // });
         const pricePromise = alpaca.get(`/price/${data.symbol}`, {
           params: { timeframe: data.timeframe },
         });
