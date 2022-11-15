@@ -57,6 +57,7 @@ const OrderForm = ({ closeModal }: Props) => {
           <FormControl isRequired>
             <FormLabel>Order Type</FormLabel>
             <Select
+              value={orderType}
               onChange={({ target: { value } }) => {
                 if (["market", "limit", "stop", "stop_limit"].includes(value)) {
                   setOrderType(value as OrderType);
@@ -74,6 +75,7 @@ const OrderForm = ({ closeModal }: Props) => {
           <FormControl isRequired>
             <FormLabel>Time in Force</FormLabel>
             <Select
+              value={timeInForce}
               onChange={({ target: { value } }) => {
                 if (["day", "gtc", "ioc", "fok"].includes(value)) {
                   setTimeInForce(value as TimeInForce);
@@ -110,18 +112,7 @@ const OrderForm = ({ closeModal }: Props) => {
           {orderType === "limit" || orderType === "stop_limit" ? (
             <FormControl isRequired>
               <FormLabel>Limit Price</FormLabel>
-              <NumberInput
-                // onChange={(val) =>
-                //   setFormData({ ...formData, limitPrice: parseFloat(val) })
-                // }
-                // defaultValue={0}
-                ref={limitRef}
-                // value={formData.limitPrice}
-                min={0}
-                max={100000}
-                step={0.01}
-                precision={2}
-              >
+              <NumberInput precision={2} ref={limitRef} min={0} max={100000}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
@@ -134,15 +125,7 @@ const OrderForm = ({ closeModal }: Props) => {
           {orderType === "stop" || orderType === "stop_limit" ? (
             <FormControl isRequired>
               <FormLabel>Stop Price</FormLabel>
-              <NumberInput
-                ref={stopRef}
-                // onChange={(val) =>
-                //   setFormData({ ...formData, stopPrice: parseInt(val) })
-                // }
-                // value={formData.stopPrice}
-                min={0}
-                max={100000}
-              >
+              <NumberInput precision={2} ref={stopRef} min={0} max={100000}>
                 <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
