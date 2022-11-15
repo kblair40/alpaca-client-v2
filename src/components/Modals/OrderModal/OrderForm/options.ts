@@ -37,23 +37,28 @@ export const ORDER_TYPES = [
 ];
 
 const DEFAULT_ORDER = {
-  quantity: "0",
+  // quantity: "0",
+  quantity: 0,
 };
 
 export const DEFAULT_MARKET = DEFAULT_ORDER;
 
 export const DEFAULT_LIMIT = {
+  // limitPrice: "0",
   limitPrice: 0,
   ...DEFAULT_ORDER,
 };
 
 export const DEFAULT_STOP = {
+  // stopPrice: "0",
   stopPrice: 0,
   ...DEFAULT_ORDER,
 };
 
 export const DEFAULT_STOP_LIMIT = {
+  // limitPrice: "0",
   limitPrice: 0,
+  // stopPrice: "0",
   stopPrice: 0,
   ...DEFAULT_ORDER,
 };
@@ -69,4 +74,13 @@ export const LABEL_MAP: { [key: string]: string } = {
   stopPrice: "Stop Price",
   limitPrice: "Limit Price",
   quantity: "Quantity",
+};
+
+export type OrderFormData = {
+  quantity: number;
+  limitPrice?: number;
+  stopPrice?: number;
+  // quantity: string;
+  // limitPrice?: string;
+  // stopPrice?: string;
 };

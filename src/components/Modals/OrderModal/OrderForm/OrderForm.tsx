@@ -1,60 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   FormControl,
   FormLabel,
   Input,
-  Flex,
   Stack,
+  Flex,
   Button,
   useColorModeValue,
   FormHelperText,
   FormErrorMessage,
   Box,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
   Select,
 } from "@chakra-ui/react";
 import {
   DEFAULT_VALUES,
   TIME_IN_FORCE,
   ORDER_TYPES,
-  LABEL_MAP,
+  // LABEL_MAP,
+  type OrderFormData,
 } from "./options";
 
 // const DEFAULT_VALUES = DEFAULT_MARKET;
 
-const OrderForm = () => {
-  const [orderType, setOrderType] = useState("market");
-  const [timeInForce, setTimeInForce] = useState("day");
-  const [formData, setFormData] = useState(DEFAULT_VALUES["market"]);
+type OrderType = "market" | "stop" | "limit" | "stop_limit";
+type TimeInForce = "day" | "gtc" | "ioc" | "fok";
 
-  const makeInput = (label: string) => {
-    return (
-      <FormControl isRequired>
-        <FormLabel>{LABEL_MAP[label]}</FormLabel>
-        {label === "timeInForce" ? (
-          <Select>
-            {TIME_IN_FORCE.map((tif, i) => {
-              return (
-                <option key={i} value={tif.value}>
-                  {tif.label}
-                </option>
-              );
-            })}
-          </Select>
-        ) : (
-          <Input />
-        )}
-      </FormControl>
-    );
-  };
+const OrderForm = () => {
+  const [orderType, setOrderType] = useState<OrderType>("market");
+  const [timeInForce, setTimeInForce] = useState<TimeInForce>("day");
+  const [formData, setFormData] = useState<OrderFormData>(
+    DEFAULT_VALUES["market"]
+  );
+
+  useEffect(() => {
+    setFormData(DEFAULT_VALUES[orderType]);
+  }, [orderType]);
 
   return (
     <Stack>
       <FormControl isRequired>
         <FormLabel>Order Type</FormLabel>
-        <Select>
-          {ORDER_TYPES.map((tif, i) => (
-            <option key={i} value={tif.value}>
-              {tif.label}
+        <Select
+          onChange={({ target: { value } }) => {
+            if (["market", "limit", "stop", "stop_limit"].includes(value)) {
+              setOrderType(value as OrderType);
+            }
+          }}
+        >
+          {ORDER_TYPES.map((type, i) => (
+            <option key={i} value={type.value}>
+              {type.label}
             </option>
           ))}
         </Select>
@@ -62,7 +62,13 @@ const OrderForm = () => {
 
       <FormControl isRequired>
         <FormLabel>Time in Force</FormLabel>
-        <Select>
+        <Select
+          onChange={({ target: { value } }) => {
+            if (["day", "gtc", "ioc", "fok"].includes(value)) {
+              setTimeInForce(value as TimeInForce);
+            }
+          }}
+        >
           {TIME_IN_FORCE.map((tif, i) => (
             <option key={i} value={tif.value}>
               {tif.label}
@@ -73,32 +79,62 @@ const OrderForm = () => {
 
       <FormControl isRequired>
         <FormLabel>Quantity</FormLabel>
-        <Input type="number" min={1} step={1} value={formData.quantity} />
+        <NumberInput
+          onChange={(val) =>
+            setFormData({ ...formData, quantity: parseInt(val) })
+          }
+          value={formData.quantity}
+          min={1}
+          step={1}
+          max={100000000}
+        >
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </NumberInput>
       </FormControl>
 
-      {/* {orderType === "market" ? (
+      {orderType === "limit" || orderType === "stop_limit" ? (
         <FormControl isRequired>
-          <FormLabel>Price</FormLabel>
-          <Select>
-            {TIME_IN_FORCE.map((tif, i) => (
-              <option key={i} value={tif.value}>
-                {tif.label}
-              </option>
-            ))}
-          </Select>
+          <FormLabel>Limit Price</FormLabel>
+          <NumberInput
+            onChange={(val) =>
+              setFormData({ ...formData, limitPrice: parseInt(val) })
+            }
+            value={formData.limitPrice}
+            min={0}
+            max={100000}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
         </FormControl>
-      ) : null} */}
+      ) : null}
 
-      {formData &&
-        Object.entries(formData).map((entry, i) => {
-          console.log("ENTRY:", entry);
-          return makeInput(entry[0]);
-          // return <Box key={i} />;
-        })}
-      {/* <FormControl isRequired>
-        <FormLabel>Watchlist Name</FormLabel>
-        <Select></Select>
-      </FormControl> */}
+      {orderType === "stop" || orderType === "stop_limit" ? (
+        <FormControl isRequired>
+          <FormLabel>Stop Price</FormLabel>
+          <NumberInput
+            onChange={(val) =>
+              setFormData({ ...formData, stopPrice: parseInt(val) })
+            }
+            value={formData.stopPrice}
+            min={0}
+            max={100000}
+          >
+            <NumberInputField />
+            <NumberInputStepper>
+              <NumberIncrementStepper />
+              <NumberDecrementStepper />
+            </NumberInputStepper>
+          </NumberInput>
+        </FormControl>
+      ) : null}
     </Stack>
   );
 };
