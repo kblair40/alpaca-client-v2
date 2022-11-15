@@ -39,7 +39,7 @@ const OrderForm = ({ closeModal }: Props) => {
   );
   const [price, setPrice] = useState<null | number>(null);
 
-  const { priceData } = useSelector((st) => st.order);
+  const { priceData, tickerSymbol } = useSelector((st) => st.order);
 
   useEffect(() => {
     if (priceData) {
@@ -53,6 +53,37 @@ const OrderForm = ({ closeModal }: Props) => {
   useEffect(() => {
     setFormData(DEFAULT_VALUES[orderType]);
   }, [orderType]);
+
+  const handleSubmit = async () => {
+    const tradeParams: { [key: string]: string | number } = {
+      symbol: tickerSymbol, // could use alpaca_id alternatively
+      qty: formData.quantity, // might need parseInt to wrap
+      side: "buy",
+      type: orderType,
+      time_in_force: timeInForce,
+      // limit_price, etc... required for certain order types
+      // TODO:
+    };
+
+    if (orderType !== "market") {
+      if (orderType === "limit" || orderType === "stop_limit") {
+        if (limitRef.current && limitRef.current.value) {
+          tradeParams.limit_price = limitRef.current.value;
+        } else {
+          console.log("EARLY RETURN - MISSING INFORMATION");
+          return;
+        }
+      }
+      if (orderType === "stop" || orderType === "stop_limit") {
+        if (stopRef.current && stopRef.current.value) {
+          tradeParams.stop_price = stopRef.current.value;
+        } else {
+          console.log("EARLY RETURN - MISSING INFORMATION");
+          return;
+        }
+      }
+    }
+  };
 
   return (
     <React.Fragment>
@@ -162,7 +193,9 @@ const OrderForm = ({ closeModal }: Props) => {
         <Button mr="1rem" onClick={closeModal}>
           Cancel
         </Button>
-        <Button variant="solid-blue">Submit</Button>
+        <Button variant="solid-blue" onClick={handleSubmit}>
+          Submit
+        </Button>
       </ModalFooter>
     </React.Fragment>
   );
