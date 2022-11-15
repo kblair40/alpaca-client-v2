@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   FormControl,
   FormLabel,
@@ -9,6 +9,8 @@ import {
   useColorModeValue,
   FormHelperText,
   FormErrorMessage,
+  ModalBody,
+  ModalFooter,
   Box,
   NumberInput,
   NumberInputField,
@@ -30,112 +32,135 @@ import {
 type OrderType = "market" | "stop" | "limit" | "stop_limit";
 type TimeInForce = "day" | "gtc" | "ioc" | "fok";
 
-const OrderForm = () => {
+type Props = {
+  closeModal: () => void;
+};
+
+const OrderForm = ({ closeModal }: Props) => {
   const [orderType, setOrderType] = useState<OrderType>("market");
   const [timeInForce, setTimeInForce] = useState<TimeInForce>("day");
   const [formData, setFormData] = useState<OrderFormData>(
     DEFAULT_VALUES["market"]
   );
 
+  const limitRef = useRef<HTMLInputElement>(null);
+  const stopRef = useRef<HTMLInputElement>(null);
+
   useEffect(() => {
     setFormData(DEFAULT_VALUES[orderType]);
   }, [orderType]);
 
   return (
-    <Stack>
-      <FormControl isRequired>
-        <FormLabel>Order Type</FormLabel>
-        <Select
-          onChange={({ target: { value } }) => {
-            if (["market", "limit", "stop", "stop_limit"].includes(value)) {
-              setOrderType(value as OrderType);
-            }
-          }}
-        >
-          {ORDER_TYPES.map((type, i) => (
-            <option key={i} value={type.value}>
-              {type.label}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
+    <React.Fragment>
+      <ModalBody>
+        <Stack>
+          <FormControl isRequired>
+            <FormLabel>Order Type</FormLabel>
+            <Select
+              onChange={({ target: { value } }) => {
+                if (["market", "limit", "stop", "stop_limit"].includes(value)) {
+                  setOrderType(value as OrderType);
+                }
+              }}
+            >
+              {ORDER_TYPES.map((type, i) => (
+                <option key={i} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
 
-      <FormControl isRequired>
-        <FormLabel>Time in Force</FormLabel>
-        <Select
-          onChange={({ target: { value } }) => {
-            if (["day", "gtc", "ioc", "fok"].includes(value)) {
-              setTimeInForce(value as TimeInForce);
-            }
-          }}
-        >
-          {TIME_IN_FORCE.map((tif, i) => (
-            <option key={i} value={tif.value}>
-              {tif.label}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Time in Force</FormLabel>
+            <Select
+              onChange={({ target: { value } }) => {
+                if (["day", "gtc", "ioc", "fok"].includes(value)) {
+                  setTimeInForce(value as TimeInForce);
+                }
+              }}
+            >
+              {TIME_IN_FORCE.map((tif, i) => (
+                <option key={i} value={tif.value}>
+                  {tif.label}
+                </option>
+              ))}
+            </Select>
+          </FormControl>
 
-      <FormControl isRequired>
-        <FormLabel>Quantity</FormLabel>
-        <NumberInput
-          onChange={(val) =>
-            setFormData({ ...formData, quantity: parseInt(val) })
-          }
-          value={formData.quantity}
-          min={1}
-          step={1}
-          max={100000000}
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Quantity</FormLabel>
+            <NumberInput
+              onChange={(val) =>
+                setFormData({ ...formData, quantity: parseInt(val) })
+              }
+              value={formData.quantity}
+              min={1}
+              step={1}
+              max={100000000}
+            >
+              <NumberInputField />
+              <NumberInputStepper>
+                <NumberIncrementStepper />
+                <NumberDecrementStepper />
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
 
-      {orderType === "limit" || orderType === "stop_limit" ? (
-        <FormControl isRequired>
-          <FormLabel>Limit Price</FormLabel>
-          <NumberInput
-            onChange={(val) =>
-              setFormData({ ...formData, limitPrice: parseInt(val) })
-            }
-            value={formData.limitPrice}
-            min={0}
-            max={100000}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </FormControl>
-      ) : null}
+          {orderType === "limit" || orderType === "stop_limit" ? (
+            <FormControl isRequired>
+              <FormLabel>Limit Price</FormLabel>
+              <NumberInput
+                // onChange={(val) =>
+                //   setFormData({ ...formData, limitPrice: parseFloat(val) })
+                // }
+                // defaultValue={0}
+                ref={limitRef}
+                // value={formData.limitPrice}
+                min={0}
+                max={100000}
+                step={0.01}
+                precision={2}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+          ) : null}
 
-      {orderType === "stop" || orderType === "stop_limit" ? (
-        <FormControl isRequired>
-          <FormLabel>Stop Price</FormLabel>
-          <NumberInput
-            onChange={(val) =>
-              setFormData({ ...formData, stopPrice: parseInt(val) })
-            }
-            value={formData.stopPrice}
-            min={0}
-            max={100000}
-          >
-            <NumberInputField />
-            <NumberInputStepper>
-              <NumberIncrementStepper />
-              <NumberDecrementStepper />
-            </NumberInputStepper>
-          </NumberInput>
-        </FormControl>
-      ) : null}
-    </Stack>
+          {orderType === "stop" || orderType === "stop_limit" ? (
+            <FormControl isRequired>
+              <FormLabel>Stop Price</FormLabel>
+              <NumberInput
+                ref={stopRef}
+                // onChange={(val) =>
+                //   setFormData({ ...formData, stopPrice: parseInt(val) })
+                // }
+                // value={formData.stopPrice}
+                min={0}
+                max={100000}
+              >
+                <NumberInputField />
+                <NumberInputStepper>
+                  <NumberIncrementStepper />
+                  <NumberDecrementStepper />
+                </NumberInputStepper>
+              </NumberInput>
+            </FormControl>
+          ) : null}
+        </Stack>
+      </ModalBody>
+
+      <ModalFooter>
+        <Button mr="1rem" onClick={closeModal}>
+          Cancel
+        </Button>
+        <Button variant="solid-blue">Submit</Button>
+      </ModalFooter>
+    </React.Fragment>
   );
 };
 
