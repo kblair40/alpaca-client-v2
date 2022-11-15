@@ -61,18 +61,16 @@ const OrderForm = ({ closeModal }: Props) => {
       side: "buy",
       type: orderType,
       time_in_force: timeInForce,
-      // limit_price, etc... required for certain order types
-      // TODO:
     };
-
     console.log("TRADE PARAMS:", tradeParams, "\n");
 
     if (orderType !== "market") {
       if (orderType === "limit" || orderType === "stop_limit") {
+        console.log("LIMIT REF:", limitRef.current!.value);
         if (limitRef.current && limitRef.current.value) {
           tradeParams.limit_price = limitRef.current.value;
         } else {
-          console.log("EARLY RETURN - MISSING INFORMATION");
+          console.log("EARLY RETURN1 - MISSING INFORMATION");
           return;
         }
       }
@@ -80,7 +78,7 @@ const OrderForm = ({ closeModal }: Props) => {
         if (stopRef.current && stopRef.current.value) {
           tradeParams.stop_price = stopRef.current.value;
         } else {
-          console.log("EARLY RETURN - MISSING INFORMATION");
+          console.log("EARLY RETURN2 - MISSING INFORMATION");
           return;
         }
       }
@@ -149,8 +147,8 @@ const OrderForm = ({ closeModal }: Props) => {
           {orderType === "limit" || orderType === "stop_limit" ? (
             <FormControl isRequired>
               <FormLabel>Limit Price</FormLabel>
-              <NumberInput precision={2} ref={limitRef} min={0} max={100000}>
-                <NumberInputField />
+              <NumberInput precision={2} min={0} max={100000}>
+                <NumberInputField ref={limitRef} />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
@@ -162,8 +160,8 @@ const OrderForm = ({ closeModal }: Props) => {
           {orderType === "stop" || orderType === "stop_limit" ? (
             <FormControl isRequired>
               <FormLabel>Stop Price</FormLabel>
-              <NumberInput precision={2} ref={stopRef} min={0} max={100000}>
-                <NumberInputField />
+              <NumberInput precision={2} min={0} max={100000}>
+                <NumberInputField ref={stopRef} />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
