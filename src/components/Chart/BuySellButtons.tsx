@@ -42,8 +42,6 @@ const BuySellButtons = () => {
           Sell
         </Button>
       </Flex>
-
-      {/* TODO: ORDER MODAL GOES HERE */}
     </React.Fragment>
   );
 };

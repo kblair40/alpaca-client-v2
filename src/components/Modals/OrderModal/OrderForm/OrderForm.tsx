@@ -12,7 +12,11 @@ import {
   NumberIncrementStepper,
   NumberDecrementStepper,
   Select,
+  Flex,
+  Text,
 } from "@chakra-ui/react";
+
+import useSelector from "hooks/useSelector";
 import {
   DEFAULT_VALUES,
   TIME_IN_FORCE,
@@ -33,6 +37,15 @@ const OrderForm = ({ closeModal }: Props) => {
   const [formData, setFormData] = useState<OrderFormData>(
     DEFAULT_VALUES["market"]
   );
+  const [price, setPrice] = useState<null | number>(null);
+
+  const { priceData } = useSelector((st) => st.order);
+
+  useEffect(() => {
+    if (priceData) {
+      setPrice(priceData.snapshot.minuteBar.c);
+    }
+  }, [priceData]);
 
   const limitRef = useRef<HTMLInputElement>(null);
   const stopRef = useRef<HTMLInputElement>(null);
@@ -126,6 +139,23 @@ const OrderForm = ({ closeModal }: Props) => {
             </FormControl>
           ) : null}
         </Stack>
+
+        <Flex mt="2rem" align="center" direction="column">
+          <Flex justify="center">
+            <Text w="124px" mr="1rem">
+              Price Per Share
+            </Text>
+            <Text w="100px">{price ? `$${price}` : ""}</Text>
+          </Flex>
+          <Flex justify="center">
+            <Text w="124px" mr="1rem">
+              Est. Order Total
+            </Text>
+            <Text w="100px">
+              {price ? `$${(price * formData.quantity).toFixed(2)}` : ""}
+            </Text>
+          </Flex>
+        </Flex>
       </ModalBody>
 
       <ModalFooter>
