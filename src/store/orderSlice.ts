@@ -19,7 +19,7 @@ const orderSlice = createSlice({
   reducers: {
     openModal(state, action) {
       const { tickerSymbol, priceData, asset } = action.payload;
-      console.log("Symbol/Data/Asset:", { tickerSymbol, priceData, asset });
+      // console.log("Symbol/Data/Asset:", { tickerSymbol, priceData, asset });
       if (tickerSymbol && priceData && asset) {
         state.tickerSymbol = tickerSymbol;
         state.priceData = priceData;
