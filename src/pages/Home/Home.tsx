@@ -11,6 +11,7 @@ import Chart from "components/Chart";
 import TickerDetail from "components/TickerDetail";
 import Clock from "components/Clock";
 import useSelector from "hooks/useSelector";
+import OrderModal from "components/Modals/OrderModal";
 
 const Home = () => {
   const { authenticated } = useSelector((st) => st.user);
@@ -77,6 +78,8 @@ const Home = () => {
           <Clock />
         </Flex>
       ) : null}
+
+      <OrderModal />
     </Box>
   );
 };

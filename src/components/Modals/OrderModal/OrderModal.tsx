@@ -31,10 +31,12 @@ const OrderModal = () => {
     dispatch(orderActions.closeModal());
   };
 
+  const bg = useColorModeValue("gray.50", "gray.800");
+
   return (
     <Modal isOpen={showModal} onClose={handleClose}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent bg={bg}>
         <ModalHeader>
           {asset ? `Place an order for ${asset.symbol}` : "Order"}
         </ModalHeader>
@@ -57,8 +59,10 @@ const OrderModal = () => {
         </ModalBody>
 
         <ModalFooter>
-          <Button>Cancel</Button>
-          <Button>Submit</Button>
+          <Button mr="1rem" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="solid-blue">Submit</Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
