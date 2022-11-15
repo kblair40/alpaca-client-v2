@@ -2,16 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   FormControl,
   FormLabel,
-  Input,
   Stack,
-  Flex,
   Button,
-  useColorModeValue,
-  FormHelperText,
-  FormErrorMessage,
   ModalBody,
   ModalFooter,
-  Box,
   NumberInput,
   NumberInputField,
   NumberInputStepper,
@@ -23,11 +17,8 @@ import {
   DEFAULT_VALUES,
   TIME_IN_FORCE,
   ORDER_TYPES,
-  // LABEL_MAP,
   type OrderFormData,
 } from "./options";
-
-// const DEFAULT_VALUES = DEFAULT_MARKET;
 
 type OrderType = "market" | "stop" | "limit" | "stop_limit";
 type TimeInForce = "day" | "gtc" | "ioc" | "fok";
