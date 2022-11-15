@@ -17,7 +17,7 @@ export const TIME_IN_FORCE = [
   },
 ];
 
-export const MARKET_TYPES = [
+export const ORDER_TYPES = [
   {
     label: "Market",
     value: "market",
@@ -63,4 +63,12 @@ export const DEFAULT_STOP_LIMIT = {
   limitPrice: 0,
   stopPrice: 0,
   ...DEFAULT_ORDER,
+};
+
+export const LABEL_MAP: { [key: string]: string } = {
+  timeInForce: "Time in Force",
+  orderType: "Order Type",
+  stopPrice: "Stop Price",
+  limitPrice: "Limit Price",
+  quantity: "Quantity",
 };
