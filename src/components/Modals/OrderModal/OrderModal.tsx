@@ -17,6 +17,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 
+import OrderForm from "./OrderForm";
 import { orderActions } from "store/orderSlice";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
@@ -42,20 +43,7 @@ const OrderModal = () => {
         </ModalHeader>
 
         <ModalBody>
-          <Stack>
-            <FormControl isRequired>
-              <FormLabel>Watchlist Name</FormLabel>
-              <Input
-                variant="neutral-outline"
-                // value={name}
-                // isInvalid={nameInvalid}
-                // onChange={(e) => {
-                //   setName(e.target.value);
-                //   if (createError) setCreateError("");
-                // }}
-              />
-            </FormControl>
-          </Stack>
+          <OrderForm />
         </ModalBody>
 
         <ModalFooter>
