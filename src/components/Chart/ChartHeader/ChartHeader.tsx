@@ -11,13 +11,28 @@ import PerformanceChip from "../PerformanceChip";
 import SelectTimeframe from "../SelectTimeframe";
 import BuySellButtons from "../BuySellButtons";
 
+// const DEFAULT_ASSET: IWatchlistAsset = {
+//   id: "b0b6dd9d-8b9b-48a9-ba46-b9d54906e415",
+//   class: "us_equity",
+//   easy_to_borrow: true,
+//   exchange: "NASDAQ",
+//   symbol: "AAPL",
+//   name: "Apple Inc. Common Stock",
+//   // @ts-ignore
+//   status: "active",
+//   tradable: true,
+//   marginable: true,
+//   maintenance_margin_requirement: 0,
+//   shortable: true,
+//   fractionable: true,
+// };
 const DEFAULT_ASSET: IWatchlistAsset = {
-  id: "b0b6dd9d-8b9b-48a9-ba46-b9d54906e415",
+  id: "b28f4066-5c6d-479b-a2af-85dc1a8f16fb",
   class: "us_equity",
   easy_to_borrow: true,
-  exchange: "NASDAQ",
-  symbol: "AAPL",
-  name: "Apple Inc. Common Stock",
+  exchange: "ARCA",
+  symbol: "SPY",
+  name: "SPDR S&P 500 ETF Trust",
   // @ts-ignore
   status: "active",
   tradable: true,

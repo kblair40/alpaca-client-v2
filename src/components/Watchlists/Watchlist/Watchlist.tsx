@@ -87,7 +87,9 @@ const Watchlist = ({ watchlist: wl }: Props) => {
     <Box
       p="8px 8px 16px"
       bg={mainBg}
-      minW={{ base: "170px", md: "unset" }}
+      // minW={{ base: "170px", md: "unset" }}
+      minW={{ base: "fit-content", md: "unset" }}
+      // w="100%"
       // new
       h={{ base: "132px", md: "unset" }}
       w={{ base: "max-content", md: "100%" }}
@@ -99,17 +101,30 @@ const Watchlist = ({ watchlist: wl }: Props) => {
         <WatchlistMenu id={wl.id} name={wl.name} />
       </Flex>
 
+      {/* TODO: REFACTOR WITH GRID */}
+      {/* 3 ROWS PER COLUMN - AND SPECIFIY GRID-AUTO-COLUMNS */}
       <Wrap
         h="100%"
-        maxH={{ base: "78px", md: "unset" }}
-        mt=".75rem"
-        overflowY="hidden"
+        maxH={{ base: "84px", md: "unset" }}
+        pt=".5rem"
+        overflowY="auto"
+        // border="1px solid red"
+        spacingY={{ base: "4px", md: "6px" }}
+        direction="column"
+        // w="100%"
+        // w="fit-content"
       >
         {wl.assets && wl.assets.length && prices ? (
           wl.assets.map((asset, i) => {
             let [price, performance] = getAssetPerformance(asset.symbol);
             return (
-              <WrapItem key={i} p="2px" w={{ base: "120px", md: "100%" }}>
+              <WrapItem
+                h="20px"
+                // border="1px solid white"
+                key={i}
+                p="2px"
+                w={{ base: "136px", md: "100%" }}
+              >
                 <Flex
                   lineHeight={1}
                   cursor="pointer"
