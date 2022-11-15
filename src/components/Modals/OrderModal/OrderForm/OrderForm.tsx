@@ -42,10 +42,18 @@ const OrderForm = () => {
           <Select>
             {label === "orderType"
               ? ORDER_TYPES.map((type, i) => {
-                  return <option value={type.value}>{type.label}</option>;
+                  return (
+                    <option key={i} value={type.value}>
+                      {type.label}
+                    </option>
+                  );
                 })
-              : TIME_IN_FORCE.map((type, i) => {
-                  return <option value={type.value}>{type.label}</option>;
+              : TIME_IN_FORCE.map((tif, i) => {
+                  return (
+                    <option key={i} value={tif.value}>
+                      {tif.label}
+                    </option>
+                  );
                 })}
           </Select>
         ) : (
