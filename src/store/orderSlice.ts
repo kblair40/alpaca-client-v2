@@ -33,9 +33,6 @@ const orderSlice = createSlice({
       state.priceData = null;
       state.showModal = false;
     },
-    setAsset(state, action) {
-      state.asset = action.payload;
-    },
   },
 });
 
