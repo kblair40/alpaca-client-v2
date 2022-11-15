@@ -145,7 +145,7 @@ const OrderForm = ({ closeModal }: Props) => {
             <Text w="124px" mr="1rem">
               Price Per Share
             </Text>
-            <Text w="100px">{price ? `$${price}` : ""}</Text>
+            <Text w="100px">{price ? `$${price.toFixed(2)}` : ""}</Text>
           </Flex>
           <Flex justify="center">
             <Text w="124px" mr="1rem">
