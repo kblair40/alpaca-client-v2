@@ -37,37 +37,35 @@ export const ORDER_TYPES = [
 ];
 
 const DEFAULT_ORDER = {
-  quantity: 0,
-  timeInForce: "day",
+  quantity: "0",
 };
 
-export const DEFAULT_MARKET = {
-  orderType: "market",
-  ...DEFAULT_ORDER,
-};
+export const DEFAULT_MARKET = DEFAULT_ORDER;
 
 export const DEFAULT_LIMIT = {
-  orderType: "limit",
   limitPrice: 0,
   ...DEFAULT_ORDER,
 };
 
 export const DEFAULT_STOP = {
-  orderType: "stop",
   stopPrice: 0,
   ...DEFAULT_ORDER,
 };
 
 export const DEFAULT_STOP_LIMIT = {
-  orderType: "stop_limit",
   limitPrice: 0,
   stopPrice: 0,
   ...DEFAULT_ORDER,
 };
 
+export const DEFAULT_VALUES = {
+  market: DEFAULT_MARKET,
+  limit: DEFAULT_LIMIT,
+  stop: DEFAULT_STOP,
+  stop_limit: DEFAULT_STOP_LIMIT,
+};
+
 export const LABEL_MAP: { [key: string]: string } = {
-  timeInForce: "Time in Force",
-  orderType: "Order Type",
   stopPrice: "Stop Price",
   limitPrice: "Limit Price",
   quantity: "Quantity",
