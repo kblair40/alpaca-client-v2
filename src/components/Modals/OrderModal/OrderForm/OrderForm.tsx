@@ -65,6 +65,8 @@ const OrderForm = ({ closeModal }: Props) => {
       // TODO:
     };
 
+    console.log("TRADE PARAMS:", tradeParams, "\n");
+
     if (orderType !== "market") {
       if (orderType === "limit" || orderType === "stop_limit") {
         if (limitRef.current && limitRef.current.value) {
@@ -193,7 +195,11 @@ const OrderForm = ({ closeModal }: Props) => {
         <Button mr="1rem" onClick={closeModal}>
           Cancel
         </Button>
-        <Button variant="solid-blue" onClick={handleSubmit}>
+        <Button
+          isDisabled={formData.quantity === 0}
+          variant="solid-blue"
+          onClick={handleSubmit}
+        >
           Submit
         </Button>
       </ModalFooter>
