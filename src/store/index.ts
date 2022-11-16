@@ -6,6 +6,7 @@ import chartReducer from "./chartSlice";
 import calendarReducer from "./calendarSlice";
 import corporateActionsReducer from "./corporateActionsSlice";
 import orderReducer from "./orderSlice";
+import positionReducer from "./positionSlice";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
     calendar: calendarReducer,
     corporateActions: corporateActionsReducer,
     order: orderReducer,
+    position: positionReducer,
   },
 });
 
