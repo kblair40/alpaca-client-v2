@@ -15,15 +15,15 @@ const Dashboard = (props: Props) => {
   }, [dispatch]);
 
   return (
-    <Tabs>
-      <TabList>
+    <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted>
+      <TabList h="42px">
         <Tab>Positions</Tab>
         <Tab>Orders</Tab>
       </TabList>
 
-      <TabPanels>
+      <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
         <TabPanel>POSITIONS GO HERE</TabPanel>
-        <TabPanel>
+        <TabPanel h="100%">
           <OrdersList />
         </TabPanel>
       </TabPanels>
