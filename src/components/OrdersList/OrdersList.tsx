@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -109,6 +108,7 @@ const OrdersList = (props: Props) => {
                 w="100%"
                 border=".1px solid #aaa"
                 textAlign="center"
+                py="4px"
               >
                 <Text flex={1} textTransform="capitalize">
                   {side}
@@ -127,7 +127,12 @@ const OrdersList = (props: Props) => {
                     // flex={1}
                     aria-label="See Details"
                     size="xs"
-                    icon={<ChevronDownIcon boxSize="16px" />}
+                    icon={
+                      <ChevronDownIcon
+                        boxSize="16px"
+                        transform="rotate(-90deg)"
+                      />
+                    }
                   />
                 </Flex>
                 {/* <Text flex={1}>{limitPrice}</Text>
