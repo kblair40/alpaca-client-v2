@@ -40,10 +40,12 @@ const positionSlice = createSlice({
     selectedTickerPosition: null,
   } as SliceState,
   reducers: {
-    // loginAlpaca(state) {
-    //   console.log("\nLOGGING IN TO ALPACA\n");
-    //   state.authenticated.alpaca = true;
-    // },
+    setSelectedPosition(state, action) {
+      state.selectedTickerPosition = action.payload;
+    },
+    removeSelectedPosition(state) {
+      state.selectedTickerPosition = null;
+    },
   },
 
   extraReducers(builder) {

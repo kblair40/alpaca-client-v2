@@ -36,6 +36,9 @@ const PositionsList = () => {
       return `$(${intGain.toFixed(2)})`;
     }
   };
+  const handleClickManage = (symbol: string) => {
+    // console
+  };
 
   if (status === "loading") {
     return (
@@ -89,7 +92,7 @@ const PositionsList = () => {
 
                 <Flex flex={0.5} justify="center">
                   <IconButton
-                    onClick={() => setDrawerOpen(true)}
+                    onClick={() => handleClickManage(pos.symbol)}
                     aria-label="Manage position"
                     icon={
                       <ChevronDownIcon
