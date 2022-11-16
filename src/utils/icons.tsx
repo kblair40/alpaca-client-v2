@@ -7,6 +7,10 @@ interface FillProps {
   boxSize?: string;
 }
 
+interface RotatableProps extends FillProps {
+  transform?: string;
+}
+
 export const VisibleIcon = (props: FillProps) => {
   const activeFill = useIconFill(props);
   return (
@@ -164,7 +168,7 @@ export const MoreHorizontalIcon = (props: FillProps) => {
   );
 };
 
-export const ChevronDownIcon = (props: FillProps) => {
+export const ChevronDownIcon = (props: RotatableProps) => {
   const activeFill = useIconFill(props);
   return (
     <Icon

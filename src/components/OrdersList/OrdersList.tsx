@@ -7,9 +7,11 @@ import {
   Spinner,
   useColorMode,
   HStack,
+  IconButton,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
+import { ChevronDownIcon } from "utils/icons";
 import { type IOrder } from "utils/types/order";
 import useSelector from "hooks/useSelector";
 
@@ -55,6 +57,7 @@ const OrdersList = (props: Props) => {
           <Text flex={1}>Ordered Qty</Text>
           {/* <Text flex={1}>Filled Qty</Text> */}
           <Text flex={1}>Avg Filled Price</Text>
+          <Text flex={1}>Details</Text>
           {/* <Text flex={1}>Limit Price</Text>
           <Text flex={1}>Stop Price</Text> */}
           {/* <Text></Text> */}
@@ -69,7 +72,6 @@ const OrdersList = (props: Props) => {
             // if (order.submitted_at) {
             //   submittedDate = new Date(order.submitted_at);
             // }
-
             const orderId = order.id;
             const clientOrderId = order.client_order_id;
             const side = order.side;
@@ -117,7 +119,17 @@ const OrdersList = (props: Props) => {
                 </Text>
                 <Text flex={1}>{dayjs(createdAt).format("MM/YY")}</Text>
                 <Text flex={1}>{qty}</Text>
-                <Text flex={1}>${filledAvgPrice}</Text>
+                <Text flex={1}>
+                  {filledAvgPrice ? `$${filledAvgPrice}` : "-"}
+                </Text>
+                <Flex justify="center" flex={1}>
+                  <IconButton
+                    // flex={1}
+                    aria-label="See Details"
+                    size="xs"
+                    icon={<ChevronDownIcon boxSize="16px" />}
+                  />
+                </Flex>
                 {/* <Text flex={1}>{limitPrice}</Text>
                 <Text flex={1}>{stopPrice}</Text> */}
               </HStack>
@@ -130,3 +142,5 @@ const OrdersList = (props: Props) => {
 };
 
 export default OrdersList;
+
+// const ChevronRightIcon =
