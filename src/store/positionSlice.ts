@@ -9,7 +9,7 @@ export const fetchPositions = createAsyncThunk(
     let res = {};
     if (isAuthenticated) {
       try {
-        const response = await alpaca.get(`/positions`);
+        const response = await alpaca.get(`/position`);
         if (response && response.data) {
           res = response.data;
         }
