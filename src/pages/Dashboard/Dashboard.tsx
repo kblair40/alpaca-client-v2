@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
 import useDispatch from "hooks/useDispatch";
 import { fetchOrders } from "store/orderSlice";
@@ -15,9 +15,19 @@ const Dashboard = (props: Props) => {
   }, [dispatch]);
 
   return (
-    <div>
-      <OrdersList />
-    </div>
+    <Tabs>
+      <TabList>
+        <Tab>Positions</Tab>
+        <Tab>Orders</Tab>
+      </TabList>
+
+      <TabPanels>
+        <TabPanel>POSITIONS GO HERE</TabPanel>
+        <TabPanel>
+          <OrdersList />
+        </TabPanel>
+      </TabPanels>
+    </Tabs>
   );
 };
 

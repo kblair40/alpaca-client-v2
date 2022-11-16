@@ -49,7 +49,6 @@ const OrdersList = () => {
           px="4px"
           textAlign="center"
           pb="4px"
-          textTransform={"uppercase"}
         >
           <Text flex={1}>Side</Text>
           <Text flex={1}>Symbol</Text>
