@@ -7,9 +7,11 @@ import {
   Spinner,
   HStack,
   VStack,
+  IconButton,
 } from "@chakra-ui/react";
 
-import { type Position } from "utils/types/position";
+// import { type Position } from "utils/types/position";
+import { ChevronDownIcon } from "utils/icons";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import { fetchPositions } from "store/positionSlice";
@@ -56,6 +58,7 @@ const PositionsList = () => {
         {/* <Text flex={1}>Avg. Purchase Price</Text> */}
         <Text flex={0.5}>Side</Text>
         <Text flex={1}>Unrealized Gain/(Loss)</Text>
+        <Text flex={0.5}>Manage</Text>
       </HStack>
 
       <VStack spacing="4px">
@@ -78,6 +81,19 @@ const PositionsList = () => {
                   {pos.side}
                 </Text>
                 <Text flex={1}>{unrealizedGain(pos.unrealized_pl)}</Text>
+
+                <Flex flex={0.5} justify="center">
+                  <IconButton
+                    aria-label="Manage position"
+                    icon={
+                      <ChevronDownIcon
+                        boxSize="16px"
+                        transform="rotate(-90deg)"
+                      />
+                    }
+                    size="xs"
+                  />
+                </Flex>
               </HStack>
             );
           })
