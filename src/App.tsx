@@ -57,7 +57,7 @@ function App() {
             }
           />
           <Route
-            path="/order/:orderid"
+            path="/order/:orderId"
             element={
               <Suspense fallback={<Loading />}>
                 <Order />
