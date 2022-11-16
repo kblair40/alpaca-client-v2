@@ -241,6 +241,19 @@ export const CheckIcon = (props: FillProps) => {
   );
 };
 
+export const ArrowLeftIcon = (props: FillProps) => {
+  const activeFill = useIconFill(props);
+  return (
+    <Icon
+      boxSize={props.boxSize ? props.boxSize : "24px"}
+      viewBox="0 0 24 24"
+      fill={activeFill}
+    >
+      <path d="M13.5703 20.8641L12.5297 21.9047C12.0891 22.3453 11.3766 22.3453 10.9406 21.9047L1.82812 12.7969C1.38749 12.3562 1.38749 11.6437 1.82812 11.2078L10.9406 2.09531C11.3812 1.65469 12.0937 1.65469 12.5297 2.09531L13.5703 3.13594C14.0156 3.58125 14.0062 4.30781 13.5516 4.74375L7.90312 10.125H21.375C21.9984 10.125 22.5 10.6266 22.5 11.25V12.75C22.5 13.3734 21.9984 13.875 21.375 13.875H7.90312L13.5516 19.2562C14.0109 19.6922 14.0203 20.4187 13.5703 20.8641Z" />
+    </Icon>
+  );
+};
+
 export const AlpacaLogoIcon = (props: FillProps) => {
   const fill = props.fill ? props.fill : "#FCD72B";
   return (
