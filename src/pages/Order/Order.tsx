@@ -81,72 +81,102 @@ const Order = () => {
           <Text textTransform="capitalize">{`${orderType} ${side}`}</Text>
         </Flex>
 
-        <Box w="100%" mt="1.5rem">
-          <DataField label="Order ID" value={orderId || "-"} />
-          <DataField label="Client Order ID" value={clientOrderId} />
-          <DataField label="Time in Force" value={timeInForce} />
-          <DataField label="Status" value={toTitleCase(status)} />
-          <DataField label="Qty Ordered" value={qty} />
-          <DataField label="Qty Filled" value={filledQty} />
-          <DataField
-            label="Avg Fill Price"
-            value={filledAvgPrice || "n/a"}
-            isCost
-          />
-          <DataField
-            label="Total Cost"
-            value={parseFloat(filledQty) * parseFloat(filledAvgPrice || "-")}
-            isCost
-          />
-          <DataField
-            label="Limit Price"
-            value={limitPrice}
-            isCost={limitPrice !== "-"}
-          />
-          <DataField
-            label="Stop Price"
-            value={stopPrice}
-            isCost={stopPrice !== "-"}
-          />
-          <DataField label="Asset ID" value={assetId || "-"} />
-          <DataField label="Asset Class" value={ASSET_CLASSES[assetClass]} />
-          <DataField
-            label="Submitted Date"
-            value={submittedAt ? new Date(submittedAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Created Date"
-            value={createdAt ? new Date(createdAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Filled Date"
-            value={filledAt ? new Date(filledAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Updated Date"
-            value={updatedAt ? new Date(updatedAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Expired Date"
-            value={expiredAt ? new Date(expiredAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Cancelled Date"
-            value={canceledAt ? new Date(canceledAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Failed Date"
-            value={failedAt ? new Date(failedAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Replaced Date"
-            value={replacedAt ? new Date(replacedAt).toLocaleString() : "-"}
-          />
-          <DataField
-            label="Replaced By"
-            value={replacedBy ? replacedBy : "-"}
-          />
-          <DataField label="Replaces" value={replaces ? replaces : "-"} />
+        {/* <Box w="100%" mt="1.5rem"> */}
+        <Box mt="1.5rem">
+          <Stack>
+            <Stack spacing="2px">
+              <DataField label="Order ID" value={orderId || "-"} />
+              <DataField label="Client Order ID" value={clientOrderId} />
+            </Stack>
+
+            <Stack spacing="2px">
+              <DataField
+                label="Time in Force"
+                value={toTitleCase(timeInForce)}
+              />
+              <DataField label="Status" value={toTitleCase(status)} />
+              <DataField label="Qty Ordered" value={qty} />
+              <DataField label="Qty Filled" value={filledQty} />
+              <DataField
+                label="Avg Fill Price"
+                value={filledAvgPrice || "n/a"}
+                isCost
+              />
+              <DataField
+                label="Total Cost"
+                value={
+                  parseFloat(filledQty) * parseFloat(filledAvgPrice || "-")
+                }
+                isCost
+              />
+            </Stack>
+
+            <Stack spacing="2px">
+              <DataField
+                label="Limit Price"
+                value={limitPrice}
+                isCost={limitPrice !== "-"}
+              />
+              <DataField
+                label="Stop Price"
+                value={stopPrice}
+                isCost={stopPrice !== "-"}
+              />
+            </Stack>
+
+            <Stack spacing="2px">
+              <DataField label="Asset ID" value={assetId || "-"} />
+              <DataField
+                label="Asset Class"
+                value={ASSET_CLASSES[assetClass]}
+              />
+            </Stack>
+
+            <Stack spacing="2px">
+              <DataField
+                label="Submitted Date"
+                value={
+                  submittedAt ? new Date(submittedAt).toLocaleString() : "-"
+                }
+              />
+              <DataField
+                label="Created Date"
+                value={createdAt ? new Date(createdAt).toLocaleString() : "-"}
+              />
+              <DataField
+                label="Filled Date"
+                value={filledAt ? new Date(filledAt).toLocaleString() : "-"}
+              />
+              <DataField
+                label="Updated Date"
+                value={updatedAt ? new Date(updatedAt).toLocaleString() : "-"}
+              />
+              <DataField
+                label="Expired Date"
+                value={expiredAt ? new Date(expiredAt).toLocaleString() : "-"}
+              />
+              <DataField
+                label="Cancelled Date"
+                value={canceledAt ? new Date(canceledAt).toLocaleString() : "-"}
+              />
+              <DataField
+                label="Failed Date"
+                value={failedAt ? new Date(failedAt).toLocaleString() : "-"}
+              />
+              <DataField
+                label="Replaced Date"
+                value={replacedAt ? new Date(replacedAt).toLocaleString() : "-"}
+              />
+            </Stack>
+
+            <Stack spacing="2px">
+              <DataField
+                label="Replaced By"
+                value={replacedBy ? replacedBy : "-"}
+              />
+              <DataField label="Replaces" value={replaces ? replaces : "-"} />
+            </Stack>
+          </Stack>
         </Box>
       </Flex>
     );
@@ -168,10 +198,15 @@ const DataField = ({
 }) => {
   return (
     <Flex justify="space-between">
-      <Text w={{ base: "140px" }} mr={{ base: "1rem" }} whiteSpace="nowrap">
+      <Text
+        fontSize="sm"
+        w={{ base: "140px" }}
+        mr={{ base: "1rem" }}
+        whiteSpace="nowrap"
+      >
         {label}
       </Text>
-      <Text flex={1} whiteSpace="nowrap">
+      <Text fontSize="sm" flex={1} whiteSpace="nowrap">
         {`${isCost ? "$" : ""}${value}`}
       </Text>
     </Flex>
