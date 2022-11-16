@@ -60,12 +60,14 @@ const Order = () => {
     const assetClass = orderData.asset_class;
     const timeInForce = orderData.time_in_force;
     const orderType = orderData.type || "";
-    const limitPrice =
-      orderData.type === "limit" ? orderData.limit_price || "-" : "-";
-    const stopPrice =
-      orderData.type === "stop" ? orderData.stop_price || "-" : "-";
+    const limitPrice = ["limit", "stop_limit"].includes(orderData.type)
+      ? orderData.limit_price || "-"
+      : "-";
+    const stopPrice = ["limstopit", "stop_limit"].includes(orderData.type)
+      ? orderData.stop_price || "-"
+      : "-";
     const status = orderData.status;
-    const filledAvgPrice = orderData.filled_avg_price;
+    const filledAvgPrice = orderData.filled_avg_price || "-";
     const qty = orderData.qty || "0";
     const filledQty = orderData.filled_qty;
     const createdAt = orderData.created_at;
@@ -100,9 +102,9 @@ const Order = () => {
               {symbol}
             </Text>
             <Text
-              fontSize={{ base: "sm", sm: "md" }}
               textTransform="capitalize"
-            >{`${orderType} ${side}`}</Text>
+              fontSize={{ base: "sm", sm: "md" }}
+            >{`${toTitleCase(orderType, "_")} ${side}`}</Text>
           </Flex>
 
           <Box mt="1.5rem">
@@ -123,14 +125,16 @@ const Order = () => {
                 <DataField
                   label="Avg Fill Price"
                   value={filledAvgPrice || "n/a"}
-                  isCost
+                  isCost={filledAvgPrice !== "-"}
                 />
                 <DataField
                   label="Total Cost"
                   value={
-                    parseFloat(filledQty) * parseFloat(filledAvgPrice || "-")
+                    filledQty !== "0"
+                      ? parseFloat(filledQty) * parseFloat(filledAvgPrice)
+                      : "-"
                   }
-                  isCost
+                  isCost={filledQty !== "0"}
                 />
               </Stack>
 

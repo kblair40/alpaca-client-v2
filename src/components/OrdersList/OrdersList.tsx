@@ -68,38 +68,14 @@ const OrdersList = (props: Props) => {
           </Center>
         ) : status === "completed" && orders && orders.length ? (
           orders.map((order: IOrder, i) => {
-            // let submittedDate;
-            // if (order.submitted_at) {
-            //   submittedDate = new Date(order.submitted_at);
-            // }
             const orderId = order.id;
-            const clientOrderId = order.client_order_id;
             const side = order.side;
             const symbol = order.symbol;
-            const assetId = order.asset_id;
-            const assetClass = order.asset_class;
-
-            const timeInForce = order.time_in_force;
             const orderType = order.type;
-            const limitPrice = order.type === "limit" ? order.limit_price : "-";
-            const stopPrice = order.type === "stop" ? order.stop_price : "-";
             const status = order.status;
             const filledAvgPrice = order.filled_avg_price;
             const qty = order.qty;
-            const filledQty = order.filled_qty;
             const createdAt = order.created_at;
-            const updatedAt = order.updated_at;
-            const submittedAt = order.submitted_at;
-            const filledAt = order.filled_at;
-            const expiredAt = order.expired_at;
-            const canceledAt = order.canceled_at;
-            const failedAt = order.failed_at;
-            const replacedAt = order.replaced_at;
-            const replacedBy = order.replaced_by;
-            const replaces = order.replaces;
-
-            // const orderClass = order.order_class;
-            // const legs = order.legs;
 
             return (
               <HStack
