@@ -1,7 +1,19 @@
-import { useState, useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Flex, Text, Center, Spinner, Stack } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Center,
+  Spinner,
+  Stack,
+  StackDivider,
+  Button,
+  useColorMode,
+} from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
+import { ArrowLeftIcon } from "utils/icons";
 import { toTitleCase } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
 import { alpaca } from "api";
@@ -68,117 +80,126 @@ const Order = () => {
     const replaces = orderData.replaces;
 
     return (
-      <Flex
-        direction="column"
-        align="center"
-        mt="2rem"
-        px={{ base: "1rem", sm: "3rem" }}
-      >
-        <Flex align="end" lineHeight={1}>
-          <Text mr="1rem" fontSize="xl" fontWeight={600}>
-            {symbol}
-          </Text>
-          <Text textTransform="capitalize">{`${orderType} ${side}`}</Text>
-        </Flex>
-
-        {/* <Box w="100%" mt="1.5rem"> */}
-        <Box mt="1.5rem">
-          <Stack>
-            <Stack spacing="2px">
-              <DataField label="Order ID" value={orderId || "-"} />
-              <DataField label="Client Order ID" value={clientOrderId} />
-            </Stack>
-
-            <Stack spacing="2px">
-              <DataField
-                label="Time in Force"
-                value={toTitleCase(timeInForce)}
-              />
-              <DataField label="Status" value={toTitleCase(status)} />
-              <DataField label="Qty Ordered" value={qty} />
-              <DataField label="Qty Filled" value={filledQty} />
-              <DataField
-                label="Avg Fill Price"
-                value={filledAvgPrice || "n/a"}
-                isCost
-              />
-              <DataField
-                label="Total Cost"
-                value={
-                  parseFloat(filledQty) * parseFloat(filledAvgPrice || "-")
-                }
-                isCost
-              />
-            </Stack>
-
-            <Stack spacing="2px">
-              <DataField
-                label="Limit Price"
-                value={limitPrice}
-                isCost={limitPrice !== "-"}
-              />
-              <DataField
-                label="Stop Price"
-                value={stopPrice}
-                isCost={stopPrice !== "-"}
-              />
-            </Stack>
-
-            <Stack spacing="2px">
-              <DataField label="Asset ID" value={assetId || "-"} />
-              <DataField
-                label="Asset Class"
-                value={ASSET_CLASSES[assetClass]}
-              />
-            </Stack>
-
-            <Stack spacing="2px">
-              <DataField
-                label="Submitted Date"
-                value={
-                  submittedAt ? new Date(submittedAt).toLocaleString() : "-"
-                }
-              />
-              <DataField
-                label="Created Date"
-                value={createdAt ? new Date(createdAt).toLocaleString() : "-"}
-              />
-              <DataField
-                label="Filled Date"
-                value={filledAt ? new Date(filledAt).toLocaleString() : "-"}
-              />
-              <DataField
-                label="Updated Date"
-                value={updatedAt ? new Date(updatedAt).toLocaleString() : "-"}
-              />
-              <DataField
-                label="Expired Date"
-                value={expiredAt ? new Date(expiredAt).toLocaleString() : "-"}
-              />
-              <DataField
-                label="Cancelled Date"
-                value={canceledAt ? new Date(canceledAt).toLocaleString() : "-"}
-              />
-              <DataField
-                label="Failed Date"
-                value={failedAt ? new Date(failedAt).toLocaleString() : "-"}
-              />
-              <DataField
-                label="Replaced Date"
-                value={replacedAt ? new Date(replacedAt).toLocaleString() : "-"}
-              />
-            </Stack>
-
-            <Stack spacing="2px">
-              <DataField
-                label="Replaced By"
-                value={replacedBy ? replacedBy : "-"}
-              />
-              <DataField label="Replaces" value={replaces ? replaces : "-"} />
-            </Stack>
-          </Stack>
+      <Fragment>
+        <Box position="fixed" top="76px" left="1rem">
+          <BackToDashboard />
         </Box>
-      </Flex>
+
+        <Flex
+          direction="column"
+          align="center"
+          mt="4rem"
+          px={{ base: "1rem", sm: "3rem" }}
+        >
+          <Flex align="end" lineHeight={1}>
+            <Text mr="1rem" fontSize="xl" fontWeight={600}>
+              {symbol}
+            </Text>
+            <Text textTransform="capitalize">{`${orderType} ${side}`}</Text>
+          </Flex>
+
+          <Box mt="1.5rem">
+            <Stack divider={<StackDivider />}>
+              <Stack spacing="2px">
+                <DataField label="Order ID" value={orderId || "-"} />
+                <DataField label="Client Order ID" value={clientOrderId} />
+              </Stack>
+
+              <Stack spacing="2px">
+                <DataField
+                  label="Time in Force"
+                  value={toTitleCase(timeInForce)}
+                />
+                <DataField label="Status" value={toTitleCase(status)} />
+                <DataField label="Qty Ordered" value={qty} />
+                <DataField label="Qty Filled" value={filledQty} />
+                <DataField
+                  label="Avg Fill Price"
+                  value={filledAvgPrice || "n/a"}
+                  isCost
+                />
+                <DataField
+                  label="Total Cost"
+                  value={
+                    parseFloat(filledQty) * parseFloat(filledAvgPrice || "-")
+                  }
+                  isCost
+                />
+              </Stack>
+
+              <Stack spacing="2px">
+                <DataField
+                  label="Limit Price"
+                  value={limitPrice}
+                  isCost={limitPrice !== "-"}
+                />
+                <DataField
+                  label="Stop Price"
+                  value={stopPrice}
+                  isCost={stopPrice !== "-"}
+                />
+              </Stack>
+
+              <Stack spacing="2px">
+                <DataField label="Asset ID" value={assetId || "-"} />
+                <DataField
+                  label="Asset Class"
+                  value={ASSET_CLASSES[assetClass]}
+                />
+              </Stack>
+
+              <Stack spacing="2px">
+                <DataField
+                  label="Submitted Date"
+                  value={
+                    submittedAt ? new Date(submittedAt).toLocaleString() : "-"
+                  }
+                />
+                <DataField
+                  label="Created Date"
+                  value={createdAt ? new Date(createdAt).toLocaleString() : "-"}
+                />
+                <DataField
+                  label="Filled Date"
+                  value={filledAt ? new Date(filledAt).toLocaleString() : "-"}
+                />
+                <DataField
+                  label="Updated Date"
+                  value={updatedAt ? new Date(updatedAt).toLocaleString() : "-"}
+                />
+                <DataField
+                  label="Expired Date"
+                  value={expiredAt ? new Date(expiredAt).toLocaleString() : "-"}
+                />
+                <DataField
+                  label="Cancelled Date"
+                  value={
+                    canceledAt ? new Date(canceledAt).toLocaleString() : "-"
+                  }
+                />
+                <DataField
+                  label="Failed Date"
+                  value={failedAt ? new Date(failedAt).toLocaleString() : "-"}
+                />
+                <DataField
+                  label="Replaced Date"
+                  value={
+                    replacedAt ? new Date(replacedAt).toLocaleString() : "-"
+                  }
+                />
+              </Stack>
+
+              <Stack spacing="2px">
+                <DataField
+                  label="Replaced By"
+                  value={replacedBy ? replacedBy : "-"}
+                />
+                <DataField label="Replaces" value={replaces ? replaces : "-"} />
+              </Stack>
+            </Stack>
+          </Box>
+        </Flex>
+      </Fragment>
     );
   }
 
@@ -199,16 +220,46 @@ const DataField = ({
   return (
     <Flex justify="space-between">
       <Text
-        fontSize="sm"
-        w={{ base: "140px" }}
-        mr={{ base: "1rem" }}
+        fontSize={{ base: "xs", sm: "sm" }}
+        w={{ base: "90px", sm: "140px" }}
+        mr="1rem"
         whiteSpace="nowrap"
       >
         {label}
       </Text>
-      <Text fontSize="sm" flex={1} whiteSpace="nowrap">
+      <Text fontSize={{ base: "xs", sm: "sm" }} flex={1} whiteSpace="nowrap">
         {`${isCost ? "$" : ""}${value}`}
       </Text>
     </Flex>
+  );
+};
+
+const BackToDashboard = () => {
+  const { colorMode } = useColorMode();
+  const isDark = colorMode === "dark";
+
+  const lightStyles = {
+    bg: "white",
+    _hover: { bg: "gray.50" },
+    _active: { bg: "gray.100" },
+  };
+  const darkStyles = {
+    bg: "gray.900",
+    _hover: { bg: "gray.800" },
+    _active: { bg: "gray.700" },
+  };
+
+  const btnStyles = isDark ? darkStyles : lightStyles;
+
+  return (
+    <Link to="/dashboard">
+      <Button
+        {...btnStyles}
+        leftIcon={<ArrowLeftIcon boxSize="18px" />}
+        size="sm"
+      >
+        Back to Dashboard
+      </Button>
+    </Link>
   );
 };
