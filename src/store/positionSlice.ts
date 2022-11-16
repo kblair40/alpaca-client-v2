@@ -10,6 +10,7 @@ export const fetchPositions = createAsyncThunk(
     if (isAuthenticated) {
       try {
         const response = await alpaca.get(`/position`);
+        console.log("POSITIONS RESPONSE:", response.data);
         if (response && response.data) {
           res = response.data;
         }
