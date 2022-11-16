@@ -9,6 +9,7 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
 import { ChevronDownIcon } from "utils/icons";
 import { type IOrder } from "utils/types/order";
@@ -52,14 +53,14 @@ const OrdersList = (props: Props) => {
           <Text flex={1}>Type</Text>
 
           <Text flex={1}>Created</Text>
-          {/* <Text flex={1}>Filled</Text> */}
-          <Text flex={1}>Ordered Qty</Text>
-          {/* <Text flex={1}>Filled Qty</Text> */}
-          <Text flex={1}>Avg Filled Price</Text>
+          <Text flex={1}>Status</Text>
+          <Text flex={1} display={{ base: "none", md: "inline" }}>
+            Ordered Qty
+          </Text>
+          <Text flex={1} display={{ base: "none", md: "inline" }}>
+            Avg Filled Price
+          </Text>
           <Text flex={1}>Details</Text>
-          {/* <Text flex={1}>Limit Price</Text>
-          <Text flex={1}>Stop Price</Text> */}
-          {/* <Text></Text> */}
         </HStack>
         {status === "loading" ? (
           <Center h="100px">
@@ -118,25 +119,29 @@ const OrdersList = (props: Props) => {
                   {orderTypes[orderType]}
                 </Text>
                 <Text flex={1}>{dayjs(createdAt).format("MM/YY")}</Text>
-                <Text flex={1}>{qty}</Text>
-                <Text flex={1}>
+                <Text flex={1} textTransform="capitalize">
+                  {status}
+                </Text>
+                <Text display={{ base: "none", md: "inline" }} flex={1}>
+                  {qty}
+                </Text>
+                <Text display={{ base: "none", md: "inline" }} flex={1}>
                   {filledAvgPrice ? `$${filledAvgPrice}` : "-"}
                 </Text>
                 <Flex justify="center" flex={1}>
-                  <IconButton
-                    // flex={1}
-                    aria-label="See Details"
-                    size="xs"
-                    icon={
-                      <ChevronDownIcon
-                        boxSize="16px"
-                        transform="rotate(-90deg)"
-                      />
-                    }
-                  />
+                  <Link to="/">
+                    <IconButton
+                      aria-label="See Details"
+                      size="xs"
+                      icon={
+                        <ChevronDownIcon
+                          boxSize="16px"
+                          transform="rotate(-90deg)"
+                        />
+                      }
+                    />
+                  </Link>
                 </Flex>
-                {/* <Text flex={1}>{limitPrice}</Text>
-                <Text flex={1}>{stopPrice}</Text> */}
               </HStack>
             );
           })
