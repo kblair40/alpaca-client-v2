@@ -71,7 +71,7 @@ const orderSlice = createSlice({
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        console.log("\n\nUSER ORDERS DATA DATA:", data);
+        console.log("\n\nUSER ORDERS DATA:", data);
 
         if (data) {
           state.orders = data;

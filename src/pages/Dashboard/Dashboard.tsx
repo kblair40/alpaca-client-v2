@@ -3,6 +3,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 
 import useDispatch from "hooks/useDispatch";
 import { fetchOrders } from "store/orderSlice";
+import OrdersList from "components/OrdersList";
 
 type Props = {};
 
@@ -13,7 +14,11 @@ const Dashboard = (props: Props) => {
     dispatch(fetchOrders());
   }, [dispatch]);
 
-  return <div>Dashboard</div>;
+  return (
+    <div>
+      <OrdersList />
+    </div>
+  );
 };
 
 export default Dashboard;
