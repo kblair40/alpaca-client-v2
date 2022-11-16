@@ -88,14 +88,21 @@ const Order = () => {
         <Flex
           direction="column"
           align="center"
-          mt="4rem"
+          pt={{ base: "5rem", sm: "4rem", md: "3rem" }}
           px={{ base: "1rem", sm: "3rem" }}
         >
           <Flex align="end" lineHeight={1}>
-            <Text mr="1rem" fontSize="xl" fontWeight={600}>
+            <Text
+              mr="1rem"
+              fontSize={{ base: "lg", sm: "xl" }}
+              fontWeight={600}
+            >
               {symbol}
             </Text>
-            <Text textTransform="capitalize">{`${orderType} ${side}`}</Text>
+            <Text
+              fontSize={{ base: "sm", sm: "md" }}
+              textTransform="capitalize"
+            >{`${orderType} ${side}`}</Text>
           </Flex>
 
           <Box mt="1.5rem">
@@ -108,7 +115,7 @@ const Order = () => {
               <Stack spacing="2px">
                 <DataField
                   label="Time in Force"
-                  value={toTitleCase(timeInForce)}
+                  value={timeInForce.toUpperCase()}
                 />
                 <DataField label="Status" value={toTitleCase(status)} />
                 <DataField label="Qty Ordered" value={qty} />
