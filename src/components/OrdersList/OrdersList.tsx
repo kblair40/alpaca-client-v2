@@ -15,6 +15,13 @@ import useSelector from "hooks/useSelector";
 
 type Props = {};
 
+const orderTypes: { [key: string]: string } = {
+  market: "Market",
+  limit: "Limit",
+  stop: "Stop",
+  stop_limit: "Stop Limit",
+};
+
 const OrdersList = (props: Props) => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -39,15 +46,17 @@ const OrdersList = (props: Props) => {
           px="4px"
           textAlign="center"
         >
-          <Text>Side</Text>
-          <Text>Symbol</Text>
-          <Text>Created</Text>
-          <Text>Filled</Text>
-          <Text>Ordered Qty</Text>
-          <Text>Filled Qty</Text>
-          <Text>Avg Filled Price</Text>
-          <Text>Limit Price</Text>
-          <Text>Stop Price</Text>
+          <Text flex={1}>Side</Text>
+          <Text flex={1}>Symbol</Text>
+          <Text flex={1}>Type</Text>
+
+          <Text flex={1}>Created</Text>
+          {/* <Text flex={1}>Filled</Text> */}
+          <Text flex={1}>Ordered Qty</Text>
+          {/* <Text flex={1}>Filled Qty</Text> */}
+          <Text flex={1}>Avg Filled Price</Text>
+          {/* <Text flex={1}>Limit Price</Text>
+          <Text flex={1}>Stop Price</Text> */}
           {/* <Text></Text> */}
         </HStack>
         {status === "loading" ? (
@@ -56,13 +65,13 @@ const OrdersList = (props: Props) => {
           </Center>
         ) : status === "completed" && orders && orders.length ? (
           orders.map((order: IOrder, i) => {
-            let submittedDate;
-            if (order.submitted_at) {
-              submittedDate = new Date(order.submitted_at);
-            }
+            // let submittedDate;
+            // if (order.submitted_at) {
+            //   submittedDate = new Date(order.submitted_at);
+            // }
+
             const orderId = order.id;
             const clientOrderId = order.client_order_id;
-
             const side = order.side;
             const symbol = order.symbol;
             const assetId = order.asset_id;
@@ -97,16 +106,20 @@ const OrdersList = (props: Props) => {
                 key={i}
                 w="100%"
                 border=".1px solid #aaa"
+                textAlign="center"
               >
-                <Text textTransform="capitalize">{side}</Text>
-                <Text>{symbol}</Text>
-                <Text>{dayjs(createdAt).format("MM/YY")}</Text>
-                <Text>{filledAt ? dayjs(filledAt).format("MM/YY") : "-"}</Text>
-                <Text>{qty}</Text>
-                <Text>{filledQty}</Text>
-                <Text>${filledAvgPrice}</Text>
-                <Text>{limitPrice}</Text>
-                <Text>{stopPrice}</Text>
+                <Text flex={1} textTransform="capitalize">
+                  {side}
+                </Text>
+                <Text flex={1}>{symbol}</Text>
+                <Text flex={1} textTransform="capitalize">
+                  {orderTypes[orderType]}
+                </Text>
+                <Text flex={1}>{dayjs(createdAt).format("MM/YY")}</Text>
+                <Text flex={1}>{qty}</Text>
+                <Text flex={1}>${filledAvgPrice}</Text>
+                {/* <Text flex={1}>{limitPrice}</Text>
+                <Text flex={1}>{stopPrice}</Text> */}
               </HStack>
             );
           })
