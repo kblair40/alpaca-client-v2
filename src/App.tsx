@@ -13,6 +13,7 @@ import Navbar from "components/Navbar";
 const Admin = lazy(() => import("pages/Admin"));
 const Portfolio = lazy(() => import("pages/Portfolio"));
 const Dashboard = lazy(() => import("pages/Dashboard"));
+const Order = lazy(() => import("pages/Order"));
 
 function App() {
   const mainBg = useColorModeValue("#fff", "gray.900");
@@ -52,6 +53,14 @@ function App() {
             element={
               <Suspense fallback={<Loading />}>
                 <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/order/:orderid"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Order />
               </Suspense>
             }
           />

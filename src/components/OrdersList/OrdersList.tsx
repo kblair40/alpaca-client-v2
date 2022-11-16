@@ -128,8 +128,9 @@ const OrdersList = (props: Props) => {
                 <Text display={{ base: "none", md: "inline" }} flex={1}>
                   {filledAvgPrice ? `$${filledAvgPrice}` : "-"}
                 </Text>
+
                 <Flex justify="center" flex={1}>
-                  <Link to="/">
+                  <Link to={`/order/${orderId}`}>
                     <IconButton
                       aria-label="See Details"
                       size="xs"

@@ -7,6 +7,7 @@ import { alpaca } from "api";
 const Order = () => {
   const [orderData, setOrderData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
   const { orderId } = useParams();
 
   useEffect(() => {
