@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+import { type Position } from "utils/types/position";
 import { alpaca } from "api";
 
 export const fetchPositions = createAsyncThunk(
@@ -24,7 +25,7 @@ export const fetchPositions = createAsyncThunk(
 );
 
 type SliceState = {
-  data: any;
+  data: null | Position[];
   status: null | "loading" | "completed" | "failed";
   error: boolean;
   selectedTickerPosition: any;
@@ -56,7 +57,7 @@ const positionSlice = createSlice({
         // console.log("\n\nUSER DATA DATA:", data);
 
         if (data) {
-          state.data = data;
+          state.data = data as Position[];
         } else {
           state.error = true;
           state.status = "failed";

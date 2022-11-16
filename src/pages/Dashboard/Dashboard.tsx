@@ -4,7 +4,7 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import useDispatch from "hooks/useDispatch";
 import { fetchOrders } from "store/orderSlice";
 import OrdersList from "components/OrdersList";
-import Positions from "components/Positions";
+import PositionsList from "components/PositionsList";
 
 type Props = {};
 
@@ -24,7 +24,7 @@ const Dashboard = (props: Props) => {
 
       <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
         <TabPanel>
-          <Positions />
+          <PositionsList />
         </TabPanel>
         <TabPanel h="100%">
           <OrdersList />
