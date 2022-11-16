@@ -23,21 +23,24 @@ import {
   ORDER_TYPES,
   type OrderFormData,
 } from "./options";
+import { alpaca } from "api";
 
 type OrderType = "market" | "stop" | "limit" | "stop_limit";
 type TimeInForce = "day" | "gtc" | "ioc" | "fok";
 
 type Props = {
   closeModal: () => void;
+  onPlaceOrder: (isSuccessful?: boolean) => void;
 };
 
-const OrderForm = ({ closeModal }: Props) => {
+const OrderForm = ({ closeModal, onPlaceOrder }: Props) => {
   const [orderType, setOrderType] = useState<OrderType>("market");
   const [timeInForce, setTimeInForce] = useState<TimeInForce>("day");
   const [formData, setFormData] = useState<OrderFormData>(
     DEFAULT_VALUES["market"]
   );
   const [price, setPrice] = useState<null | number>(null);
+  const [loading, setLoading] = useState(false);
 
   const { priceData, tickerSymbol } = useSelector((st) => st.order);
 
@@ -55,6 +58,7 @@ const OrderForm = ({ closeModal }: Props) => {
   }, [orderType]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     const tradeParams: { [key: string]: string | number } = {
       symbol: tickerSymbol, // could use alpaca_id alternatively
       qty: formData.quantity, // might need parseInt to wrap
@@ -71,6 +75,7 @@ const OrderForm = ({ closeModal }: Props) => {
           tradeParams.limit_price = limitRef.current.value;
         } else {
           console.log("EARLY RETURN1 - MISSING INFORMATION");
+          setLoading(false);
           return;
         }
       }
@@ -79,10 +84,22 @@ const OrderForm = ({ closeModal }: Props) => {
           tradeParams.stop_price = stopRef.current.value;
         } else {
           console.log("EARLY RETURN2 - MISSING INFORMATION");
+          setLoading(false);
           return;
         }
       }
     }
+
+    try {
+      const tradeResponse = await alpaca.post("/order", { tradeParams });
+      console.log("\n\nTRADE RESPONSE:", tradeResponse, "\n\n");
+      onPlaceOrder(true);
+    } catch (e) {
+      console.log("FAILED TO COMPLETE TRADE:", e);
+      onPlaceOrder(false);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -195,6 +212,7 @@ const OrderForm = ({ closeModal }: Props) => {
         </Button>
         <Button
           isDisabled={formData.quantity === 0}
+          isLoading={loading}
           variant="solid-blue"
           onClick={handleSubmit}
         >
