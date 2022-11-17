@@ -96,7 +96,7 @@ const ClosePositionModal = ({
                   {isSale // @ts-ignore
                     ? `$${closePositionData.totalEstimatedProceeds.toFixed(2)}`
                     : // @ts-ignore
-                      `$${closePositionData.totalEstimatedCost.toFixed(2)}`}
+                      `$${closePositionData.totalEstimatedCost.toFixed(2)!}`}
                 </Text>
               </Flex>
             </ModalBody>

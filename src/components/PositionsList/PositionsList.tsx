@@ -43,9 +43,9 @@ const PositionsList = () => {
     let intGain: number | string = parseFloat(gain);
     intGain = parseFloat(intGain.toLocaleString("en-US"));
     if (intGain >= 0) {
-      return "$" + intGain.toFixed(2);
+      return intGain.toFixed(2);
     } else {
-      return `$(${intGain.toFixed(2)})`;
+      return `(${intGain.toFixed(2)})`;
     }
   };
   const handleClickManage = async (position: Position) => {
@@ -57,6 +57,10 @@ const PositionsList = () => {
     // console.log("ASSET RESPONSE:", assetResponse.data);
     // dispatch(chartActions.setTicker(assetResponse.data));
     dispatch(fetchTickerData({ symbol: position.symbol, timeframe: "1D" }));
+  };
+
+  const assetClassMap: { [key: string]: string } = {
+    us_equity: "Equity",
   };
 
   if (status === "loading") {
@@ -77,14 +81,34 @@ const PositionsList = () => {
         w="100%"
         textAlign="center"
         fontWeight="600"
-        fontSize="sm"
+        fontSize="xs"
         h="40px"
+        textDecoration="underline"
+        align="end"
+        mb="8px"
       >
-        <Text flex={0.5}>Symbol</Text>
+        <Text flex={0.75} textAlign="left">
+          Symbol
+        </Text>
         <Text flex={0.5}>Qty</Text>
-        <Text flex={1}>Avg. Purchase Price</Text>
-        <Text flex={0.5}>Side</Text>
-        <Text flex={1}>Unrealized Gain/(Loss)</Text>
+        <Text flex={0.5}>Asset</Text>
+        <Text display={{ base: "none", sm: "inline" }} flex={1}>
+          Avg. Entry Price
+        </Text>
+        <Text flex={1}>Cost</Text>
+        <Text flex={1}>Mkt Value</Text>
+        <Text flex={1} display={{ base: "none", md: "inline" }}>
+          Day Gain ($)
+        </Text>
+        <Text flex={1} display={{ base: "none", md: "inline" }}>
+          Day Gain (%)
+        </Text>
+        <Text display={{ base: "none", sm: "inline" }} flex={1}>
+          Gain ($)
+        </Text>
+        <Text display={{ base: "none", md: "inline" }} flex={0.75}>
+          Gain (%)
+        </Text>
         <Text flex={0.5}>Manage</Text>
       </HStack>
 
@@ -96,19 +120,39 @@ const PositionsList = () => {
                 key={i}
                 w="100%"
                 textAlign="center"
-                fontSize="sm"
-                fontWeight="500"
+                fontSize="xs"
+                fontWeight="400"
                 py="2px"
               >
-                <Text flex={0.5}>{pos.symbol}</Text>
+                <Text flex={0.75} textAlign="left">
+                  {pos.symbol}
+                </Text>
                 <Text flex={0.5}>{pos.qty}</Text>
+                <Text flex={0.5}>{assetClassMap[pos.asset_class]}</Text>
+                <Text display={{ base: "none", sm: "inline" }} flex={1}>
+                  {parseFloat(pos.avg_entry_price).toFixed(2)}
+                </Text>
                 <Text flex={1}>
-                  ${parseFloat(pos.avg_entry_price).toFixed(2)}
+                  {parseFloat(pos.cost_basis).toLocaleString("en-US")}
                 </Text>
-                <Text textTransform="capitalize" flex={0.5}>
-                  {pos.side}
+
+                <Text flex={1}>
+                  {parseFloat(
+                    parseFloat(pos.market_value).toFixed(2)
+                  ).toLocaleString("en-US")}
                 </Text>
-                <Text flex={1}>{unrealizedGain(pos.unrealized_pl)}</Text>
+                <Text display={{ base: "none", md: "inline" }} flex={1}>
+                  {unrealizedGain(pos.unrealized_intraday_pl)}
+                </Text>
+                <Text display={{ base: "none", md: "inline" }} flex={1}>
+                  {unrealizedGain(pos.unrealized_intraday_plpc)}%
+                </Text>
+                <Text display={{ base: "none", sm: "inline" }} flex={1}>
+                  {unrealizedGain(pos.unrealized_pl)}
+                </Text>
+                <Text display={{ base: "none", md: "inline" }} flex={0.75}>
+                  {unrealizedGain(pos.unrealized_plpc)}%
+                </Text>
 
                 <Flex flex={0.5} justify="center">
                   <IconButton
@@ -116,11 +160,11 @@ const PositionsList = () => {
                     aria-label="Manage position"
                     icon={
                       <ChevronDownIcon
-                        boxSize="16px"
+                        boxSize="12px"
                         transform="rotate(-90deg)"
                       />
                     }
-                    size="xs"
+                    boxSize="20px"
                   />
                 </Flex>
               </HStack>
