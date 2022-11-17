@@ -13,6 +13,7 @@ import {
   Wrap,
   WrapItem,
   HStack,
+  Button,
 } from "@chakra-ui/react";
 
 import { type Quote } from "utils/types/quote";
@@ -83,44 +84,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
               </Flex>
             </DrawerHeader>
 
-            <DrawerBody>
-              <Wrap spacingX="1.5rem" spacingY=".5rem">
-                <DataPoint
-                  label="Cost Basis"
-                  value={"$" + formatNumber(positionData.cost_basis)}
-                />
-                <DataPoint
-                  label="Mkt Value"
-                  value={"$" + formatNumber(positionData.market_value)}
-                />
-                <DataPoint
-                  label="Avg Entry Price"
-                  value={"$" + formatNumber(positionData.avg_entry_price)}
-                />
-                <DataPoint label="Qty" value={positionData.qty} />
-                <DataPoint label="Side" value={positionData.side} />
-                <DataPoint
-                  label="Unrealized P/(L)"
-                  value={"$" + formatNumber(positionData.unrealized_pl)}
-                />
-                <DataPoint
-                  label="Unrealized P/(L)%"
-                  value={formatNumber(positionData.unrealized_plpc) + "%"}
-                />
-                <DataPoint
-                  label="Unrealized Intraday P/(L)"
-                  value={
-                    "$" + formatNumber(positionData.unrealized_intraday_pl)
-                  }
-                />
-                <DataPoint
-                  label="Unrealized Intraday P/(L)%"
-                  value={
-                    formatNumber(positionData.unrealized_intraday_plpc) + "%"
-                  }
-                />
-              </Wrap>
-            </DrawerBody>
+            <DrawerBody></DrawerBody>
           </React.Fragment>
         ) : (
           <Text
@@ -133,7 +97,12 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
         )}
 
         <DrawerFooter>
+          {/* <Button>Sell</Button>
+          <Button>Buy</Button> */}
           <BuySellButtons />
+          <Button size="sm" h="26px" ml="1rem">
+            Close Position
+          </Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
@@ -143,23 +112,13 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 export default PositionDrawer;
 
 const TickerQuote = ({ quote, trade }: { quote: Quote; trade: any }) => {
-  // bid, ask, last, Chg ($),
+  // bid, ask, last, Chg ($)
   if (quote.ap === 0 || quote.bp === 0) {
     return <NoQuote />;
   }
 
   return (
-    <Wrap
-      flex={1}
-      spacingX="1rem"
-      spacingY="4px"
-      mx="1.5rem"
-      fontSize="sm"
-      // justify="end"
-      border="1px solid #aaa"
-      // py="4"
-      // shouldWrapChildren
-    >
+    <Wrap flex={1} spacingX="1rem" spacingY="4px" mx="1.5rem" fontSize="sm">
       <WrapItem>
         <Flex>
           <Text fontWeight="400">Bid:</Text>
@@ -222,3 +181,42 @@ const DataPoint = ({ label, value }: { label: string; value: string }) => {
     </WrapItem>
   );
 };
+
+{
+  /* <Wrap spacingX="1.5rem" spacingY=".5rem">
+                <DataPoint
+                  label="Cost Basis"
+                  value={"$" + formatNumber(positionData.cost_basis)}
+                />
+                <DataPoint
+                  label="Mkt Value"
+                  value={"$" + formatNumber(positionData.market_value)}
+                />
+                <DataPoint
+                  label="Avg Entry Price"
+                  value={"$" + formatNumber(positionData.avg_entry_price)}
+                />
+                <DataPoint label="Qty" value={positionData.qty} />
+                <DataPoint label="Side" value={positionData.side} />
+                <DataPoint
+                  label="Unrealized P/(L)"
+                  value={"$" + formatNumber(positionData.unrealized_pl)}
+                />
+                <DataPoint
+                  label="Unrealized P/(L)%"
+                  value={formatNumber(positionData.unrealized_plpc) + "%"}
+                />
+                <DataPoint
+                  label="Unrealized Intraday P/(L)"
+                  value={
+                    "$" + formatNumber(positionData.unrealized_intraday_pl)
+                  }
+                />
+                <DataPoint
+                  label="Unrealized Intraday P/(L)%"
+                  value={
+                    formatNumber(positionData.unrealized_intraday_plpc) + "%"
+                  }
+                />
+              </Wrap>  */
+}
