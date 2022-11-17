@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { type Position } from "utils/types/position";
 import { alpaca } from "api";
-import alpacaApi from "api/alpaca";
+// import alpacaApi from "api/alpaca";
 
 export const fetchPositions = createAsyncThunk(
   "position/fetchPositions",
@@ -36,7 +36,7 @@ export const fetchQuote = createAsyncThunk(
       try {
         console.log("sending");
         // const response = await alpaca.get(`/price/${symbol}/latest`);
-        const response = await alpacaApi.get(`/stocks/${symbol}/snapshot`);
+        const response = await alpaca.get(`/snapshot/${symbol}`);
         console.log("POSITION SNAPSHOT RESPONSE:", response.data);
         if (response && response.data) {
           res = response.data;
@@ -56,7 +56,7 @@ type SliceState = {
   quoteStatus: null | "loading" | "completed" | "failed";
   error: boolean;
   selectedTickerPosition: any;
-  selectedTickerData: any;
+  selectedTickerSnapshot: any;
 };
 
 const positionSlice = createSlice({
@@ -66,7 +66,7 @@ const positionSlice = createSlice({
     status: null,
     error: false,
     selectedTickerPosition: null,
-    selectedTickerData: null,
+    selectedTickerSnapshot: null,
   } as SliceState,
   reducers: {
     setSelectedPosition(state, action) {
@@ -74,6 +74,7 @@ const positionSlice = createSlice({
     },
     removeSelectedPosition(state) {
       state.selectedTickerPosition = null;
+      state.selectedTickerSnapshot = null;
     },
   },
 
@@ -107,7 +108,7 @@ const positionSlice = createSlice({
         console.log("\n\nSELECTED TICKER DATA:", data);
 
         if (data) {
-          state.selectedTickerData = data;
+          state.selectedTickerSnapshot = data;
         }
       })
       .addCase(fetchQuote.rejected, (state) => {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Drawer,
   DrawerBody,
@@ -25,6 +25,8 @@ type Props = {
 };
 
 const PositionDrawer = ({ isOpen, onClose }: Props) => {
+  const [snapshot, setSnapshot] = useState<any>(null);
+
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
@@ -33,8 +35,20 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   const {
     selectedTickerPosition: positionData,
     quoteStatus,
-    selectedTickerData,
+    selectedTickerSnapshot,
   } = useSelector((st) => st.position);
+
+  useEffect(() => {
+    if (selectedTickerSnapshot) {
+      setSnapshot(selectedTickerSnapshot);
+    }
+  }, [selectedTickerSnapshot]);
+
+  useEffect(() => {
+    if (quoteStatus !== "completed" && snapshot) {
+      setSnapshot(null);
+    }
+  }, [quoteStatus]);
 
   const formatNumber = (num: string) => {
     let formattedNum = parseFloat(num).toLocaleString("en-US");
@@ -50,17 +64,22 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
           <React.Fragment>
             <DrawerCloseButton onClick={onClose} />
             <DrawerHeader>
-              <Flex lineHeight={1} align="end">
-                <Text mr=".5rem" fontWeight="600">
-                  {positionData.symbol}
-                </Text>
-                <Text variant="secondary" fontSize="md" fontWeight="500">
-                  {positionData.exchange}
-                </Text>
+              <Flex lineHeight={1} align="end" flexWrap="wrap">
+                <Flex align="end" flexWrap="wrap">
+                  <Text mr=".5rem" fontWeight="600">
+                    {positionData.symbol}
+                  </Text>
+                  <Text variant="secondary" fontSize="md" fontWeight="500">
+                    {positionData.exchange}
+                  </Text>
+                </Flex>
 
-                {/* {selectedTickerData && quoteStatus === "completed" ? (
-                  <TickerQuote quote={selectedTickerData.quote} />
-                ) : null} */}
+                {snapshot && quoteStatus === "completed" ? (
+                  <TickerQuote
+                    quote={snapshot.latestQuote}
+                    trade={snapshot.latestTrade}
+                  />
+                ) : null}
               </Flex>
             </DrawerHeader>
 
@@ -123,34 +142,51 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
 export default PositionDrawer;
 
-const TickerQuote = ({ quote }: { quote: Quote }) => {
+const TickerQuote = ({ quote, trade }: { quote: Quote; trade: any }) => {
   // bid, ask, last, Chg ($),
   if (quote.ap === 0 || quote.bp === 0) {
     return <NoQuote />;
   }
 
   return (
-    <HStack
-      spacing="1rem"
-      ml="2rem"
-      fontSize="sm"
-      // py="4px"
+    <Wrap
       flex={1}
-      // border="1px solid #aaa"
+      spacingX="1rem"
+      spacingY="4px"
+      mx="1.5rem"
+      fontSize="sm"
+      // justify="end"
+      border="1px solid #aaa"
+      // py="4"
+      // shouldWrapChildren
     >
-      <Flex>
-        <Text fontWeight="400">Bid:</Text>
-        <Text ml="3px" fontWeight="700">
-          ${quote.bp}
-        </Text>
-      </Flex>
-      <Flex>
-        <Text fontWeight="400">Ask:</Text>
-        <Text ml="3px" fontWeight="700">
-          ${quote.ap}
-        </Text>
-      </Flex>
-    </HStack>
+      <WrapItem>
+        <Flex>
+          <Text fontWeight="400">Bid:</Text>
+          <Text ml="4px" fontWeight="700">
+            ${quote.bp.toFixed(2)}
+          </Text>
+        </Flex>
+      </WrapItem>
+
+      <WrapItem>
+        <Flex>
+          <Text fontWeight="400">Ask:</Text>
+          <Text ml="4px" fontWeight="700">
+            ${quote.ap.toFixed(2)}
+          </Text>
+        </Flex>
+      </WrapItem>
+
+      <WrapItem>
+        <Flex>
+          <Text fontWeight="400">Latest Trade:</Text>
+          <Text ml="4px" fontWeight="700">
+            ${trade.p.toFixed(2)}
+          </Text>
+        </Flex>
+      </WrapItem>
+    </Wrap>
   );
 };
 
