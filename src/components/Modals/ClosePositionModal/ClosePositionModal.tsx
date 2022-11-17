@@ -102,7 +102,12 @@ const ClosePositionModal = ({
             </ModalBody>
 
             <ModalFooter display="flex">
-              <Button variant="solid-blue" flex={1} mr="1.5rem">
+              <Button
+                onClick={onClose}
+                variant="solid-blue"
+                flex={1}
+                mr="1.5rem"
+              >
                 Cancel
               </Button>
               <Button
