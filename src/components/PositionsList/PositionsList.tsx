@@ -10,11 +10,11 @@ import {
   IconButton,
 } from "@chakra-ui/react";
 
-// import { type Position } from "utils/types/position";
+import { type Position } from "utils/types/position";
 import { ChevronDownIcon } from "utils/icons";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
-import { fetchPositions } from "store/positionSlice";
+import { fetchPositions, positionActions } from "store/positionSlice";
 import PositionDrawer from "./PositionDrawer";
 
 const PositionsList = () => {
@@ -27,6 +27,12 @@ const PositionsList = () => {
     dispatch(fetchPositions());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (!drawerOpen) {
+      dispatch(positionActions.removeSelectedPosition());
+    }
+  }, [drawerOpen, dispatch]);
+
   const unrealizedGain = (gain: string) => {
     let intGain: number | string = parseFloat(gain);
     intGain = parseFloat(intGain.toLocaleString("en-US"));
@@ -36,8 +42,9 @@ const PositionsList = () => {
       return `$(${intGain.toFixed(2)})`;
     }
   };
-  const handleClickManage = (symbol: string) => {
-    // console
+  const handleClickManage = (position: Position) => {
+    dispatch(positionActions.setSelectedPosition(position));
+    setDrawerOpen(true);
   };
 
   if (status === "loading") {
@@ -92,7 +99,7 @@ const PositionsList = () => {
 
                 <Flex flex={0.5} justify="center">
                   <IconButton
-                    onClick={() => handleClickManage(pos.symbol)}
+                    onClick={() => handleClickManage(pos)}
                     aria-label="Manage position"
                     icon={
                       <ChevronDownIcon
