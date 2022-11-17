@@ -48,8 +48,10 @@ export const fetchQuote = createAsyncThunk(
 type SliceState = {
   data: null | Position[];
   status: null | "loading" | "completed" | "failed";
+  quoteStatus: null | "loading" | "completed" | "failed";
   error: boolean;
   selectedTickerPosition: any;
+  selectedTickerData: any;
 };
 
 const positionSlice = createSlice({
@@ -59,6 +61,7 @@ const positionSlice = createSlice({
     status: null,
     error: false,
     selectedTickerPosition: null,
+    selectedTickerData: null,
   } as SliceState,
   reducers: {
     setSelectedPosition(state, action) {
@@ -91,22 +94,19 @@ const positionSlice = createSlice({
         state.error = true;
       })
       .addCase(fetchQuote.pending, (state) => {
-        state.status = "loading";
+        state.quoteStatus = "loading";
       })
       .addCase(fetchQuote.fulfilled, (state, action) => {
-        state.status = "completed";
+        state.quoteStatus = "completed";
         const data = action.payload;
         console.log("\n\nSELECTED TICKER DATA:", data);
 
-        // if (data) {
-        //   state.data = data as Position[];
-        // } else {
-        //   state.error = true;
-        //   state.status = "failed";
-        // }
+        if (data) {
+          state.selectedTickerData = data;
+        }
       })
       .addCase(fetchQuote.rejected, (state) => {
-        state.status = "failed";
+        state.quoteStatus = "failed";
         state.error = true;
       });
   },
