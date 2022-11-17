@@ -15,6 +15,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
+import { type ClosePositionData } from "utils/types/closePosition";
 import { type Quote } from "utils/types/quote";
 import BuySellButtons from "components/Chart/BuySellButtons";
 import ClosePositionModal from "components/Modals/ClosePositionModal";
@@ -24,23 +25,6 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
 };
-
-interface ClosePosition {
-  symbol: string;
-  pricePerShare: number;
-}
-
-interface CloseLong extends ClosePosition {
-  sharesToSell: number;
-  totalEstimatedProceeds: number;
-}
-
-interface CloseShort extends ClosePosition {
-  sharesToBuy: number;
-  totalEstimatedCost: number;
-}
-
-type ClosePositionData = CloseShort | CloseLong;
 
 const PositionDrawer = ({ isOpen, onClose }: Props) => {
   const [snapshot, setSnapshot] = useState<any>(null);
@@ -59,7 +43,31 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
     selectedTickerSnapshot,
   } = useSelector((st) => st.position);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (selectedTickerSnapshot && positionData) {
+      const qty = parseInt(positionData.qty);
+      const { minuteBar } = selectedTickerSnapshot;
+      // let closePositionData: { [key: string]: string | number } = {
+      let closePositionData = {
+        symbol: positionData.symbol,
+        pricePerShare: parseFloat(
+          parseFloat(positionData.current_price).toFixed(2)
+        ),
+        [`${qty >= 0 ? "sharesToSell" : "sharesToBuy"}`]: qty,
+        [`${qty >= 0 ? "totalEstimatedProceeds" : "totalEstimatedCost"}`]:
+          qty * parseFloat(parseFloat(positionData.current_price).toFixed(2)),
+      };
+
+      // const qty = parseInt(positionData.qty);
+      // if (qty > 0) {
+      //   closePositionData["sharesToSell"] = qty;
+      // } else {
+      //   closePositionData["sharesToBuy"] = qty;
+      // }
+
+      setClosePositionData(closePositionData as ClosePositionData);
+    }
+  }, [selectedTickerSnapshot, positionData]);
 
   useEffect(() => {
     if (selectedTickerSnapshot) {
@@ -70,12 +78,21 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   useEffect(() => {
     if (quoteStatus !== "completed" && snapshot) {
       setSnapshot(null);
+      setClosePositionData(null);
     }
   }, [quoteStatus]);
 
   const formatNumber = (num: string) => {
     let formattedNum = parseFloat(num).toLocaleString("en-US");
     return parseFloat(formattedNum).toFixed(2);
+  };
+
+  const handleClickClosePosition = () => {
+    if (closePositionData) {
+      setClosePositionModalOpen(true);
+    } else {
+      console.error("NO DATA - NOT OPENING CLOSE POSITION MODAL");
+    }
   };
 
   return (
@@ -120,10 +137,13 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
           )}
 
           <DrawerFooter>
-            {/* <Button>Sell</Button>
-          <Button>Buy</Button> */}
             <BuySellButtons />
-            <Button size="sm" h="26px" ml="1rem">
+            <Button
+              size="sm"
+              h="26px"
+              ml="1rem"
+              onClick={handleClickClosePosition}
+            >
               Close Position
             </Button>
           </DrawerFooter>
@@ -134,6 +154,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
         <ClosePositionModal
           isOpen={closePositionModalOpen}
           onClose={() => setClosePositionModalOpen(false)}
+          closePositionData={closePositionData}
         />
       )}
     </React.Fragment>
