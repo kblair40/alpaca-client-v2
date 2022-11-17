@@ -43,6 +43,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
     quoteStatus,
     selectedTickerSnapshot,
   } = useSelector((st) => st.position);
+  const calendarData = useSelector((st) => st.calendar);
 
   useEffect(() => {
     if (selectedTickerSnapshot && positionData) {
@@ -103,6 +104,12 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
     onClose();
   };
 
+  let marketIsOpen = false;
+  if (calendarData && calendarData.data) {
+    const { clock } = calendarData.data;
+    if (clock.is_open) marketIsOpen = true;
+  }
+
   return (
     <React.Fragment>
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
@@ -141,7 +148,11 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                         <Text fontSize="xl" fontWeight="600" textAlign="center">
                           Sorry, a quote could not be retrieved.
                         </Text>
-                        <Text textAlign="center">Try again later</Text>
+                        <Text textAlign="center">
+                          {!marketIsOpen
+                            ? "Please try again when the market is open"
+                            : ""}
+                        </Text>
                       </Box>
                     ) : null}
                   </Box>
