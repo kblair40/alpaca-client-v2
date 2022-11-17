@@ -9,7 +9,7 @@ export const fetchOrders = createAsyncThunk("order/fetchOrders", async () => {
   if (isAuthenticated) {
     try {
       const response = await alpaca.get("/order");
-      console.log("USER ORDERS:", response.data);
+      // console.log("USER ORDERS:", response.data);
 
       if (response && response.data) {
         return response.data;
@@ -71,7 +71,7 @@ const orderSlice = createSlice({
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        console.log("\n\nUSER ORDERS DATA:", data);
+        // console.log("\n\nUSER ORDERS DATA:", data);
 
         if (data) {
           state.orders = data;

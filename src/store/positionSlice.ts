@@ -12,7 +12,7 @@ export const fetchPositions = createAsyncThunk(
     if (isAuthenticated) {
       try {
         const response = await alpaca.get(`/position`);
-        console.log("POSITIONS RESPONSE:", response.data);
+        // console.log("POSITIONS RESPONSE:", response.data);
         if (response && response.data) {
           res = response.data;
         }
@@ -37,7 +37,7 @@ export const fetchQuote = createAsyncThunk(
         console.log("sending");
         // const response = await alpaca.get(`/price/${symbol}/latest`);
         const response = await alpaca.get(`/snapshot/${symbol}`);
-        console.log("POSITION SNAPSHOT RESPONSE:", response.data);
+        // console.log("POSITION SNAPSHOT RESPONSE:", response.data);
         if (response && response.data) {
           res = response.data;
         }

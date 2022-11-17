@@ -17,6 +17,7 @@ import {
 
 import { type Quote } from "utils/types/quote";
 import BuySellButtons from "components/Chart/BuySellButtons";
+import ClosePositionModal from "components/Modals/ClosePositionModal";
 import useSelector from "hooks/useSelector";
 
 type Props = {
@@ -24,8 +25,28 @@ type Props = {
   onClose: () => void;
 };
 
+interface ClosePosition {
+  symbol: string;
+  pricePerShare: number;
+}
+
+interface CloseLong extends ClosePosition {
+  sharesToSell: number;
+  totalEstimatedProceeds: number;
+}
+
+interface CloseShort extends ClosePosition {
+  sharesToBuy: number;
+  totalEstimatedCost: number;
+}
+
+type ClosePositionData = CloseShort | CloseLong;
+
 const PositionDrawer = ({ isOpen, onClose }: Props) => {
   const [snapshot, setSnapshot] = useState<any>(null);
+  const [closePositionModalOpen, setClosePositionModalOpen] = useState(false);
+  const [closePositionData, setClosePositionData] =
+    useState<null | ClosePositionData>(null);
 
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -37,6 +58,8 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
     quoteStatus,
     selectedTickerSnapshot,
   } = useSelector((st) => st.position);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (selectedTickerSnapshot) {
@@ -56,55 +79,64 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   };
 
   return (
-    <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
-      <DrawerOverlay />
+    <React.Fragment>
+      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+        <DrawerOverlay />
 
-      <DrawerContent bg={bg}>
-        {positionData ? (
-          <React.Fragment>
-            <DrawerCloseButton onClick={onClose} />
-            <DrawerHeader>
-              <Flex lineHeight={1} align="end" flexWrap="wrap">
-                <Flex align="end" flexWrap="wrap">
-                  <Text mr=".5rem" fontWeight="600">
-                    {positionData.symbol}
-                  </Text>
-                  <Text variant="secondary" fontSize="md" fontWeight="500">
-                    {positionData.exchange}
-                  </Text>
+        <DrawerContent bg={bg}>
+          {positionData ? (
+            <React.Fragment>
+              <DrawerCloseButton onClick={onClose} />
+              <DrawerHeader>
+                <Flex lineHeight={1} align="end" flexWrap="wrap">
+                  <Flex align="end" flexWrap="wrap">
+                    <Text mr=".5rem" fontWeight="600">
+                      {positionData.symbol}
+                    </Text>
+                    <Text variant="secondary" fontSize="md" fontWeight="500">
+                      {positionData.exchange}
+                    </Text>
+                  </Flex>
+
+                  {snapshot && quoteStatus === "completed" ? (
+                    <TickerQuote
+                      quote={snapshot.latestQuote}
+                      trade={snapshot.latestTrade}
+                    />
+                  ) : null}
                 </Flex>
+              </DrawerHeader>
 
-                {snapshot && quoteStatus === "completed" ? (
-                  <TickerQuote
-                    quote={snapshot.latestQuote}
-                    trade={snapshot.latestTrade}
-                  />
-                ) : null}
-              </Flex>
-            </DrawerHeader>
+              {/* <DrawerBody></DrawerBody> */}
+            </React.Fragment>
+          ) : (
+            <Text
+              textAlign="center"
+              fontWeight="600"
+              color={isDark ? "red.300" : "red.600"}
+            >
+              Could not retrieve position positionData
+            </Text>
+          )}
 
-            <DrawerBody></DrawerBody>
-          </React.Fragment>
-        ) : (
-          <Text
-            textAlign="center"
-            fontWeight="600"
-            color={isDark ? "red.300" : "red.600"}
-          >
-            Could not retrieve position positionData
-          </Text>
-        )}
-
-        <DrawerFooter>
-          {/* <Button>Sell</Button>
+          <DrawerFooter>
+            {/* <Button>Sell</Button>
           <Button>Buy</Button> */}
-          <BuySellButtons />
-          <Button size="sm" h="26px" ml="1rem">
-            Close Position
-          </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+            <BuySellButtons />
+            <Button size="sm" h="26px" ml="1rem">
+              Close Position
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
+
+      {closePositionModalOpen && (
+        <ClosePositionModal
+          isOpen={closePositionModalOpen}
+          onClose={() => setClosePositionModalOpen(false)}
+        />
+      )}
+    </React.Fragment>
   );
 };
 

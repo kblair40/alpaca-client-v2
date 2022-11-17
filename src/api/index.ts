@@ -39,7 +39,7 @@ alpaca.interceptors.request.use(
     }
 
     // TESTING
-    console.log("\n\nCONFIG:", config, "\n\n");
+    // console.log("\n\nCONFIG:", config, "\n\n");
 
     return config;
   },
