@@ -12,9 +12,9 @@ import {
   Text,
   Wrap,
   WrapItem,
-  Button,
 } from "@chakra-ui/react";
 
+import BuySellButtons from "components/Chart/BuySellButtons";
 import useSelector from "hooks/useSelector";
 
 type Props = {
@@ -43,9 +43,9 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
         {data ? (
           <React.Fragment>
             <DrawerCloseButton onClick={onClose} />
-            <DrawerHeader pt="1rem" pb={0}>
+            <DrawerHeader>
               <Flex lineHeight={1} align="end">
-                <Text mr=".5rem" fontSize="xl" fontWeight="600">
+                <Text mr=".5rem" fontWeight="600">
                   {data.symbol}
                 </Text>
                 <Text variant="secondary" fontSize="md" fontWeight="500">
@@ -75,15 +75,15 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                   value={"$" + formatNumber(data.unrealized_pl)}
                 />
                 <DataPoint
-                  label="Unrealized  P/(L)%"
+                  label="Unrealized P/(L)%"
                   value={formatNumber(data.unrealized_plpc) + "%"}
                 />
                 <DataPoint
-                  label="Unrealized Intraday  P/(L)"
+                  label="Unrealized Intraday P/(L)"
                   value={"$" + formatNumber(data.unrealized_intraday_pl)}
                 />
                 <DataPoint
-                  label="Unrealized Intraday  P/(L)%"
+                  label="Unrealized Intraday P/(L)%"
                   value={formatNumber(data.unrealized_intraday_plpc) + "%"}
                 />
               </Wrap>
@@ -100,10 +100,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
         )}
 
         <DrawerFooter>
-          <Button size="sm" mr="1rem">
-            Close
-          </Button>
-          <Button size="sm">Other</Button>
+          <BuySellButtons />
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
