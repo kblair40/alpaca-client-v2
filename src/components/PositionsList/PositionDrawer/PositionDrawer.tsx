@@ -15,7 +15,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import { type IAsset } from "utils/types/asset";
 import { type Quote } from "utils/types/quote";
 import BuySellButtons from "components/Chart/BuySellButtons";
 import useSelector from "hooks/useSelector";

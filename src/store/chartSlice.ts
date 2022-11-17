@@ -68,10 +68,12 @@ const chartSlice = createSlice({
       state.timeframe = action.payload;
     },
     clearChart(state) {
-      state.data = [];
+      state.data = null;
       state.ticker = null;
       state.status = null;
       state.error = false;
+      state.asset = null;
+      state.timeframe = "1D";
     },
   },
 

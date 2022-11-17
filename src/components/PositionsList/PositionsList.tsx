@@ -15,7 +15,6 @@ import { ChevronDownIcon } from "utils/icons";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import { chartActions, fetchTickerData } from "store/chartSlice";
-import alpacaApi from "api/alpaca";
 import {
   fetchPositions,
   fetchQuote,
@@ -36,6 +35,7 @@ const PositionsList = () => {
   useEffect(() => {
     if (!drawerOpen) {
       dispatch(positionActions.removeSelectedPosition());
+      dispatch(chartActions.clearChart());
     }
   }, [drawerOpen, dispatch]);
 
