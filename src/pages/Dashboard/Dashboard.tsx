@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 
 import useDispatch from "hooks/useDispatch";
+import { fetchCalendarData } from "store/calendarSlice";
 import { fetchOrders } from "store/orderSlice";
 import OrdersList from "components/OrdersList";
 import PositionsList from "components/PositionsList";
@@ -14,6 +15,7 @@ const Dashboard = (props: Props) => {
 
   useEffect(() => {
     dispatch(fetchOrders());
+    dispatch(fetchCalendarData());
   }, [dispatch]);
 
   return (

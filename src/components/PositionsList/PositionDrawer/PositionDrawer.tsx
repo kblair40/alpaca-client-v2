@@ -13,6 +13,7 @@ import {
   Wrap,
   WrapItem,
   Button,
+  Box,
 } from "@chakra-ui/react";
 
 import { type ClosePositionData } from "utils/types/closePosition";
@@ -131,7 +132,21 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                 </Flex>
               </DrawerHeader>
 
-              {/* <DrawerBody></DrawerBody> */}
+              <DrawerBody p={0}>
+                {snapshot && quoteStatus === "completed" ? (
+                  <Box w="100%">
+                    {snapshot.latestQuote.ap === 0 ||
+                    snapshot.latestQuote.bp === 0 ? (
+                      <Box w="100%">
+                        <Text fontSize="xl" fontWeight="600" textAlign="center">
+                          Sorry, a quote could not be retrieved.
+                        </Text>
+                        <Text textAlign="center">Try again later</Text>
+                      </Box>
+                    ) : null}
+                  </Box>
+                ) : null}
+              </DrawerBody>
             </React.Fragment>
           ) : (
             <Text
@@ -174,7 +189,7 @@ export default PositionDrawer;
 const TickerQuote = ({ quote, trade }: { quote: Quote; trade: any }) => {
   // bid, ask, last, Chg ($)
   if (quote.ap === 0 || quote.bp === 0) {
-    return <NoQuote />;
+    return null;
   }
 
   return (
@@ -206,14 +221,6 @@ const TickerQuote = ({ quote, trade }: { quote: Quote; trade: any }) => {
         </Flex>
       </WrapItem>
     </Wrap>
-  );
-};
-
-const NoQuote = () => {
-  return (
-    <Text textAlign="center" fontWeight="600" fontSize="lg">
-      No Quote Available
-    </Text>
   );
 };
 
