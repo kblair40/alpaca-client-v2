@@ -76,6 +76,22 @@ const positionSlice = createSlice({
       state.selectedTickerPosition = null;
       state.selectedTickerSnapshot = null;
     },
+    removePosition(state, action) {
+      const symbol = action.payload;
+      if (state.data === null) return;
+
+      const positions = [...state.data];
+
+      const positionIdxToDelete = positions.findIndex((pos) => {
+        return pos.symbol.toUpperCase() === symbol.toUpperCase();
+      });
+
+      if (positionIdxToDelete !== -1) {
+        positions.splice(positionIdxToDelete, 1);
+      }
+
+      state.data = positions;
+    },
   },
 
   extraReducers(builder) {

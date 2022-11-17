@@ -95,6 +95,13 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
     }
   };
 
+  const handleDeletePosition = () => {
+    setClosePositionModalOpen(false);
+    setSnapshot(null);
+    setClosePositionData(null);
+    onClose();
+  };
+
   return (
     <React.Fragment>
       <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
@@ -155,6 +162,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
           isOpen={closePositionModalOpen}
           onClose={() => setClosePositionModalOpen(false)}
           closePositionData={closePositionData}
+          onDeletePosition={handleDeletePosition}
         />
       )}
     </React.Fragment>
