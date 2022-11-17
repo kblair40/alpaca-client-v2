@@ -14,6 +14,8 @@ import {
   WrapItem,
   Button,
   Box,
+  Center,
+  Spinner,
 } from "@chakra-ui/react";
 
 import { type ClosePositionData } from "utils/types/closePosition";
@@ -35,6 +37,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   const [latestQuote, setLatestQuote] = useState<any>(null);
   const [latestTrade, setLatestTrade] = useState<any>(null);
   const [noQuote, setNoQuote] = useState<boolean | null>(null);
+  const [quoteAllZeros, setQuoteAllZeros] = useState(true);
 
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -74,19 +77,16 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
       if (lq.ap === 0 || lq.bp === 0) {
         setNoQuote(true);
-      } else setNoQuote(false);
+        setQuoteAllZeros(true);
+      } else {
+        setNoQuote(false);
+        setQuoteAllZeros(false);
+      }
 
       setLatestQuote(lq);
       setLatestTrade(lt);
     }
   }, [selectedTickerSnapshot]);
-
-  useEffect(() => {
-    if (quoteStatus !== "completed" && snapshot) {
-      setSnapshot(null);
-      setClosePositionData(null);
-    }
-  }, [quoteStatus]);
 
   const handleClickClosePosition = () => {
     if (closePositionData) {
@@ -108,6 +108,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
     setLatestQuote(null);
     setLatestTrade(null);
     setNoQuote(null);
+    setQuoteAllZeros(true);
   };
 
   let marketIsOpen = false;
@@ -129,7 +130,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
         <DrawerContent bg={bg}>
           {positionData ? (
             <React.Fragment>
-              <DrawerCloseButton onClick={onClose} />
+              <DrawerCloseButton rounded="full" onClick={onClose} size="sm" />
               <DrawerHeader>
                 <Flex lineHeight={1} align="end" flexWrap="wrap">
                   <Flex align="end" flexWrap="wrap">
@@ -141,9 +142,13 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                     </Text>
                   </Flex>
 
-                  {latestQuote && latestTrade ? (
-                    <TickerQuote quote={latestQuote} trade={latestTrade} />
-                  ) : null}
+                  {/* {latestQuote && latestTrade ? ( */}
+                  <TickerQuote
+                    status={quoteStatus}
+                    quote={latestQuote}
+                    trade={latestTrade}
+                  />
+                  {/* ) : null} */}
                 </Flex>
               </DrawerHeader>
 
@@ -178,9 +183,9 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
           )}
 
           <DrawerFooter>
-            <BuySellButtons isDisabled={Boolean(noQuote)} />
+            <BuySellButtons isDisabled={Boolean(quoteAllZeros)} />
             <Button
-              isDisabled={Boolean(noQuote)}
+              isDisabled={Boolean(quoteAllZeros)}
               size="sm"
               h="26px"
               ml="1rem"
@@ -206,8 +211,30 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
 export default PositionDrawer;
 
-const TickerQuote = ({ quote, trade }: { quote: Quote; trade: any }) => {
+const TickerQuote = ({
+  quote,
+  trade,
+  status,
+}: {
+  quote: null | Quote;
+  trade: any;
+  status: string | null;
+}) => {
   // bid, ask, last, Chg ($)
+  if (status === "loading") {
+    return (
+      <Center ml="2.5rem">
+        <Spinner size="sm" />
+      </Center>
+    );
+  }
+
+  if ((!quote || !trade) && status === "completed") {
+    return null;
+  }
+
+  if (!quote || !trade) return null;
+
   if (quote.ap === 0 || quote.bp === 0) {
     return null;
   }
