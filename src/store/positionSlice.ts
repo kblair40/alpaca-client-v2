@@ -4,7 +4,7 @@ import { type Position } from "utils/types/position";
 import { alpaca } from "api";
 
 export const fetchPositions = createAsyncThunk(
-  "user/fetchPositions",
+  "position/fetchPositions",
   async () => {
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
     let res = {};
@@ -23,6 +23,24 @@ export const fetchPositions = createAsyncThunk(
     return res;
   }
 );
+
+export const fetchQuote = createAsyncThunk("position/fetchQuote", async () => {
+  const isAuthenticated = !!window.localStorage.getItem("auth-token");
+  let res = {};
+  if (isAuthenticated) {
+    try {
+      const response = await alpaca.get(`/position`);
+      console.log("POSITIONS RESPONSE:", response.data);
+      if (response && response.data) {
+        res = response.data;
+      }
+    } catch (err) {
+      console.log("FAILED:", err);
+      return null;
+    }
+  }
+  return res;
+});
 
 type SliceState = {
   data: null | Position[];
@@ -66,6 +84,25 @@ const positionSlice = createSlice({
         }
       })
       .addCase(fetchPositions.rejected, (state) => {
+        state.status = "failed";
+        state.error = true;
+      })
+      .addCase(fetchQuote.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchQuote.fulfilled, (state, action) => {
+        state.status = "completed";
+        const data = action.payload;
+        // console.log("\n\nUSER DATA DATA:", data);
+
+        if (data) {
+          state.data = data as Position[];
+        } else {
+          state.error = true;
+          state.status = "failed";
+        }
+      })
+      .addCase(fetchQuote.rejected, (state) => {
         state.status = "failed";
         state.error = true;
       });
