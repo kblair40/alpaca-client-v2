@@ -28,7 +28,9 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
   const bg = isDark ? "gray.800" : "gray.50";
 
-  const { selectedTickerPosition: data } = useSelector((st) => st.position);
+  const { selectedTickerPosition: positionData } = useSelector(
+    (st) => st.position
+  );
 
   const formatNumber = (num: string) => {
     let formattedNum = parseFloat(num).toLocaleString("en-US");
@@ -40,16 +42,16 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
       <DrawerOverlay />
 
       <DrawerContent bg={bg}>
-        {data ? (
+        {positionData ? (
           <React.Fragment>
             <DrawerCloseButton onClick={onClose} />
             <DrawerHeader>
               <Flex lineHeight={1} align="end">
                 <Text mr=".5rem" fontWeight="600">
-                  {data.symbol}
+                  {positionData.symbol}
                 </Text>
                 <Text variant="secondary" fontSize="md" fontWeight="500">
-                  {data.exchange}
+                  {positionData.exchange}
                 </Text>
               </Flex>
             </DrawerHeader>
@@ -58,33 +60,37 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
               <Wrap spacingX="1.5rem" spacingY=".5rem">
                 <DataPoint
                   label="Cost Basis"
-                  value={"$" + formatNumber(data.cost_basis)}
+                  value={"$" + formatNumber(positionData.cost_basis)}
                 />
                 <DataPoint
                   label="Mkt Value"
-                  value={"$" + formatNumber(data.market_value)}
+                  value={"$" + formatNumber(positionData.market_value)}
                 />
                 <DataPoint
                   label="Avg Entry Price"
-                  value={"$" + formatNumber(data.avg_entry_price)}
+                  value={"$" + formatNumber(positionData.avg_entry_price)}
                 />
-                <DataPoint label="Qty" value={data.qty} />
-                <DataPoint label="Side" value={data.side} />
+                <DataPoint label="Qty" value={positionData.qty} />
+                <DataPoint label="Side" value={positionData.side} />
                 <DataPoint
                   label="Unrealized P/(L)"
-                  value={"$" + formatNumber(data.unrealized_pl)}
+                  value={"$" + formatNumber(positionData.unrealized_pl)}
                 />
                 <DataPoint
                   label="Unrealized P/(L)%"
-                  value={formatNumber(data.unrealized_plpc) + "%"}
+                  value={formatNumber(positionData.unrealized_plpc) + "%"}
                 />
                 <DataPoint
                   label="Unrealized Intraday P/(L)"
-                  value={"$" + formatNumber(data.unrealized_intraday_pl)}
+                  value={
+                    "$" + formatNumber(positionData.unrealized_intraday_pl)
+                  }
                 />
                 <DataPoint
                   label="Unrealized Intraday P/(L)%"
-                  value={formatNumber(data.unrealized_intraday_plpc) + "%"}
+                  value={
+                    formatNumber(positionData.unrealized_intraday_plpc) + "%"
+                  }
                 />
               </Wrap>
             </DrawerBody>
@@ -95,7 +101,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
             fontWeight="600"
             color={isDark ? "red.300" : "red.600"}
           >
-            Could not retrieve position data
+            Could not retrieve position positionData
           </Text>
         )}
 
