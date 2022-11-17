@@ -13,11 +13,11 @@ const BuySellButtons = ({ isDisabled = false }: Props) => {
   const { status, data, ticker, asset } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 
-  const handleClick = () => {
+  const handleClick = (side: "buy" | "sell") => {
     if (ticker && ticker.symbol && data && data.snapshot && data.quote) {
       let tickerSymbol = ticker.symbol;
       dispatch(
-        orderActions.openModal({ tickerSymbol, asset, priceData: data })
+        orderActions.openModal({ tickerSymbol, asset, side, priceData: data })
       );
     }
   };
@@ -27,7 +27,7 @@ const BuySellButtons = ({ isDisabled = false }: Props) => {
     <React.Fragment>
       <Flex align="center">
         <Button
-          onClick={handleClick}
+          onClick={() => handleClick("buy")}
           isDisabled={isDisabled || disabled}
           variant="solid-blue"
           size="sm"
@@ -35,8 +35,9 @@ const BuySellButtons = ({ isDisabled = false }: Props) => {
         >
           Buy
         </Button>
+
         <Button
-          onClick={handleClick}
+          onClick={() => handleClick("sell")}
           isDisabled={isDisabled || disabled}
           ml="1rem"
           variant="solid-red"

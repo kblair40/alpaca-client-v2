@@ -30,6 +30,7 @@ type SliceState = {
   priceData: any;
   orders: any[];
   status: null | "loading" | "completed" | "failed";
+  side: null | "buy" | "sell";
   error: boolean;
 };
 
@@ -41,17 +42,19 @@ const orderSlice = createSlice({
     tickerSymbol: "",
     priceData: null,
     status: null,
+    side: null,
     error: false,
     orders: [],
   } as SliceState,
   reducers: {
     openModal(state, action) {
-      const { tickerSymbol, priceData, asset } = action.payload;
+      const { tickerSymbol, priceData, asset, side } = action.payload;
       // console.log("Symbol/Data/Asset:", { tickerSymbol, priceData, asset });
       if (tickerSymbol && priceData && asset) {
         state.tickerSymbol = tickerSymbol;
         state.priceData = priceData;
         state.asset = asset;
+        state.side = side;
         state.showModal = true;
       }
     },
@@ -60,6 +63,7 @@ const orderSlice = createSlice({
       state.tickerSymbol = "";
       state.priceData = null;
       state.showModal = false;
+      state.side = null;
     },
   },
 
