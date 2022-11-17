@@ -271,6 +271,29 @@ const TickerQuote = ({
   );
 };
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 const DataPoint = ({ label, value }: { label: string; value: string }) => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";

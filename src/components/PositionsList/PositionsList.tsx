@@ -72,7 +72,7 @@ const PositionsList = () => {
   }
 
   return (
-    <Box>
+    <Box minW="340px">
       <PositionDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
@@ -87,7 +87,7 @@ const PositionsList = () => {
         align="end"
         mb="8px"
       >
-        <Text flex={0.75} textAlign="left">
+        <Text flex={{ base: 0.75, sm: 0.5 }} textAlign="left">
           Symbol
         </Text>
         <Text flex={0.5}>Qty</Text>
@@ -124,7 +124,7 @@ const PositionsList = () => {
                 fontWeight="400"
                 py="2px"
               >
-                <Text flex={0.75} textAlign="left">
+                <Text flex={{ base: 0.75, sm: 0.5 }} textAlign="left">
                   {pos.symbol}
                 </Text>
                 <Text flex={0.5}>{pos.qty}</Text>
