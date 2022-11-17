@@ -32,6 +32,9 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   const [closePositionModalOpen, setClosePositionModalOpen] = useState(false);
   const [closePositionData, setClosePositionData] =
     useState<null | ClosePositionData>(null);
+  const [latestQuote, setLatestQuote] = useState<any>(null);
+  const [latestTrade, setLatestTrade] = useState<any>(null);
+  const [noQuote, setNoQuote] = useState<boolean | null>(null);
 
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -48,7 +51,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   useEffect(() => {
     if (selectedTickerSnapshot && positionData) {
       const qty = parseInt(positionData.qty);
-      const { minuteBar } = selectedTickerSnapshot;
+      // const { minuteBar } = selectedTickerSnapshot;
       // let closePositionData: { [key: string]: string | number } = {
       let closePositionData = {
         symbol: positionData.symbol,
@@ -60,13 +63,6 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
           qty * parseFloat(parseFloat(positionData.current_price).toFixed(2)),
       };
 
-      // const qty = parseInt(positionData.qty);
-      // if (qty > 0) {
-      //   closePositionData["sharesToSell"] = qty;
-      // } else {
-      //   closePositionData["sharesToBuy"] = qty;
-      // }
-
       setClosePositionData(closePositionData as ClosePositionData);
     }
   }, [selectedTickerSnapshot, positionData]);
@@ -74,6 +70,14 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
   useEffect(() => {
     if (selectedTickerSnapshot) {
       setSnapshot(selectedTickerSnapshot);
+      const { latestQuote: lq, latestTrade: lt } = selectedTickerSnapshot;
+
+      if (lq.ap === 0 || lq.bp === 0) {
+        setNoQuote(true);
+      } else setNoQuote(false);
+
+      setLatestQuote(lq);
+      setLatestTrade(lt);
     }
   }, [selectedTickerSnapshot]);
 
@@ -83,11 +87,6 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
       setClosePositionData(null);
     }
   }, [quoteStatus]);
-
-  const formatNumber = (num: string) => {
-    let formattedNum = parseFloat(num).toLocaleString("en-US");
-    return parseFloat(formattedNum).toFixed(2);
-  };
 
   const handleClickClosePosition = () => {
     if (closePositionData) {
@@ -99,9 +98,16 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
   const handleDeletePosition = () => {
     setClosePositionModalOpen(false);
+    clearState();
+    onClose();
+  };
+
+  const clearState = () => {
     setSnapshot(null);
     setClosePositionData(null);
-    onClose();
+    setLatestQuote(null);
+    setLatestTrade(null);
+    setNoQuote(null);
   };
 
   let marketIsOpen = false;
@@ -112,7 +118,12 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
   return (
     <React.Fragment>
-      <Drawer isOpen={isOpen} onClose={onClose} placement="bottom">
+      <Drawer
+        isOpen={isOpen}
+        onClose={onClose}
+        placement="bottom"
+        onCloseComplete={clearState}
+      >
         <DrawerOverlay />
 
         <DrawerContent bg={bg}>
@@ -130,21 +141,18 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                     </Text>
                   </Flex>
 
-                  {snapshot && quoteStatus === "completed" ? (
-                    <TickerQuote
-                      quote={snapshot.latestQuote}
-                      trade={snapshot.latestTrade}
-                    />
+                  {latestQuote && latestTrade ? (
+                    <TickerQuote quote={latestQuote} trade={latestTrade} />
                   ) : null}
                 </Flex>
               </DrawerHeader>
 
               <DrawerBody p={0}>
-                {snapshot && quoteStatus === "completed" ? (
+                {noQuote ? (
                   <Box w="100%">
                     {snapshot.latestQuote.ap === 0 ||
                     snapshot.latestQuote.bp === 0 ? (
-                      <Box w="100%">
+                      <React.Fragment>
                         <Text fontSize="xl" fontWeight="600" textAlign="center">
                           Sorry, a quote could not be retrieved.
                         </Text>
@@ -153,7 +161,7 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                             ? "Please try again when the market is open"
                             : ""}
                         </Text>
-                      </Box>
+                      </React.Fragment>
                     ) : null}
                   </Box>
                 ) : null}
@@ -170,8 +178,9 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
           )}
 
           <DrawerFooter>
-            <BuySellButtons />
+            <BuySellButtons isDisabled={Boolean(noQuote)} />
             <Button
+              isDisabled={Boolean(noQuote)}
               size="sm"
               h="26px"
               ml="1rem"

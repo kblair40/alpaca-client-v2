@@ -5,7 +5,11 @@ import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import React from "react";
 
-const BuySellButtons = () => {
+type Props = {
+  isDisabled?: boolean;
+};
+
+const BuySellButtons = ({ isDisabled = false }: Props) => {
   const { status, data, ticker, asset } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 
@@ -18,13 +22,13 @@ const BuySellButtons = () => {
     }
   };
 
-  const isDisabled = status !== "completed";
+  const disabled = status !== "completed";
   return (
     <React.Fragment>
       <Flex align="center">
         <Button
           onClick={handleClick}
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || disabled}
           variant="solid-blue"
           size="sm"
           h="26px"
@@ -33,7 +37,7 @@ const BuySellButtons = () => {
         </Button>
         <Button
           onClick={handleClick}
-          isDisabled={isDisabled}
+          isDisabled={isDisabled || disabled}
           ml="1rem"
           variant="solid-red"
           size="sm"
