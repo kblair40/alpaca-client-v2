@@ -88,6 +88,7 @@ const chartSlice = createSlice({
         if (data) {
           state.data = data.prices;
           state.asset = data.asset;
+          if (!state.ticker) state.ticker = data.asset;
           if (state.error) state.error = false;
         } else {
           state.error = true;

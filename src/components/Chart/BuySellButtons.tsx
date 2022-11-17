@@ -1,16 +1,11 @@
 import { Button, Flex } from "@chakra-ui/react";
 
-import { type IAsset } from "utils/types/asset";
 import { orderActions } from "store/orderSlice";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import React from "react";
 
-type Props = {
-  assetData?: IAsset;
-};
-
-const BuySellButtons = ({ assetData }: Props) => {
+const BuySellButtons = () => {
   const { status, data, ticker, asset } = useSelector((st) => st.chart);
   const dispatch = useDispatch();
 

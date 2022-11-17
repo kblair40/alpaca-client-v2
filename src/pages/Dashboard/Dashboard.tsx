@@ -5,6 +5,7 @@ import useDispatch from "hooks/useDispatch";
 import { fetchOrders } from "store/orderSlice";
 import OrdersList from "components/OrdersList";
 import PositionsList from "components/PositionsList";
+import OrderModal from "components/Modals/OrderModal";
 
 type Props = {};
 
@@ -16,21 +17,25 @@ const Dashboard = (props: Props) => {
   }, [dispatch]);
 
   return (
-    <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted>
-      <TabList h="42px">
-        <Tab>Positions</Tab>
-        <Tab>Orders</Tab>
-      </TabList>
+    <React.Fragment>
+      <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted>
+        <TabList h="42px">
+          <Tab>Positions</Tab>
+          <Tab>Orders</Tab>
+        </TabList>
 
-      <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
-        <TabPanel>
-          <PositionsList />
-        </TabPanel>
-        <TabPanel h="100%">
-          <OrdersList />
-        </TabPanel>
-      </TabPanels>
-    </Tabs>
+        <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
+          <TabPanel>
+            <PositionsList />
+          </TabPanel>
+          <TabPanel h="100%">
+            <OrdersList />
+          </TabPanel>
+        </TabPanels>
+      </Tabs>
+
+      <OrderModal />
+    </React.Fragment>
   );
 };
 

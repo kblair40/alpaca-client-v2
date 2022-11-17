@@ -14,6 +14,8 @@ import { type Position } from "utils/types/position";
 import { ChevronDownIcon } from "utils/icons";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
+import { chartActions, fetchTickerData } from "store/chartSlice";
+import alpacaApi from "api/alpaca";
 import {
   fetchPositions,
   fetchQuote,
@@ -46,10 +48,15 @@ const PositionsList = () => {
       return `$(${intGain.toFixed(2)})`;
     }
   };
-  const handleClickManage = (position: Position) => {
+  const handleClickManage = async (position: Position) => {
     dispatch(fetchQuote(position.symbol));
     dispatch(positionActions.setSelectedPosition(position));
     setDrawerOpen(true);
+
+    // const assetResponse = await alpacaApi.get(`/assets/${position.symbol}`);
+    // console.log("ASSET RESPONSE:", assetResponse.data);
+    // dispatch(chartActions.setTicker(assetResponse.data));
+    dispatch(fetchTickerData({ symbol: position.symbol, timeframe: "1D" }));
   };
 
   if (status === "loading") {
