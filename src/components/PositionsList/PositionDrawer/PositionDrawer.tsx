@@ -14,6 +14,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 
+import { type Quote } from "utils/types/quote";
 import BuySellButtons from "components/Chart/BuySellButtons";
 import useSelector from "hooks/useSelector";
 
@@ -28,9 +29,11 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 
   const bg = isDark ? "gray.800" : "gray.50";
 
-  const { selectedTickerPosition: positionData } = useSelector(
-    (st) => st.position
-  );
+  const {
+    selectedTickerPosition: positionData,
+    quoteStatus,
+    selectedTickerData,
+  } = useSelector((st) => st.position);
 
   const formatNumber = (num: string) => {
     let formattedNum = parseFloat(num).toLocaleString("en-US");
@@ -53,6 +56,10 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                 <Text variant="secondary" fontSize="md" fontWeight="500">
                   {positionData.exchange}
                 </Text>
+
+                {selectedTickerData && quoteStatus === "completed" ? (
+                  <TickerQuote quote={selectedTickerData.quote} />
+                ) : null}
               </Flex>
             </DrawerHeader>
 
@@ -114,6 +121,27 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
 };
 
 export default PositionDrawer;
+
+const TickerQuote = ({ quote }: { quote: Quote }) => {
+  // bid, ask, last, Chg ($),
+  if (quote.ap === 0 || quote.bp === 0) {
+    return <NoQuote />;
+  }
+
+  return (
+    <Flex ml="2rem" fontSize="sm" py="4px" flex={1} border="1px solid #aaa">
+      Quote
+    </Flex>
+  );
+};
+
+const NoQuote = () => {
+  return (
+    <Text textAlign="center" fontWeight="600" fontSize="lg">
+      No Quote Available
+    </Text>
+  );
+};
 
 const DataPoint = ({ label, value }: { label: string; value: string }) => {
   const { colorMode } = useColorMode();
