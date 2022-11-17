@@ -14,7 +14,11 @@ import { type Position } from "utils/types/position";
 import { ChevronDownIcon } from "utils/icons";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
-import { fetchPositions, positionActions } from "store/positionSlice";
+import {
+  fetchPositions,
+  fetchQuote,
+  positionActions,
+} from "store/positionSlice";
 import PositionDrawer from "./PositionDrawer";
 
 const PositionsList = () => {
@@ -43,6 +47,7 @@ const PositionsList = () => {
     }
   };
   const handleClickManage = (position: Position) => {
+    dispatch(fetchQuote(position.symbol));
     dispatch(positionActions.setSelectedPosition(position));
     setDrawerOpen(true);
   };

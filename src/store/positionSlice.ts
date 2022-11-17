@@ -24,23 +24,26 @@ export const fetchPositions = createAsyncThunk(
   }
 );
 
-export const fetchQuote = createAsyncThunk("position/fetchQuote", async () => {
-  const isAuthenticated = !!window.localStorage.getItem("auth-token");
-  let res = {};
-  if (isAuthenticated) {
-    try {
-      const response = await alpaca.get(`/position`);
-      console.log("POSITIONS RESPONSE:", response.data);
-      if (response && response.data) {
-        res = response.data;
+export const fetchQuote = createAsyncThunk(
+  "position/fetchQuote",
+  async (symbol: string) => {
+    const isAuthenticated = !!window.localStorage.getItem("auth-token");
+    let res = {};
+    if (isAuthenticated) {
+      try {
+        const response = await alpaca.get(`/price/${symbol}/latest`);
+        console.log("POSITION QUOTE RESPONSE:", response.data);
+        if (response && response.data) {
+          res = response.data;
+        }
+      } catch (err) {
+        console.log("FAILED:", err);
+        return null;
       }
-    } catch (err) {
-      console.log("FAILED:", err);
-      return null;
     }
+    return res;
   }
-  return res;
-});
+);
 
 type SliceState = {
   data: null | Position[];
@@ -93,14 +96,14 @@ const positionSlice = createSlice({
       .addCase(fetchQuote.fulfilled, (state, action) => {
         state.status = "completed";
         const data = action.payload;
-        // console.log("\n\nUSER DATA DATA:", data);
+        console.log("\n\nSELECTED TICKER DATA:", data);
 
-        if (data) {
-          state.data = data as Position[];
-        } else {
-          state.error = true;
-          state.status = "failed";
-        }
+        // if (data) {
+        //   state.data = data as Position[];
+        // } else {
+        //   state.error = true;
+        //   state.status = "failed";
+        // }
       })
       .addCase(fetchQuote.rejected, (state) => {
         state.status = "failed";

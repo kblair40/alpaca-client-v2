@@ -24,7 +24,7 @@ api.interceptors.request.use(
 export default api;
 
 export const alpaca = axios.create({
-  baseURL: "http://localhost:3001/alpaca",
+  baseURL: "http://localhost:3001/alpaca/",
 });
 
 alpaca.interceptors.request.use(
