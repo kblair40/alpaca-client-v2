@@ -86,6 +86,7 @@ const PositionsList = () => {
           positions.map((pos, i) => {
             return (
               <HStack
+                key={i}
                 w="100%"
                 textAlign="center"
                 fontSize="sm"

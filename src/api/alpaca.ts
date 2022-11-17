@@ -12,6 +12,7 @@ console.log("\nTOKEN AFTER:", token);
 
 const api = axios.create({
   baseURL: "https://api.alpaca.markets/v2",
+  // baseURL: "https://paper-api.alpaca.markets/v2",
   headers: {
     Authorization: token,
   },

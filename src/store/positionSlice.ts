@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { type Position } from "utils/types/position";
 import { alpaca } from "api";
+import alpacaApi from "api/alpaca";
 
 export const fetchPositions = createAsyncThunk(
   "position/fetchPositions",
@@ -27,12 +28,16 @@ export const fetchPositions = createAsyncThunk(
 export const fetchQuote = createAsyncThunk(
   "position/fetchQuote",
   async (symbol: string) => {
+    console.log("SYMBOL TO FETCH:", symbol);
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
+    console.log("IS AUTH:", isAuthenticated);
     let res = {};
     if (isAuthenticated) {
       try {
-        const response = await alpaca.get(`/price/${symbol}/latest`);
-        console.log("POSITION QUOTE RESPONSE:", response.data);
+        console.log("sending");
+        // const response = await alpaca.get(`/price/${symbol}/latest`);
+        const response = await alpacaApi.get(`/stocks/${symbol}/snapshot`);
+        console.log("POSITION SNAPSHOT RESPONSE:", response.data);
         if (response && response.data) {
           res = response.data;
         }

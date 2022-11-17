@@ -12,6 +12,7 @@ import {
   Text,
   Wrap,
   WrapItem,
+  HStack,
 } from "@chakra-ui/react";
 
 import { type Quote } from "utils/types/quote";
@@ -57,9 +58,9 @@ const PositionDrawer = ({ isOpen, onClose }: Props) => {
                   {positionData.exchange}
                 </Text>
 
-                {selectedTickerData && quoteStatus === "completed" ? (
+                {/* {selectedTickerData && quoteStatus === "completed" ? (
                   <TickerQuote quote={selectedTickerData.quote} />
-                ) : null}
+                ) : null} */}
               </Flex>
             </DrawerHeader>
 
@@ -129,9 +130,27 @@ const TickerQuote = ({ quote }: { quote: Quote }) => {
   }
 
   return (
-    <Flex ml="2rem" fontSize="sm" py="4px" flex={1} border="1px solid #aaa">
-      Quote
-    </Flex>
+    <HStack
+      spacing="1rem"
+      ml="2rem"
+      fontSize="sm"
+      // py="4px"
+      flex={1}
+      // border="1px solid #aaa"
+    >
+      <Flex>
+        <Text fontWeight="400">Bid:</Text>
+        <Text ml="3px" fontWeight="700">
+          ${quote.bp}
+        </Text>
+      </Flex>
+      <Flex>
+        <Text fontWeight="400">Ask:</Text>
+        <Text ml="3px" fontWeight="700">
+          ${quote.ap}
+        </Text>
+      </Flex>
+    </HStack>
   );
 };
 
