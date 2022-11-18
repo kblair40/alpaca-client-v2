@@ -6,6 +6,7 @@ import {
   Flex,
   Text,
   useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 // import { type IAccount } from "utils/types/account";
@@ -13,6 +14,10 @@ import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import CustomPieChart from "./CustomPieChart";
 import { fetchAccount } from "store/accountSlice";
+import {
+  darkModeChartColors as darkColors,
+  lightModeChartColors as lightColors,
+} from "utils/constants";
 
 // type BalanceChartData = {
 //   cashValue: string;
@@ -34,10 +39,13 @@ export type ChartData = {
   name: string;
   legendValue: string;
   value: number;
+  color: string;
 };
 
 const PositionsChart = () => {
   const [chartData, setChartData] = useState<ChartData[]>();
+
+  const COLORS = useColorModeValue(lightColors, darkColors);
 
   const dispatch = useDispatch();
   const { data: accountData, status: accountStatus } = useSelector(
@@ -86,20 +94,17 @@ const PositionsChart = () => {
     }
   }, [accountData]);
 
-  // const makeBalanceChartData = (data: any) => {
   const makeBalanceChartData = (data: BalanceChartData) => {
     let chartData = [];
-    for (let [key, val] of Object.entries(data)) {
-      console.log(
-        "\n\nVAL:",
-        { val, parsed: val.string, type: typeof val },
-        "\n\n"
-      );
+    const entriesArray = Object.entries(data);
+    // for (let [key, val] of Object.entries(data)) {
+    for (let i = 0; i < entriesArray.length; i++) {
+      let [key, val] = entriesArray[i];
       let name = key;
-      // let value = parseFloat(val); // give chart raw number to work with
       let value = val.number; // give chart raw number to work with
       let legendValue = val.string; // show formatted string in legend
-      chartData.push({ name, value, legendValue });
+      let color = COLORS[i % COLORS.length];
+      chartData.push({ name, value, legendValue, color });
     }
     setChartData(chartData);
   };

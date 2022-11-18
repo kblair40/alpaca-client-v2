@@ -1,24 +1,66 @@
-import { useState, useEffect } from "react";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
-import { useBreakpointValue, Center, Spinner } from "@chakra-ui/react";
+// import { useState, useEffect } from "react";
+import {
+  PieChart,
+  Pie,
+  Sector,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+} from "recharts";
+import {
+  useBreakpointValue,
+  Box,
+  Text,
+  Stack,
+  useColorModeValue,
+} from "@chakra-ui/react";
+
+import {
+  darkModeChartColors as darkColors,
+  lightModeChartColors as lightColors,
+} from "utils/constants";
 
 import { type ChartData } from "./PositionsChart";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
-
 type Props = {
-  // data: { [key: string]: string | number }[];
   data: ChartData[];
 };
 
-// const data = [
-//   { name: "Group A", value: 400 },
-//   { name: "Group B", value: 300 },
-//   { name: "Group C", value: 300 },
-//   { name: "Group D", value: 200 },
-// ];
-
 const CustomPieChart = ({ data }: Props) => {
+  const COLORS = useColorModeValue(lightColors, darkColors);
+  // const renderLegend = (legendProps: { payload: any }) => {
+  const renderLegend = (props: any) => {
+    console.log("\n\nLEGEND PROPS:", props.payload, "\n\n");
+    if (!props) return null;
+    // const {}
+
+    //
+    return (
+      <Stack direction={{ base: "column" }} spacing={{ base: "4px" }}>
+        {props.payload.map((dataPoint: ChartData, index: number) => {
+          if (!dataPoint.value) return null;
+          return (
+            <Stack direction={{ base: "row" }} spacing="4px">
+              <Text fontWeight="500">{dataPoint.name}</Text>
+              <Text fontWeight="600">{dataPoint.legendValue}</Text>
+            </Stack>
+          );
+        })}
+      </Stack>
+    );
+  };
+
+  // const renderLegend = (props: any) => {
+  //   console.log("\n\nLEGEND PROPS:", props.payload, "\n\n");
+  //   if (!props) return null;
+  //   // const {}
+
+  //   //
+  //   return (
+  //     <Stack direction={{ base: "column" }} spacing={{ base: "4px" }}></Stack>
+  //   );
+  // };
+
   const radiuses = useBreakpointValue({
     base: { innerRadius: "36", outerRadius: "48" },
     sm: { innerRadius: "45", outerRadius: "60" },
@@ -35,27 +77,28 @@ const CustomPieChart = ({ data }: Props) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart
-      // width={500}
-      // height={250}
       // onMouseEnter={onPieEnter}
       >
         <Pie
           data={data}
-          // cx="50%"
-          // cx="20%"
-          // cy="50%"
           cx={cx}
-          // cx={90}
-          // cy={150}
           {...radiuses}
           fill="#8884d8"
           paddingAngle={4}
           dataKey="value"
         >
-          {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-          ))}
+          {data.map((entry, index) => {
+            console.log("\n\nENTRY:", entry, "\n\n");
+            return (
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
+            );
+          })}
         </Pie>
+        <Legend content={renderLegend} payload={data} />
+        {/* <Legend content={renderLegend} /> */}
       </PieChart>
     </ResponsiveContainer>
   );
