@@ -8,9 +8,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Scrollbars } from "react-custom-scrollbars-2";
 
-// import { type IAccount } from "utils/types/account";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import CustomPieChart from "./CustomPieChart";
@@ -20,21 +18,12 @@ import {
   lightModeChartColors as lightColors,
 } from "utils/constants";
 
-// type BalanceChartData = {
-//   cashValue: string;
-//   stocksValue: string;
-//   shortValue: string;
-// };
 type DataPoint = { string: string; number: number };
 type BalanceChartData = {
   Cash: DataPoint;
   Stocks: DataPoint;
   Short: DataPoint;
-  // Cash: string;
-  // Stocks: string;
-  // Short: string;
 };
-
 export type ChartData = {
   [key: string]: string | number;
   name: string;
@@ -98,7 +87,7 @@ const PositionsChart = () => {
   const makeBalanceChartData = (data: BalanceChartData) => {
     let chartData = [];
     const entriesArray = Object.entries(data);
-    // for (let [key, val] of Object.entries(data)) {
+
     for (let i = 0; i < entriesArray.length; i++) {
       let [key, val] = entriesArray[i];
       let name = key;
@@ -113,7 +102,7 @@ const PositionsChart = () => {
   const containerWidth = useBreakpointValue({
     base: "180px",
     sm: "220px",
-    md: "320px",
+    md: "340px",
     lg: "360px",
   });
 
@@ -127,42 +116,35 @@ const PositionsChart = () => {
 
   if (!accountData) return <Text>NO DATA</Text>;
 
+  const chartWrapperProps = {
+    width: containerWidth,
+    maxH: "100%",
+    overflowY: "hidden",
+    minW: "180px",
+  };
+
   return (
-    <Flex
-      h="100%"
-      // border="1px solid #777"
-      justify={{ base: "center", sm: "start" }}
-      //
-    >
-      <Box
-        mr={{ base: "1rem", sm: "2rem" }}
-        // border=".1px solid white"
-        width={containerWidth}
-      >
+    <Flex h="100%" justify="center" w="100vw" maxW="100vw">
+      {/* @ts-ignore */}
+      <Box mr={{ base: "1rem", sm: "2rem" }} {...chartWrapperProps}>
         {chartData && <CustomPieChart data={chartData} label="All" />}
       </Box>
 
-      <Box
-        // border=".1px solid white"
-        width={containerWidth}
-        // overflowY="auto"
-        overflowX="hidden"
-        display={{ base: "none", sm: "block" }}
-      >
-        <Scrollbars thumbSize={20}>
-          {chartData && (
-            <CustomPieChart
-              data={chartData
-                .concat(chartData)
-                .concat(chartData)
-                .concat(chartData)
-                .concat(chartData)
-                .concat(chartData)
-                .concat(chartData)}
-              label="Stocks"
-            />
-          )}
-        </Scrollbars>
+      {/* @ts-ignore */}
+      <Box display={{ base: "none", sm: "block" }} {...chartWrapperProps}>
+        {chartData && (
+          <CustomPieChart
+            data={chartData
+              .concat(chartData)
+              .concat(chartData)
+              .concat(chartData)
+              .concat(chartData)
+              .concat(chartData)
+              .concat(chartData)
+              .concat(chartData)}
+            label="Stocks"
+          />
+        )}
       </Box>
     </Flex>
   );

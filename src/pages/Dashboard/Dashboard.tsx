@@ -7,6 +7,8 @@ import {
   TabPanel,
   Flex,
   Box,
+  useColorModeValue,
+  useTheme,
 } from "@chakra-ui/react";
 
 import useDispatch from "hooks/useDispatch";
@@ -22,6 +24,11 @@ type Props = {};
 const Dashboard = (props: Props) => {
   const dispatch = useDispatch();
 
+  const {
+    colors: { gray },
+  } = useTheme();
+  const borderTopColor = useColorModeValue(gray["200"], gray["600"]);
+
   useEffect(() => {
     dispatch(fetchOrders());
     dispatch(fetchCalendarData());
@@ -35,37 +42,24 @@ const Dashboard = (props: Props) => {
           <Tab>Orders</Tab>
         </TabList>
 
-        <TabPanels
-          h="calc(100vh - 118px)"
-          overflowY="hidden"
-          // border="1px solid white"
-        >
-          {/* Maybe set overflowY: "auto" here (on TabPanel) */}
-          <TabPanel
-            // border="1px solid red"
-            h="100%"
-            pb={0}
-          >
-            <Flex
-              h="100%"
-              direction="column"
-              w="100%"
-              // border="1px solid purple"
-            >
-              <Box
-                // border="1px solid orange"
-                minH="180px"
-                //
-                flex={1.25}
-              >
+        <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
+          <TabPanel h="100%" pb={0} px={0} overflowX="hidden">
+            <Flex h="100%" direction="column" w="100%">
+              <Box minH="180px" flex={1.25} px="1rem">
                 <PositionsList />
               </Box>
 
               <Box
-                mt="1rem"
-                // border="1px solid green"
-                minH="300px"
-                //
+                borderTop="1px solid"
+                borderColor={borderTopColor}
+                mt=".5rem"
+                pt=".5rem"
+                minH="240px"
+                sx={{
+                  ".recharts-responsive-container": {
+                    maxHeight: "calc(100% - 48px)",
+                  },
+                }}
                 flex={2}
               >
                 <PositionsChart />

@@ -15,7 +15,9 @@ import {
   Stack,
   Flex,
   useColorModeValue,
+  useTheme,
 } from "@chakra-ui/react";
+import { Scrollbars } from "react-custom-scrollbars-2";
 
 import {
   darkModeChartColors as darkColors,
@@ -31,6 +33,12 @@ type Props = {
 
 const CustomPieChart = ({ data, label }: Props) => {
   const COLORS = useColorModeValue(lightColors, darkColors);
+
+  const {
+    colors: { gray, red },
+  } = useTheme();
+
+  const dividerColor = useColorModeValue(red["200"], red["600"]);
 
   const renderLegend = (props: any) => {
     // console.log("\n\nLEGEND PROPS:", props.payload, "\n\n");
@@ -82,8 +90,8 @@ const CustomPieChart = ({ data, label }: Props) => {
 
   const cx = useBreakpointValue({
     base: "50%",
-    md: 66,
-    lg: 70,
+    md: 74,
+    lg: 80,
   });
 
   const cy = useBreakpointValue({
@@ -113,40 +121,50 @@ const CustomPieChart = ({ data, label }: Props) => {
 
   return (
     <Fragment>
-      <Text
-        textAlign="center"
-        mb="1rem"
-        fontSize={{ base: "xl" }}
-        fontWeight="700"
+      <Scrollbars
+        thumbSize={30}
+        thumbMinSize={30}
+        autoHide={true}
+        autoHideTimeout={1000}
+        autoHideDuration={200}
+        hideTracksWhenNotNeeded={true}
       >
-        {label}
-      </Text>
-      <ResponsiveContainer width="100%" height="100%" debounce={200}>
-        <PieChart>
-          <Pie
-            data={data}
-            cx={cx}
-            cy={cy}
-            height={chartHeight}
-            {...radius}
-            paddingAngle={0}
-            dataKey="value"
-          >
-            <ReText>Hello</ReText>
-            {data.map((entry, index) => {
-              // console.log("\n\nENTRY:", entry, "\n\n");
-              return (
-                <Cell
-                  key={`cell-${index}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              );
-            })}
-          </Pie>
-          {/* @ts-ignore */}
-          <Legend {...legendProps} />
-        </PieChart>
-      </ResponsiveContainer>
+        <Text
+          textAlign="center"
+          mb="1rem"
+          fontSize={{ base: "xl" }}
+          fontWeight="700"
+        >
+          {label}
+        </Text>
+        {/* <ResponsiveContainer width="100%" height={600} debounce={200}> */}
+        <ResponsiveContainer width="100%" height="100%" debounce={200}>
+          <PieChart>
+            <Pie
+              data={data}
+              cx={cx}
+              cy={cy}
+              height={chartHeight}
+              {...radius}
+              paddingAngle={0}
+              dataKey="value"
+            >
+              <ReText>Hello</ReText>
+              {data.map((entry, index) => {
+                // console.log("\n\nENTRY:", entry, "\n\n");
+                return (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                );
+              })}
+            </Pie>
+            {/* @ts-ignore */}
+            <Legend {...legendProps} />
+          </PieChart>
+        </ResponsiveContainer>
+      </Scrollbars>
     </Fragment>
   );
 };
