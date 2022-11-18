@@ -21,12 +21,9 @@ type Field = "buySell" | "timeframe" | "status";
 const OrderFilters = (props: Props) => {
   const [filterValues, setFilterValues] = useState<FilterValues>({
     timeframe: timeframes.defaultValue,
-    // @ts-ignore
     buySell: buySell.defaultValue,
     status: statuses.defaultValue,
   });
-  // const [buySellValue, setBuySellValue] = useState(buySell.defaultValue);
-  // const [timeframeValue, setTimeframeValue] = useState(timeframes.defaultValue);
 
   const dispatch = useDispatch();
 
@@ -38,12 +35,9 @@ const OrderFilters = (props: Props) => {
 
   useEffect(() => {
     if (filterValues) {
-      dispatch(
-        fetchOrdersByTimeframe({
-          side: filterValues.buySell,
-          timeframe: filterValues.timeframe,
-        })
-      );
+      const { buySell, timeframe, status } = filterValues;
+      const filters = { side: buySell, timeframe, status };
+      dispatch(fetchOrdersByTimeframe(filters));
     }
   }, [filterValues, dispatch]);
 

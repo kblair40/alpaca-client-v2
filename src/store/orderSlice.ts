@@ -25,9 +25,11 @@ export const fetchOrders = createAsyncThunk("order/fetchOrders", async () => {
 
 type Side = "buy" | "sell" | "both";
 type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
+type Status = "open" | "closed" | "all";
 type Args = {
   side: Side;
   timeframe: Timeframe;
+  status: Status;
 };
 export const fetchOrdersByTimeframe = createAsyncThunk(
   "order/fetchOrdersByTimeframe",
@@ -37,8 +39,9 @@ export const fetchOrdersByTimeframe = createAsyncThunk(
 
     if (isAuthenticated) {
       try {
+        const { timeframe, status, side } = filters;
         const response = await alpaca.get("/filtered/order", {
-          params: { timeframe: filters.timeframe, side: filters.side },
+          params: { timeframe, side, status },
         });
         console.log("FILTERED ORDERS:", response.data);
 
