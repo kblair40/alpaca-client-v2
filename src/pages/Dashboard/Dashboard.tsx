@@ -34,12 +34,20 @@ const Dashboard = (props: Props) => {
     dispatch(fetchCalendarData());
   }, [dispatch]);
 
+  const tabStyles = {
+    _selected: {
+      borderColor: useColorModeValue(gray["600"], gray["100"]),
+      fontWeight: 600,
+    },
+    _active: { bg: undefined },
+  };
+
   return (
     <React.Fragment>
       <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted>
         <TabList h="42px">
-          <Tab>Positions</Tab>
-          <Tab>Orders</Tab>
+          <Tab {...tabStyles}>Positions</Tab>
+          <Tab {...tabStyles}>Orders</Tab>
         </TabList>
 
         <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
