@@ -24,6 +24,7 @@ type BalanceChartData = {
   Stocks: DataPoint;
   Short: DataPoint;
 };
+type PositionChartData = { [key: string]: DataPoint };
 export type ChartData = {
   [key: string]: string | number;
   name: string;
@@ -33,7 +34,8 @@ export type ChartData = {
 };
 
 const PositionsChart = () => {
-  const [chartData, setChartData] = useState<ChartData[]>();
+  const [allChartData, setAllChartData] = useState<ChartData[]>();
+  const [stocksChartData, setStocksChartData] = useState<ChartData[]>();
 
   const COLORS = useColorModeValue(lightColors, darkColors);
 
@@ -41,10 +43,55 @@ const PositionsChart = () => {
   const { data: accountData, status: accountStatus } = useSelector(
     (st) => st.account
   );
+  const { data: positionData, status: positionStatus } = useSelector(
+    (st) => st.position
+  );
+
+  let options = {
+    currency: "USD",
+    currencyDisplay: "narrowSymbol",
+    currencySign: "accounting",
+    style: "currency",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+
+  const convertToCurrency = (num: string) => {
+    return parseFloat(num).toLocaleString("en-US", options);
+  };
 
   useEffect(() => {
     dispatch(fetchAccount());
   }, [dispatch]);
+
+  useEffect(() => {
+    // market_value to get value
+    if (!positionData) return;
+
+    console.log("\n\nALL COLORS:", COLORS, "\n\n");
+
+    const chartData = [];
+    for (let i = 0; i < positionData.length; i++) {
+      const position = positionData[i];
+      // console.log("POSITION:", position);
+      const name = position.symbol;
+      const legendValue = convertToCurrency(position.market_value);
+      const value = parseFloat(position.market_value);
+      const color = COLORS[i % COLORS.length];
+      console.log("COLOR:", color);
+      chartData.push({ name, value, legendValue, color });
+    }
+    setStocksChartData(chartData);
+  }, [positionData]);
+
+  // for (let i = 0; i < entriesArray.length; i++) {
+  //   let [key, val] = entriesArray[i];
+  //   let name = key;
+  //   let value = val.number; // give chart raw number to work with
+  //   let legendValue = val.string; // show formatted string in legend
+  //   let color = COLORS[i % COLORS.length];
+  //   chartData.push({ name, value, legendValue, color });
+  // }
 
   useEffect(() => {
     if (accountData) {
@@ -53,19 +100,6 @@ const PositionsChart = () => {
         long_market_value: stocksValue,
         short_market_value: shortValue,
       } = accountData;
-
-      let options = {
-        currency: "USD",
-        currencyDisplay: "narrowSymbol",
-        currencySign: "accounting",
-        style: "currency",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      };
-
-      const convertToCurrency = (num: string) => {
-        return parseFloat(num).toLocaleString("en-US", options);
-      };
 
       makeBalanceChartData({
         Cash: {
@@ -96,7 +130,7 @@ const PositionsChart = () => {
       let color = COLORS[i % COLORS.length];
       chartData.push({ name, value, legendValue, color });
     }
-    setChartData(chartData);
+    setAllChartData(chartData);
   };
 
   const containerWidth = useBreakpointValue({
@@ -127,23 +161,13 @@ const PositionsChart = () => {
     <Flex h="100%" justify="center" w="100vw" maxW="100vw">
       {/* @ts-ignore */}
       <Box mr={{ base: "1rem", sm: "2rem" }} {...chartWrapperProps}>
-        {chartData && <CustomPieChart data={chartData} label="All" />}
+        {allChartData && <CustomPieChart data={allChartData} label="All" />}
       </Box>
 
       {/* @ts-ignore */}
       <Box display={{ base: "none", sm: "block" }} {...chartWrapperProps}>
-        {chartData && (
-          <CustomPieChart
-            data={chartData
-              .concat(chartData)
-              .concat(chartData)
-              .concat(chartData)
-              .concat(chartData)
-              .concat(chartData)
-              .concat(chartData)
-              .concat(chartData)}
-            label="Stocks"
-          />
+        {stocksChartData && (
+          <CustomPieChart data={stocksChartData} label="All" />
         )}
       </Box>
     </Flex>

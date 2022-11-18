@@ -103,7 +103,7 @@ const CustomPieChart = ({ data, label }: Props) => {
     md: 300,
   });
 
-  console.log("\n\nLEGEND LAYOUT:", legendLayout, "\n\n");
+  // console.log("\n\nLEGEND LAYOUT:", legendLayout, "\n\n");
 
   const legendProps = {
     content: renderLegend,

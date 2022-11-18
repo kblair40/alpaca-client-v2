@@ -12,7 +12,7 @@ export const fetchAccount = createAsyncThunk(
     if (isAuthenticated) {
       try {
         const response = await paperApi.get("/account");
-        console.log("USER ACCOUNT:", response.data);
+        // console.log("USER ACCOUNT:", response.data);
 
         if (response && response.data) {
           return response.data;
