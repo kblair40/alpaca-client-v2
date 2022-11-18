@@ -53,9 +53,6 @@ const PositionsList = () => {
     dispatch(positionActions.setSelectedPosition(position));
     setDrawerOpen(true);
 
-    // const assetResponse = await alpacaApi.get(`/assets/${position.symbol}`);
-    // console.log("ASSET RESPONSE:", assetResponse.data);
-    // dispatch(chartActions.setTicker(assetResponse.data));
     dispatch(fetchTickerData({ symbol: position.symbol, timeframe: "1D" }));
   };
 
