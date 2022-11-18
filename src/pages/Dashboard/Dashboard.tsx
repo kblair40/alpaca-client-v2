@@ -35,14 +35,39 @@ const Dashboard = (props: Props) => {
           <Tab>Orders</Tab>
         </TabList>
 
-        <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
-          <TabPanel>
-            <Flex direction="column" w="100%">
-              <Box>
+        <TabPanels
+          h="calc(100vh - 118px)"
+          overflowY="hidden"
+          // border="1px solid white"
+        >
+          {/* Maybe set overflowY: "auto" here (on TabPanel) */}
+          <TabPanel
+            // border="1px solid red"
+            h="100%"
+            pb={0}
+          >
+            <Flex
+              h="100%"
+              direction="column"
+              w="100%"
+              // border="1px solid purple"
+            >
+              <Box
+                // border="1px solid orange"
+                minH="180px"
+                //
+                flex={1.25}
+              >
                 <PositionsList />
               </Box>
 
-              <Box mt="1rem">
+              <Box
+                mt="1rem"
+                // border="1px solid green"
+                minH="300px"
+                //
+                flex={2}
+              >
                 <PositionsChart />
               </Box>
             </Flex>

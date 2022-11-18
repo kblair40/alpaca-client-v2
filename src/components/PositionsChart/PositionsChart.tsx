@@ -8,6 +8,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Scrollbars } from "react-custom-scrollbars-2";
 
 // import { type IAccount } from "utils/types/account";
 import useDispatch from "hooks/useDispatch";
@@ -109,11 +110,11 @@ const PositionsChart = () => {
     setChartData(chartData);
   };
 
-  const containerBoxSize = useBreakpointValue({
-    base: "160px",
+  const containerWidth = useBreakpointValue({
+    base: "180px",
     sm: "220px",
-    md: "300px",
-    lg: "340px",
+    md: "320px",
+    lg: "360px",
   });
 
   if (accountStatus === "loading") {
@@ -127,12 +128,41 @@ const PositionsChart = () => {
   if (!accountData) return <Text>NO DATA</Text>;
 
   return (
-    <Flex>
-      <Box mr="2rem" border="1px solid white" boxSize={containerBoxSize}>
+    <Flex
+      h="100%"
+      // border="1px solid #777"
+      justify={{ base: "center", sm: "start" }}
+      //
+    >
+      <Box
+        mr={{ base: "1rem", sm: "2rem" }}
+        // border=".1px solid white"
+        width={containerWidth}
+      >
         {chartData && <CustomPieChart data={chartData} label="All" />}
       </Box>
-      <Box border="1px solid white" boxSize={containerBoxSize}>
-        {chartData && <CustomPieChart data={chartData} label="Stocks" />}
+
+      <Box
+        // border=".1px solid white"
+        width={containerWidth}
+        // overflowY="auto"
+        overflowX="hidden"
+        display={{ base: "none", sm: "block" }}
+      >
+        <Scrollbars thumbSize={20}>
+          {chartData && (
+            <CustomPieChart
+              data={chartData
+                .concat(chartData)
+                .concat(chartData)
+                .concat(chartData)
+                .concat(chartData)
+                .concat(chartData)
+                .concat(chartData)}
+              label="Stocks"
+            />
+          )}
+        </Scrollbars>
       </Box>
     </Flex>
   );
