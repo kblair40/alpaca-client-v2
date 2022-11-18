@@ -32,6 +32,7 @@ type Args = {
 export const fetchOrdersByTimeframe = createAsyncThunk(
   "order/fetchOrdersByTimeframe",
   async (filters: Args) => {
+    console.log("FILTER ORDERS FUNC RCVD:", filters);
     const isAuthenticated = !!window.localStorage.getItem("auth-token");
 
     if (isAuthenticated) {
