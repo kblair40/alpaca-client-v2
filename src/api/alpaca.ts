@@ -18,4 +18,11 @@ const api = axios.create({
   },
 });
 
+export const paperApi = axios.create({
+  baseURL: "https://paper-api.alpaca.markets/v2",
+  headers: {
+    Authorization: token,
+  },
+});
+
 export default api;

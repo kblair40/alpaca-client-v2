@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { type IAccount } from "utils/types/account";
 
-// import { alpaca } from "api";
-import alpacaApi from "api/alpaca";
+// import alpacaApi from "api/alpaca";
+import { paperApi } from "api/alpaca";
 
 export const fetchAccount = createAsyncThunk(
   "account/fetchAccount",
@@ -10,7 +11,7 @@ export const fetchAccount = createAsyncThunk(
 
     if (isAuthenticated) {
       try {
-        const response = await alpacaApi.get("/account");
+        const response = await paperApi.get("/account");
         console.log("USER ACCOUNT:", response.data);
 
         if (response && response.data) {
@@ -28,7 +29,7 @@ export const fetchAccount = createAsyncThunk(
 
 type SliceState = {
   status: null | "loading" | "completed" | "failed";
-  data: any;
+  data: null | IAccount;
   error: boolean;
 };
 
@@ -40,7 +41,7 @@ const accountSlice = createSlice({
     error: false,
   } as SliceState,
   reducers: {
-    // closeModal(state) {},
+    // closeModal(state, action) {},
   },
 
   extraReducers(builder) {
