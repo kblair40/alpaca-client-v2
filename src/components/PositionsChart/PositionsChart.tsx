@@ -113,7 +113,7 @@ const PositionsChart = () => {
     base: "160px",
     sm: "220px",
     md: "300px",
-    lg: "400px",
+    lg: "340px",
   });
 
   if (accountStatus === "loading") {
@@ -128,8 +128,11 @@ const PositionsChart = () => {
 
   return (
     <Flex>
+      <Box mr="2rem" border="1px solid white" boxSize={containerBoxSize}>
+        {chartData && <CustomPieChart data={chartData} label="All" />}
+      </Box>
       <Box border="1px solid white" boxSize={containerBoxSize}>
-        {chartData && <CustomPieChart data={chartData} />}
+        {chartData && <CustomPieChart data={chartData} label="Stocks" />}
       </Box>
     </Flex>
   );
