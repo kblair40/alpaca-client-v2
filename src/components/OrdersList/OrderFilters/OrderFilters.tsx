@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Flex, Stack, Select, FormControl, FormLabel } from "@chakra-ui/react";
 
-import { timeframes, buySell, type FilterData } from "./options";
+import { timeframes, buySell, statuses, type FilterData } from "./options";
 import useDispatch from "hooks/useDispatch";
 import { fetchOrdersByTimeframe } from "store/orderSlice";
 
@@ -12,16 +12,18 @@ type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
 type FilterValues = {
   buySell: any;
   timeframe: any;
+  status: any;
   // buySell: BuySell;
   // timeframe: Timeframe;
 };
-type Field = "buySell" | "timeframe";
+type Field = "buySell" | "timeframe" | "status";
 
 const OrderFilters = (props: Props) => {
   const [filterValues, setFilterValues] = useState<FilterValues>({
     timeframe: timeframes.defaultValue,
     // @ts-ignore
     buySell: buySell.defaultValue,
+    status: statuses.defaultValue,
   });
   // const [buySellValue, setBuySellValue] = useState(buySell.defaultValue);
   // const [timeframeValue, setTimeframeValue] = useState(timeframes.defaultValue);
@@ -32,11 +34,6 @@ const OrderFilters = (props: Props) => {
     console.log("CHANGE DATA:", { value, field });
     // console.log("NEW VALUE:", e.target.value);
     setFilterValues({ ...filterValues, [`${field}`]: value });
-
-    // dispatch(fetchOrdersByTimeframe({
-    //   side: value,
-    //   timeframe:
-    // }));
   };
 
   useEffect(() => {
@@ -48,7 +45,7 @@ const OrderFilters = (props: Props) => {
         })
       );
     }
-  }, [filterValues]);
+  }, [filterValues, dispatch]);
 
   return (
     <Stack
@@ -65,6 +62,14 @@ const OrderFilters = (props: Props) => {
         onChange={handleChangeValue}
         data={buySell}
       />
+
+      <Filter
+        value={filterValues.status}
+        field="status"
+        onChange={handleChangeValue}
+        data={statuses}
+      />
+
       <Filter
         value={filterValues.timeframe}
         field="timeframe"
