@@ -1,15 +1,16 @@
 type BuySell = "buy" | "sell" | "both";
 type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
+type Status = "open" | "closed" | "all";
 
 type Option = {
   // label: string;
   label: string;
   // value: string;
-  value: BuySell | Timeframe;
+  value: BuySell | Timeframe | Status;
 };
 export type FilterData = {
   options: Option[];
-  defaultValue: BuySell | Timeframe;
+  defaultValue: BuySell | Timeframe | Status;
   // defaultValue: string;
   label: string;
 };
@@ -58,6 +59,25 @@ export const timeframes: FilterData = {
     {
       label: "More Than 2 Years Ago",
       value: "more_than_2",
+    },
+  ],
+};
+
+export const statuses: FilterData = {
+  defaultValue: "all",
+  label: "Status",
+  options: [
+    {
+      label: "Open",
+      value: "open",
+    },
+    {
+      label: "Closed",
+      value: "closed",
+    },
+    {
+      label: "All",
+      value: "all",
     },
   ],
 };
