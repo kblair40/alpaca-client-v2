@@ -36,13 +36,26 @@ const CustomPieChart = ({ data }: Props) => {
 
     //
     return (
-      <Stack direction={{ base: "column" }} spacing={{ base: "4px" }}>
+      <Stack
+        direction={{ base: "column" }}
+        spacing={{ base: "4px" }}
+        // border="1px solid #888"
+        //
+      >
         {props.payload.map((dataPoint: ChartData, index: number) => {
           if (!dataPoint.value) return null;
           return (
-            <Stack direction={{ base: "row" }} spacing="4px">
+            <Stack
+              fontSize="sm"
+              align="center"
+              direction={{ base: "row" }}
+              spacing="4px"
+            >
+              <Box boxSize="16px" bg={dataPoint.color} rounded="full" />
               <Text fontWeight="500">{dataPoint.name}</Text>
-              <Text fontWeight="600">{dataPoint.legendValue}</Text>
+              <Text pl="10px" fontWeight="600">
+                {dataPoint.legendValue}
+              </Text>
             </Stack>
           );
         })}
