@@ -41,7 +41,7 @@ export const buySell: FilterData = {
 };
 
 export const timeframes: FilterData = {
-  defaultValue: "past_yr",
+  defaultValue: "all",
   label: "Timeframe",
   options: [
     {
@@ -57,9 +57,13 @@ export const timeframes: FilterData = {
       value: "ytd",
     },
     {
-      label: "More Than 2 Years Ago",
-      value: "more_than_2",
+      label: "All",
+      value: "all",
     },
+    // {
+    //   label: "More Than 2 Years Ago",
+    //   value: "more_than_2",
+    // },
   ],
 };
 

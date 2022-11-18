@@ -97,7 +97,7 @@ const Filter = ({ data, value, onChange, field }: FilterProps) => {
         value={value}
         onChange={handleChange}
         size="sm"
-        defaultValue="both"
+        // defaultValue="both"
         rounded="md"
         cursor="pointer"
       >
