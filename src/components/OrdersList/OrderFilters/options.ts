@@ -45,7 +45,7 @@ export const timeframes: FilterData = {
     },
     {
       label: "More Than 2 Years Ago",
-      value: "ytd",
+      value: "more_than_2",
     },
   ],
 };

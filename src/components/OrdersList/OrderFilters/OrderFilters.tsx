@@ -1,7 +1,9 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { Flex, Stack, Select, FormControl, FormLabel } from "@chakra-ui/react";
 
 import { timeframes, buySell, type FilterData } from "./options";
+import useDispatch from "hooks/useDispatch";
+import { fetchOrdersByTimeframe } from "store/orderSlice";
 
 type Props = {};
 
