@@ -9,20 +9,46 @@ type Props = {};
 
 type BuySell = "buy" | "sell" | "both";
 type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
+type FilterValues = {
+  buySell: any;
+  timeframe: any;
+  // buySell: BuySell;
+  // timeframe: Timeframe;
+};
 type Field = "buySell" | "timeframe";
 
 const OrderFilters = (props: Props) => {
-  const [filterValues, setFilterValues] = useState({
-    buySell: buySell.defaultValue,
+  const [filterValues, setFilterValues] = useState<FilterValues>({
     timeframe: timeframes.defaultValue,
+    // @ts-ignore
+    buySell: buySell.defaultValue,
   });
   // const [buySellValue, setBuySellValue] = useState(buySell.defaultValue);
   // const [timeframeValue, setTimeframeValue] = useState(timeframes.defaultValue);
 
+  const dispatch = useDispatch();
+
   const handleChangeValue = (value: string, field: Field) => {
     console.log("CHANGE DATA:", { value, field });
     // console.log("NEW VALUE:", e.target.value);
+    setFilterValues({ ...filterValues, [`${field}`]: value });
+
+    // dispatch(fetchOrdersByTimeframe({
+    //   side: value,
+    //   timeframe:
+    // }));
   };
+
+  useEffect(() => {
+    if (filterValues) {
+      dispatch(
+        fetchOrdersByTimeframe({
+          side: filterValues.buySell,
+          timeframe: filterValues.timeframe,
+        })
+      );
+    }
+  }, [filterValues]);
 
   return (
     <Stack
