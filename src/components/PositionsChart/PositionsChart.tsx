@@ -14,14 +14,30 @@ import useSelector from "hooks/useSelector";
 import CustomPieChart from "./CustomPieChart";
 import { fetchAccount } from "store/accountSlice";
 
+// type BalanceChartData = {
+//   cashValue: string;
+//   stocksValue: string;
+//   shortValue: string;
+// };
+type DataPoint = { string: string; number: number };
 type BalanceChartData = {
-  cashValue: string;
-  stocksValue: string;
-  shortValue: string;
+  Cash: DataPoint;
+  Stocks: DataPoint;
+  Short: DataPoint;
+  // Cash: string;
+  // Stocks: string;
+  // Short: string;
+};
+
+export type ChartData = {
+  [key: string]: string | number;
+  name: string;
+  legendValue: string;
+  value: number;
 };
 
 const PositionsChart = () => {
-  const [chartData, setChartData] = useState<BalanceChartData>();
+  const [chartData, setChartData] = useState<ChartData[]>();
 
   const dispatch = useDispatch();
   const { data: accountData, status: accountStatus } = useSelector(
@@ -49,12 +65,44 @@ const PositionsChart = () => {
         maximumFractionDigits: 2,
       };
 
-      cashValue = parseFloat(cashValue).toLocaleString("en-US", options);
-      stocksValue = parseFloat(stocksValue).toLocaleString("en-US", options);
-      shortValue = parseFloat(shortValue).toLocaleString("en-US", options);
-      setChartData({ cashValue, stocksValue, shortValue });
+      const convertToCurrency = (num: string) => {
+        return parseFloat(num).toLocaleString("en-US", options);
+      };
+
+      makeBalanceChartData({
+        Cash: {
+          string: convertToCurrency(cashValue),
+          number: parseFloat(cashValue),
+        },
+        Stocks: {
+          string: convertToCurrency(stocksValue),
+          number: parseFloat(stocksValue),
+        },
+        Short: {
+          string: convertToCurrency(shortValue),
+          number: parseFloat(shortValue),
+        },
+      });
     }
   }, [accountData]);
+
+  // const makeBalanceChartData = (data: any) => {
+  const makeBalanceChartData = (data: BalanceChartData) => {
+    let chartData = [];
+    for (let [key, val] of Object.entries(data)) {
+      console.log(
+        "\n\nVAL:",
+        { val, parsed: val.string, type: typeof val },
+        "\n\n"
+      );
+      let name = key;
+      // let value = parseFloat(val); // give chart raw number to work with
+      let value = val.number; // give chart raw number to work with
+      let legendValue = val.string; // show formatted string in legend
+      chartData.push({ name, value, legendValue });
+    }
+    setChartData(chartData);
+  };
 
   const containerBoxSize = useBreakpointValue({
     base: "160px",
@@ -76,7 +124,7 @@ const PositionsChart = () => {
   return (
     <Flex>
       <Box border="1px solid white" boxSize={containerBoxSize}>
-        <CustomPieChart />
+        {chartData && <CustomPieChart data={chartData} />}
       </Box>
     </Flex>
   );

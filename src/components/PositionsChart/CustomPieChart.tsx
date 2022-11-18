@@ -1,19 +1,24 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
-import { useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue, Center, Spinner } from "@chakra-ui/react";
+
+import { type ChartData } from "./PositionsChart";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
-type Props = {};
+type Props = {
+  // data: { [key: string]: string | number }[];
+  data: ChartData[];
+};
 
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
+// const data = [
+//   { name: "Group A", value: 400 },
+//   { name: "Group B", value: 300 },
+//   { name: "Group C", value: 300 },
+//   { name: "Group D", value: 200 },
+// ];
 
-const CustomPieChart = (props: Props) => {
+const CustomPieChart = ({ data }: Props) => {
   const radiuses = useBreakpointValue({
     base: { innerRadius: "36", outerRadius: "48" },
     sm: { innerRadius: "45", outerRadius: "60" },
