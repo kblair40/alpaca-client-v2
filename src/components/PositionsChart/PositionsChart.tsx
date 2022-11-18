@@ -169,6 +169,27 @@ const PositionsChart = () => {
           <CustomPieChart data={stocksChartData} label="Stocks" />
         )}
       </Box>
+
+      <Box
+        display="inline"
+        w="100%"
+        position="fixed"
+        bottom={{ base: "0.5rem", sm: "1rem" }}
+        left="50%"
+        transform="translateX(-50%)"
+        textAlign="center"
+        minW="340px"
+        overflowX="hidden"
+        fontSize="sm"
+      >
+        <Text display="inline" fontWeight="600" variant={"secondary"}>
+          *Note:{" "}
+        </Text>
+        <Text display="inline" variant={"secondary"}>
+          Any entity that does not make up at least 1% of total value is not
+          displayed
+        </Text>
+      </Box>
     </Flex>
   );
 };
