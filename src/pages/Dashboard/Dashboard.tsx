@@ -6,6 +6,7 @@ import { fetchCalendarData } from "store/calendarSlice";
 import { fetchOrders } from "store/orderSlice";
 import OrdersList from "components/OrdersList";
 import PositionsList from "components/PositionsList";
+import PositionsChart from "components/PositionsChart";
 import OrderModal from "components/Modals/OrderModal";
 
 type Props = {};
@@ -29,6 +30,7 @@ const Dashboard = (props: Props) => {
         <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
           <TabPanel>
             <PositionsList />
+            <PositionsChart />
           </TabPanel>
           <TabPanel h="100%">
             <OrdersList />
