@@ -37,8 +37,8 @@ const CustomPieChart = ({ data }: Props) => {
     //
     return (
       <Stack
-        direction={{ base: "column" }}
         spacing={{ base: "4px" }}
+        // direction={{ base: "column" }}
         // border="1px solid #888"
         //
       >
@@ -46,14 +46,15 @@ const CustomPieChart = ({ data }: Props) => {
           if (!dataPoint.value) return null;
           return (
             <Stack
+              key={index}
               fontSize="sm"
               align="center"
               direction={{ base: "row" }}
               spacing="4px"
             >
-              <Box boxSize="16px" bg={dataPoint.color} rounded="full" />
-              <Text fontWeight="500">{dataPoint.name}</Text>
-              <Text pl="10px" fontWeight="600">
+              <Box boxSize="12px" bg={dataPoint.color} rounded="full" />
+              <Text fontWeight="600">{dataPoint.name}</Text>
+              <Text pl="10px" fontWeight="500">
                 {dataPoint.legendValue}
               </Text>
             </Stack>
@@ -87,6 +88,20 @@ const CustomPieChart = ({ data }: Props) => {
     md: 80,
     lg: 100,
   });
+
+  const legendLayout = useBreakpointValue({
+    base: { layout: "horizontal", verticalAlign: "bottom", align: "left" },
+    md: { layout: "horizontal", verticalAlign: "middle", align: "right" },
+  });
+
+  console.log("\n\nLEGEND LAYOUT:", legendLayout, "\n\n");
+
+  const legendProps = {
+    content: renderLegend,
+    payload: data,
+    // {...legendLayout}
+  };
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart
@@ -110,7 +125,18 @@ const CustomPieChart = ({ data }: Props) => {
             );
           })}
         </Pie>
-        <Legend content={renderLegend} payload={data} />
+        <Legend
+          content={renderLegend}
+          payload={data}
+          // {{}}
+          // {{}}
+          // {legendLayout ? ...legendLayout : null}
+
+          // {...legendLayout}
+          // layout="vertical"
+          // verticalAlign="middle"
+          // align="right"
+        />
         {/* <Legend content={renderLegend} /> */}
       </PieChart>
     </ResponsiveContainer>
