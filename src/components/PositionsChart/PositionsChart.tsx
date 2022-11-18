@@ -5,18 +5,26 @@ import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import { fetchAccount } from "store/accountSlice";
 
-type Props = {};
+type PositionsChartData = {
+  cashValue: number;
+  stocksValue: number;
+};
 
 const PositionsChart = () => {
-  const dispatch = useDispatch();
+  const [chartData, setChartData] = useState<PositionsChartData>();
 
-  const { data, status } = useSelector((st) => st.account);
+  const dispatch = useDispatch();
+  const { data: accountData, status: accountStatus } = useSelector(
+    (st) => st.account
+  );
 
   useEffect(() => {
     dispatch(fetchAccount());
   }, [dispatch]);
 
-  if (status === "loading") {
+  useEffect(() => {}, []);
+
+  if (accountStatus === "loading") {
     return (
       <Center h="120px">
         <Spinner />
@@ -24,7 +32,7 @@ const PositionsChart = () => {
     );
   }
 
-  if (!data) return <Text>NO DATA</Text>;
+  if (!accountData) return <Text>NO DATA</Text>;
 
   return <div>PositionsChart</div>;
 };
