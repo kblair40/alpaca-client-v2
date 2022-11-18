@@ -1,5 +1,13 @@
 import React, { useEffect } from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Flex,
+  Box,
+} from "@chakra-ui/react";
 
 import useDispatch from "hooks/useDispatch";
 import { fetchCalendarData } from "store/calendarSlice";
@@ -29,8 +37,15 @@ const Dashboard = (props: Props) => {
 
         <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
           <TabPanel>
-            <PositionsList />
-            <PositionsChart />
+            <Flex direction="column" w="100%">
+              <Box>
+                <PositionsList />
+              </Box>
+
+              <Box mt="1rem">
+                <PositionsChart />
+              </Box>
+            </Flex>
           </TabPanel>
           <TabPanel h="100%">
             <OrdersList />
