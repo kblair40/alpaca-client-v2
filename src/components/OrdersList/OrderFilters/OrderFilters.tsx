@@ -7,10 +7,11 @@ type Option = {
   label: string;
   value: string;
 };
-type FilterData = { options: Option[]; defaultValue: string };
+type FilterData = { options: Option[]; defaultValue: string; label: string };
 
 const buySell: FilterData = {
   defaultValue: "both",
+  label: "Buy/Sell",
   options: [
     {
       label: "Buy",
@@ -27,45 +28,42 @@ const buySell: FilterData = {
   ],
 };
 
+const timeframes: FilterData = {
+  defaultValue: "past_year",
+  label: "Timeframe",
+  options: [
+    {
+      label: "Past Yr",
+      value: "past_yr",
+    },
+    {
+      label: "Past 2 Yrs",
+      value: "past_2yrs",
+    },
+    {
+      label: "Yr to Date",
+      value: "ytd",
+    },
+    {
+      label: "More Than 2 Years Ago",
+      value: "ytd",
+    },
+  ],
+};
+
 const OrderFilters = (props: Props) => {
   return (
-    <Flex justifyContent="flex-start" align="center" w="100%">
+    <Stack
+      spacing={{ base: ".5rem", md: "1rem", lg: "1.5rem" }}
+      direction="row"
+      justifyContent="flex-start"
+      align="center"
+      w="100%"
+      mt=".5rem"
+    >
       <Filter data={buySell} />
-      {/* <FormControl w="max-content">
-        <FormLabel fontSize="sm">Buy/Sell</FormLabel>
-        <Select w="120px" size="sm" defaultValue="both">
-          {buySell.options.map((option, i) => (
-            <option key={i} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>
-      </FormControl> */}
-
-      {/* <FormControl border="1px solid green" w="max-content">
-        <FormLabel whiteSpace="nowrap" fontSize="sm">
-          Date From
-        </FormLabel>
-        <Select size="sm" defaultValue="both">
-          {buySell.options.map((option, i) => (
-            <option key={i} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>
-      </FormControl> */}
-
-      {/* <FormControl>
-        <FormLabel fontSize="sm">Date To</FormLabel>
-        <Select size="sm" defaultValue="both">
-          {buySell.options.map((option, i) => (
-            <option key={i} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Select>
-      </FormControl> */}
-    </Flex>
+      <Filter data={timeframes} />
+    </Stack>
   );
 };
 
@@ -74,10 +72,12 @@ export default OrderFilters;
 // type FilterProps = { data: FilterData };
 const Filter = ({ data }: { data: FilterData }) => {
   return (
-    <FormControl>
-      <FormLabel fontSize="sm">Date To</FormLabel>
-      <Select size="sm" defaultValue="both">
-        {buySell.options.map((option, i) => (
+    <FormControl w="max-content">
+      <FormLabel whiteSpace="nowrap" fontSize="sm">
+        {data.label}
+      </FormLabel>
+      <Select size="sm" defaultValue="both" rounded="md" cursor="pointer">
+        {data.options.map((option, i) => (
           <option key={i} value={option.value}>
             {option.label}
           </option>

@@ -35,7 +35,7 @@ const OrdersList = () => {
   return (
     <Flex h="calc(100% + 16px)" direction="column" minH="240px">
       <OrderFilters />
-      <Box position="relative" top="40px">
+      <Box position="relative" top="60px">
         <HStack
           position="absolute"
           top="-32px"
