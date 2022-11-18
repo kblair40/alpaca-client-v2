@@ -26,7 +26,7 @@ import { type ChartData } from "./PositionsChart";
 
 type Props = {
   data: ChartData[];
-  label?: string;
+  label: string;
 };
 
 const CustomPieChart = ({ data, label }: Props) => {
@@ -49,7 +49,11 @@ const CustomPieChart = ({ data, label }: Props) => {
       >
         <Stack spacing={{ base: "4px" }} w="max-content">
           {props.payload.map((dataPoint: ChartData, index: number) => {
+            // if (!dataPoint.value || dataPoint.value < minAllowedValue) {
+            //   return null;
+            // }
             if (!dataPoint.value) return null;
+
             return (
               <Stack
                 key={index}
@@ -103,14 +107,12 @@ const CustomPieChart = ({ data, label }: Props) => {
     md: 300,
   });
 
-  // console.log("\n\nLEGEND LAYOUT:", legendLayout, "\n\n");
-
   const legendProps = {
     content: renderLegend,
     payload: data,
     ...legendLayout,
   };
-
+  // console.log("\n\n\n\n\n\n");
   return (
     <Fragment>
       <Scrollbars
@@ -141,14 +143,10 @@ const CustomPieChart = ({ data, label }: Props) => {
               dataKey="value"
             >
               <ReText>Hello</ReText>
+
               {data.map((entry, index) => {
-                // console.log("\n\nENTRY:", entry, "\n\n");
-                return (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                );
+                console.log("\n\nENTRY:", entry, "\n\n");
+                return <Cell key={`cell-${index}`} fill={entry.color} />;
               })}
             </Pie>
             {/* @ts-ignore */}

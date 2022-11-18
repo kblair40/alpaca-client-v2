@@ -43,9 +43,10 @@ const PositionsChart = () => {
   const { data: accountData, status: accountStatus } = useSelector(
     (st) => st.account
   );
-  const { data: positionData, status: positionStatus } = useSelector(
-    (st) => st.position
-  );
+  const {
+    data: positionData,
+    // status: positionStatus
+  } = useSelector((st) => st.position);
 
   let options = {
     currency: "USD",
@@ -65,33 +66,28 @@ const PositionsChart = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    // market_value to get value
     if (!positionData) return;
 
     console.log("\n\nALL COLORS:", COLORS, "\n\n");
 
-    const chartData = [];
+    let totalValue = 0;
+    let chartData = [];
     for (let i = 0; i < positionData.length; i++) {
       const position = positionData[i];
       // console.log("POSITION:", position);
       const name = position.symbol;
       const legendValue = convertToCurrency(position.market_value);
       const value = parseFloat(position.market_value);
+      totalValue += value;
       const color = COLORS[i % COLORS.length];
-      console.log("COLOR:", color);
+      // console.log("COLOR:", color);
       chartData.push({ name, value, legendValue, color });
     }
+
+    // do not render any stock that makes up less than 1% of the total portfolio value
+    chartData = chartData.filter((data) => data.value > totalValue * 0.01);
     setStocksChartData(chartData);
   }, [positionData]);
-
-  // for (let i = 0; i < entriesArray.length; i++) {
-  //   let [key, val] = entriesArray[i];
-  //   let name = key;
-  //   let value = val.number; // give chart raw number to work with
-  //   let legendValue = val.string; // show formatted string in legend
-  //   let color = COLORS[i % COLORS.length];
-  //   chartData.push({ name, value, legendValue, color });
-  // }
 
   useEffect(() => {
     if (accountData) {
@@ -122,15 +118,18 @@ const PositionsChart = () => {
     let chartData = [];
     const entriesArray = Object.entries(data);
 
+    let totalValue = 0;
     for (let i = 0; i < entriesArray.length; i++) {
       let [key, val] = entriesArray[i];
       let name = key;
       let value = val.number; // give chart raw number to work with
+      totalValue += value;
       let legendValue = val.string; // show formatted string in legend
       let color = COLORS[i % COLORS.length];
       chartData.push({ name, value, legendValue, color });
     }
-    setAllChartData(chartData);
+    setAllChartData(chartData.filter((data) => data.value > totalValue * 0.01));
+    // setMinAllowedAllValue(totalValue * 0.01);
   };
 
   const containerWidth = useBreakpointValue({
@@ -167,7 +166,7 @@ const PositionsChart = () => {
       {/* @ts-ignore */}
       <Box display={{ base: "none", sm: "block" }} {...chartWrapperProps}>
         {stocksChartData && (
-          <CustomPieChart data={stocksChartData} label="All" />
+          <CustomPieChart data={stocksChartData} label="Stocks" />
         )}
       </Box>
     </Flex>
