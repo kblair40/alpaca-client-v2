@@ -36,10 +36,10 @@ export const fetchOrdersByTimeframe = createAsyncThunk(
 
     if (isAuthenticated) {
       try {
-        const response = await alpaca.get("/specific/order", {
+        const response = await alpaca.get("/filtered/order", {
           params: { timeframe: filters.timeframe, side: filters.side },
         });
-        // console.log("USER ORDERS:", response.data);
+        console.log("FILTERED ORDERS:", response.data);
 
         if (response && response.data) {
           return response.data;
