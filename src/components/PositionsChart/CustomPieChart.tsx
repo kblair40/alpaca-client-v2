@@ -2,7 +2,6 @@ import { Fragment } from "react";
 import {
   PieChart,
   Pie,
-  // Sector,
   Cell,
   ResponsiveContainer,
   Legend,
@@ -15,7 +14,6 @@ import {
   Stack,
   Flex,
   useColorModeValue,
-  useTheme,
 } from "@chakra-ui/react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
@@ -33,12 +31,6 @@ type Props = {
 
 const CustomPieChart = ({ data, label }: Props) => {
   const COLORS = useColorModeValue(lightColors, darkColors);
-
-  const {
-    colors: { gray, red },
-  } = useTheme();
-
-  const dividerColor = useColorModeValue(red["200"], red["600"]);
 
   const renderLegend = (props: any) => {
     // console.log("\n\nLEGEND PROPS:", props.payload, "\n\n");
@@ -137,7 +129,6 @@ const CustomPieChart = ({ data, label }: Props) => {
         >
           {label}
         </Text>
-        {/* <ResponsiveContainer width="100%" height={600} debounce={200}> */}
         <ResponsiveContainer width="100%" height="100%" debounce={200}>
           <PieChart>
             <Pie
