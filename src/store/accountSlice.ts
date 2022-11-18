@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { type IWatchlistAsset } from "utils/types/watchlist";
 
 // import { alpaca } from "api";
 import alpacaApi from "api/alpaca";
@@ -12,7 +11,7 @@ export const fetchAccount = createAsyncThunk(
     if (isAuthenticated) {
       try {
         const response = await alpacaApi.get("/account");
-        // console.log("USER ORDERS:", response.data);
+        console.log("USER ACCOUNT:", response.data);
 
         if (response && response.data) {
           return response.data;

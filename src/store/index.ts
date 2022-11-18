@@ -7,6 +7,7 @@ import calendarReducer from "./calendarSlice";
 import corporateActionsReducer from "./corporateActionsSlice";
 import orderReducer from "./orderSlice";
 import positionReducer from "./positionSlice";
+import accountReducer from "./accountSlice";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     corporateActions: corporateActionsReducer,
     order: orderReducer,
     position: positionReducer,
+    account: accountReducer,
   },
 });
 
