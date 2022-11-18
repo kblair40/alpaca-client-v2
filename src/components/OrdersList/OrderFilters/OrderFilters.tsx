@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Flex, Stack, Select, FormControl, FormLabel } from "@chakra-ui/react";
 
 import { timeframes, buySell, statuses, type FilterData } from "./options";
@@ -7,8 +7,8 @@ import { fetchOrdersByTimeframe } from "store/orderSlice";
 
 type Props = {};
 
-type BuySell = "buy" | "sell" | "both";
-type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
+// type BuySell = "buy" | "sell" | "both";
+// type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
 type FilterValues = {
   buySell: any;
   timeframe: any;
@@ -33,11 +33,14 @@ const OrderFilters = (props: Props) => {
     setFilterValues({ ...filterValues, [`${field}`]: value });
   };
 
+  const didMount = useRef(false);
   useEffect(() => {
-    if (filterValues) {
+    if (filterValues && didMount.current) {
       const { buySell, timeframe, status } = filterValues;
       const filters = { side: buySell, timeframe, status };
       dispatch(fetchOrdersByTimeframe(filters));
+    } else {
+      didMount.current = true;
     }
   }, [filterValues, dispatch]);
 
@@ -97,7 +100,6 @@ const Filter = ({ data, value, onChange, field }: FilterProps) => {
         value={value}
         onChange={handleChange}
         size="sm"
-        // defaultValue="both"
         rounded="md"
         cursor="pointer"
       >
