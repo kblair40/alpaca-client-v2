@@ -23,6 +23,37 @@ export const fetchOrders = createAsyncThunk("order/fetchOrders", async () => {
   return [];
 });
 
+type Side = "buy" | "sell" | "both";
+type Timeframe = "past_yr" | "past_2yrs" | "ytd" | "more_than_2";
+type Args = {
+  side: Side;
+  timeframe: Timeframe;
+};
+export const fetchOrdersByTimeframe = createAsyncThunk(
+  "order/fetchOrdersByTimeframe",
+  async (filters: Args) => {
+    const isAuthenticated = !!window.localStorage.getItem("auth-token");
+
+    if (isAuthenticated) {
+      try {
+        const response = await alpaca.get("/specific/order", {
+          params: { timeframe: filters.timeframe, side: filters.side },
+        });
+        // console.log("USER ORDERS:", response.data);
+
+        if (response && response.data) {
+          return response.data;
+        }
+      } catch (err) {
+        console.log("FAILED:", err);
+        return [];
+      }
+    }
+
+    return [];
+  }
+);
+
 type SliceState = {
   asset: IWatchlistAsset | null; // standard asset object from alpaca;
   showModal: boolean;
@@ -85,6 +116,25 @@ const orderSlice = createSlice({
         }
       })
       .addCase(fetchOrders.rejected, (state) => {
+        state.status = "failed";
+        state.error = true;
+      })
+      .addCase(fetchOrdersByTimeframe.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(fetchOrdersByTimeframe.fulfilled, (state, action) => {
+        state.status = "completed";
+        const data = action.payload;
+        // console.log("\n\nUSER ORDERS DATA:", data);
+
+        if (data) {
+          state.orders = data;
+        } else {
+          state.error = true;
+          state.status = "failed";
+        }
+      })
+      .addCase(fetchOrdersByTimeframe.rejected, (state) => {
         state.status = "failed";
         state.error = true;
       });
