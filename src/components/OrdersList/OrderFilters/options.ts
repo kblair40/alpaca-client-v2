@@ -15,10 +15,10 @@ export type FilterData = {
   label: string;
 };
 
-type FilterValues = {
-  buySell: BuySell;
-  timeFrame: Timeframe;
-};
+// type FilterValues = {
+//   buySell: BuySell;
+//   timeFrame: Timeframe;
+// };
 // type Field = "buySell" | "timeframe";
 
 export const buySell: FilterData = {
@@ -45,15 +45,15 @@ export const timeframes: FilterData = {
   label: "Timeframe",
   options: [
     {
-      label: "Past Yr",
+      label: "Past Year",
       value: "past_yr",
     },
     {
-      label: "Past 2 Yrs",
+      label: "Past 2 Years",
       value: "past_2yrs",
     },
     {
-      label: "Yr to Date",
+      label: "Year to Date",
       value: "ytd",
     },
     {
@@ -64,7 +64,7 @@ export const timeframes: FilterData = {
 };
 
 export const statuses: FilterData = {
-  defaultValue: "all",
+  defaultValue: "open",
   label: "Status",
   options: [
     {
