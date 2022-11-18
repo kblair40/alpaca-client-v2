@@ -1,55 +1,9 @@
 import React from "react";
 import { Flex, Stack, Select, FormControl, FormLabel } from "@chakra-ui/react";
 
+import { timeframes, buySell, type FilterData } from "./options";
+
 type Props = {};
-
-type Option = {
-  label: string;
-  value: string;
-};
-type FilterData = { options: Option[]; defaultValue: string; label: string };
-
-const buySell: FilterData = {
-  defaultValue: "both",
-  label: "Buy/Sell",
-  options: [
-    {
-      label: "Buy",
-      value: "buy",
-    },
-    {
-      label: "Sell",
-      value: "Sell",
-    },
-    {
-      label: "Both",
-      value: "both",
-    },
-  ],
-};
-
-const timeframes: FilterData = {
-  defaultValue: "past_year",
-  label: "Timeframe",
-  options: [
-    {
-      label: "Past Yr",
-      value: "past_yr",
-    },
-    {
-      label: "Past 2 Yrs",
-      value: "past_2yrs",
-    },
-    {
-      label: "Yr to Date",
-      value: "ytd",
-    },
-    {
-      label: "More Than 2 Years Ago",
-      value: "ytd",
-    },
-  ],
-};
 
 const OrderFilters = (props: Props) => {
   return (
