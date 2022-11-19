@@ -1,16 +1,18 @@
-import { Tooltip } from "@chakra-ui/react";
+import { Tooltip, Box } from "@chakra-ui/react";
 
 import { QuestionIcon } from "utils/icons";
 
 type Props = {
-  tooltipLabel: string;
+  label: string;
   iconBoxSize?: string;
 };
 
-const QuestionBubble = ({ tooltipLabel, iconBoxSize = "18px" }: Props) => {
+const QuestionBubble = ({ label, iconBoxSize = "18px" }: Props) => {
   return (
-    <Tooltip label={tooltipLabel}>
-      <QuestionIcon boxSize={iconBoxSize} />
+    <Tooltip label={label}>
+      <Box>
+        <QuestionIcon boxSize={iconBoxSize} />
+      </Box>
     </Tooltip>
   );
 };

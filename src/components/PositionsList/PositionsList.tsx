@@ -21,6 +21,7 @@ import {
   positionActions,
 } from "store/positionSlice";
 import PositionDrawer from "./PositionDrawer";
+import QuestionBubble from "components/QuestionBubble";
 
 const PositionsList = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);

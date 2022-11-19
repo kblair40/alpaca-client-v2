@@ -15,7 +15,6 @@ import {
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
-import QuestionBubble from "components/QuestionBubble";
 import { ChevronDownIcon } from "utils/icons";
 import { type IOrder } from "utils/types/order";
 import useSelector from "hooks/useSelector";
@@ -32,7 +31,11 @@ const OrdersList = () => {
   // const { colorMode } = useColorMode();
   // const isDark = colorMode === "dark";
 
-  const { status, error, orders } = useSelector((st) => st.order);
+  const {
+    status,
+    // error,
+    orders,
+  } = useSelector((st) => st.order);
 
   return (
     <Flex h="calc(100% + 16px)" direction="column" minH="240px">
@@ -68,10 +71,6 @@ const OrdersList = () => {
         <VStack
           spacing="4px"
           divider={<StackDivider />}
-          // h="100%"
-          // maxH="100%"
-          // maxH="calc(100vh - 340px)"
-          // border="1px solid #888"
           overflowY="auto"
           pb="1rem"
         >
