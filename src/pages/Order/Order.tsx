@@ -50,6 +50,7 @@ const Order = () => {
     "accepted_for_bidding",
     "accepted",
   ];
+  const filledStatuses = ["filled", "partially_filled"];
 
   if (loading) {
     return (
@@ -88,8 +89,10 @@ const Order = () => {
     const replacedBy = orderData.replaced_by;
     const replaces = orderData.replaces;
     const isEditable = editableStatuses.includes(orderData.status);
+    const isFilled =
+      filledStatuses.includes(orderData.status) && !!filledAvgPrice;
 
-    console.log("status:", status);
+    // console.log("status:", status);
 
     return (
       <Fragment>
@@ -111,10 +114,18 @@ const Order = () => {
             >
               {symbol}
             </Text>
-            <Text
-              textTransform="capitalize"
-              fontSize={{ base: "sm", sm: "md" }}
-            >{`${toTitleCase(orderType, "_")} ${side}`}</Text>
+
+            {!isFilled ? (
+              <Text
+                textTransform="capitalize"
+                fontSize={{ base: "sm", sm: "md" }}
+              >{`${toTitleCase(orderType, "_")} ${side}`}</Text>
+            ) : (
+              <Text
+                textTransform="capitalize"
+                fontSize={{ base: "sm", sm: "md" }}
+              >{`${side} ${qty} @ ${filledAvgPrice}`}</Text>
+            )}
 
             {isEditable && (
               <Button
