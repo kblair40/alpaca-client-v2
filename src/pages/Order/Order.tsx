@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
-import { ArrowLeftIcon } from "utils/icons";
+import { ArrowLeftIcon, EditIcon } from "utils/icons";
 import { toTitleCase } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
 import { alpaca } from "api";
@@ -43,6 +43,13 @@ const Order = () => {
 
     fetchOrder();
   }, [orderId]);
+
+  const editableStatuses = [
+    "new",
+    "done_for_day",
+    "accepted_for_bidding",
+    "accepted",
+  ];
 
   if (loading) {
     return (
@@ -80,6 +87,9 @@ const Order = () => {
     const replacedAt = orderData.replaced_at;
     const replacedBy = orderData.replaced_by;
     const replaces = orderData.replaces;
+    const isEditable = editableStatuses.includes(orderData.status);
+
+    console.log("status:", status);
 
     return (
       <Fragment>
@@ -105,6 +115,17 @@ const Order = () => {
               textTransform="capitalize"
               fontSize={{ base: "sm", sm: "md" }}
             >{`${toTitleCase(orderType, "_")} ${side}`}</Text>
+
+            {isEditable && (
+              <Button
+                ml="1rem"
+                variant="solid-blue"
+                size="xs"
+                leftIcon={<EditIcon boxSize="16px" />}
+              >
+                Edit Order
+              </Button>
+            )}
           </Flex>
 
           <Box mt="1.5rem">
