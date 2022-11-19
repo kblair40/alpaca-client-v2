@@ -38,10 +38,11 @@ const OrdersList = () => {
       <Box position="relative" top="60px">
         <HStack
           position="absolute"
-          top="-32px"
+          top={{ base: "-32px", md: "-36px" }}
           left={0}
           right={0}
-          fontSize="sm"
+          align="center"
+          fontSize="13px"
           fontWeight="700"
           w="100%"
           textAlign="center"
@@ -89,7 +90,7 @@ const OrdersList = () => {
 
               return (
                 <HStack
-                  fontSize="sm"
+                  fontSize="13px"
                   key={i}
                   w="100%"
                   textAlign="center"
