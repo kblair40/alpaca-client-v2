@@ -48,6 +48,7 @@ const Dashboard = (props: Props) => {
         <TabList h="42px">
           <Tab {...tabStyles}>Positions</Tab>
           <Tab {...tabStyles}>Orders</Tab>
+          <Tab {...tabStyles}>Account</Tab>
         </TabList>
 
         <TabPanels h="calc(100vh - 118px)" overflowY="hidden">
@@ -74,6 +75,10 @@ const Dashboard = (props: Props) => {
               </Box>
             </Flex>
           </TabPanel>
+          <TabPanel h="100%">
+            <OrdersList />
+          </TabPanel>
+
           <TabPanel h="100%">
             <OrdersList />
           </TabPanel>
