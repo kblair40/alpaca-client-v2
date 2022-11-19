@@ -43,7 +43,7 @@ const OrdersList = () => {
       <Box position="relative" top="60px">
         <HStack
           position="absolute"
-          top={{ base: "-32px", md: "-36px" }}
+          top={{ base: "-32px", md: "-34px" }}
           left={0}
           right={0}
           align="center"
@@ -53,8 +53,10 @@ const OrdersList = () => {
           textAlign="center"
           textDecoration="underline"
         >
+          <Text flex={0.75} textAlign="left">
+            Symbol
+          </Text>
           <Text flex={1}>Side</Text>
-          <Text flex={1}>Symbol</Text>
           <Text flex={1}>Type</Text>
 
           <Text flex={1}>Created</Text>
@@ -62,7 +64,7 @@ const OrdersList = () => {
           <Text flex={1} display={{ base: "none", md: "inline" }}>
             Ordered Qty
           </Text>
-          <Text flex={1} display={{ base: "none", md: "inline" }}>
+          <Text flex={1.25} display={{ base: "none", md: "inline" }}>
             Avg Filled Price
           </Text>
           <Text flex={1}>Details</Text>
@@ -99,10 +101,12 @@ const OrdersList = () => {
                   textAlign="center"
                   py="4px"
                 >
+                  <Text flex={0.75} textAlign="left">
+                    {symbol}
+                  </Text>
                   <Text flex={1} textTransform="capitalize">
                     {side}
                   </Text>
-                  <Text flex={1}>{symbol}</Text>
                   <Text flex={1} textTransform="capitalize">
                     {orderTypes[orderType]}
                   </Text>
@@ -115,7 +119,7 @@ const OrdersList = () => {
                   <Text display={{ base: "none", md: "inline" }} flex={1}>
                     {qty}
                   </Text>
-                  <Text display={{ base: "none", md: "inline" }} flex={1}>
+                  <Text display={{ base: "none", md: "inline" }} flex={1.25}>
                     {filledAvgPrice ? `$${filledAvgPrice}` : "-"}
                   </Text>
 
