@@ -68,7 +68,7 @@ export const timeframes: FilterData = {
 };
 
 export const statuses: FilterData = {
-  defaultValue: "open",
+  defaultValue: "all",
   label: "Status",
   options: [
     {
