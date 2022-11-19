@@ -65,7 +65,10 @@ const OrdersList = () => {
         <VStack
           spacing="4px"
           divider={<StackDivider />}
-          h="100%"
+          // h="100%"
+          // maxH="100%"
+          // maxH="calc(100vh - 340px)"
+          // border="1px solid #888"
           overflowY="auto"
           pb="1rem"
         >
@@ -127,6 +130,8 @@ const OrdersList = () => {
                 </HStack>
               );
             })
+          ) : status === "completed" && orders && !orders.length ? (
+            <NoOrders />
           ) : null}
         </VStack>
       </Box>
@@ -135,3 +140,14 @@ const OrdersList = () => {
 };
 
 export default OrdersList;
+
+const NoOrders = () => {
+  return (
+    <Flex mt="2rem" py="1rem" direction="column" align="center">
+      <Text textAlign="center" fontWeight="600">
+        No Orders Match Your Search Criteria
+      </Text>
+      <Text textAlign="center">Try adjusting filter values</Text>
+    </Flex>
+  );
+};
