@@ -10,6 +10,7 @@ import {
   IconButton,
   StackDivider,
   Box,
+  Tooltip,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
@@ -86,7 +87,9 @@ const OrdersList = () => {
               const status = order.status;
               const filledAvgPrice = order.filled_avg_price;
               const qty = order.qty;
-              const createdAt = order.created_at;
+              const date = dayjs(order.created_at);
+              const createdAt = date.format("M/D/YY");
+              const dateTip = date.format("MMM D, YYYY h:mm a");
 
               return (
                 <HStack
@@ -103,7 +106,9 @@ const OrdersList = () => {
                   <Text flex={1} textTransform="capitalize">
                     {orderTypes[orderType]}
                   </Text>
-                  <Text flex={1}>{dayjs(createdAt).format("MM/YY")}</Text>
+                  <Tooltip label={dateTip}>
+                    <Text flex={1}>{createdAt}</Text>
+                  </Tooltip>
                   <Text flex={1} textTransform="capitalize">
                     {status}
                   </Text>
