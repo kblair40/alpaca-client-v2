@@ -89,7 +89,6 @@ const PositionsList = () => {
           Symbol
         </Text>
         <Text flex={0.5}>Qty</Text>
-        <Text flex={0.5}>Asset</Text>
         <Text display={{ base: "none", sm: "inline" }} flex={1}>
           Avg. Entry Price
         </Text>
@@ -126,7 +125,6 @@ const PositionsList = () => {
                   {pos.symbol}
                 </Text>
                 <Text flex={0.5}>{pos.qty}</Text>
-                <Text flex={0.5}>{assetClassMap[pos.asset_class]}</Text>
                 <Text display={{ base: "none", sm: "inline" }} flex={1}>
                   {parseFloat(pos.avg_entry_price).toFixed(2)}
                 </Text>
