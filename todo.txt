@@ -1,6 +1,8 @@
 V1 Critical
-1. 
-
+1. Add Edit Order modal
+    - include disclaimer (no guarantee edit will apply)
+    - test by placing order outside market hours and immediately navigating to the order
+2. Make dashboard tabs lazy
 
 Ideas/Nice-To-Haves
 1. Gradient for Skeleton component

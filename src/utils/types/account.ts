@@ -2,6 +2,7 @@ export type IAccount = {
   account_blocked: boolean;
   account_number: string;
   crypto_status?: string;
+  balance_asof?: string;
   buying_power: string;
   cash: string;
   created_at: string;

@@ -18,6 +18,7 @@ import OrdersList from "components/OrdersList";
 import PositionsList from "components/PositionsList";
 import PositionsChart from "components/PositionsChart";
 import OrderModal from "components/Modals/OrderModal";
+import AlpacaAccount from "components/AlpacaAccount";
 
 type Props = {};
 
@@ -80,7 +81,7 @@ const Dashboard = (props: Props) => {
           </TabPanel>
 
           <TabPanel h="100%">
-            <OrdersList />
+            <AlpacaAccount />
           </TabPanel>
         </TabPanels>
       </Tabs>
