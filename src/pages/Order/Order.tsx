@@ -17,12 +17,14 @@ import { ArrowLeftIcon, EditIcon } from "utils/icons";
 import { toTitleCase } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
 import { alpaca } from "api";
+import EditOrderModal from "components/Modals/EditOrderModal";
 
 const ASSET_CLASSES: { [key: string]: string } = {
   us_equity: "US Equity",
 };
 
 const Order = () => {
+  const [editModalOpen, setEditModalOpen] = useState(false);
   const [orderData, setOrderData] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,6 +53,14 @@ const Order = () => {
     "accepted",
   ];
   const filledStatuses = ["filled", "partially_filled"];
+
+  const handleCloseEditModal = () => {
+    setEditModalOpen(false);
+  };
+
+  const handleClickEdit = () => {
+    //
+  };
 
   if (loading) {
     return (
@@ -96,6 +106,8 @@ const Order = () => {
 
     return (
       <Fragment>
+        <EditOrderModal isOpen={editModalOpen} onClose={handleCloseEditModal} />
+
         <Box position="fixed" top="76px" left="1rem">
           <BackToDashboard />
         </Box>
@@ -133,6 +145,8 @@ const Order = () => {
                 variant="solid-blue"
                 size="xs"
                 leftIcon={<EditIcon boxSize="16px" />}
+                onClick={() => setEditModalOpen(true)}
+                isDisabled={!orderData}
               >
                 Edit Order
               </Button>
