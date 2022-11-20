@@ -78,7 +78,7 @@ const Dashboard = (props: Props) => {
             </Flex>
           </TabPanel>
 
-          <TabPanel h="100%">
+          <TabPanel h="100%" p={0}>
             <OrdersList />
           </TabPanel>
 
