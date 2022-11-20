@@ -13,6 +13,7 @@ import {
   Th,
   Td,
   TableContainer,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
@@ -27,7 +28,12 @@ const Activities = () => {
   const dispatch = useDispatch();
   const { activitiesStatus, activities } = useSelector((st) => st.account);
 
-  const dateFormat = "MM/DD/YYYY, hh:mm:ss A";
+  const longDateFormat = "MM/DD/YYYY, hh:mm:ss A";
+  const shortDateFormat = "MM/DD/YY";
+  const dateFormat = useBreakpointValue({
+    base: shortDateFormat,
+    sm: longDateFormat,
+  });
 
   useEffect(() => {
     dispatch(fetchAccountActivities());
@@ -58,10 +64,16 @@ const Activities = () => {
   }
 
   return (
-    <Stack align="start" w="100%" pt="1.5rem" h="100%" px="1rem">
+    <Stack
+      align="start"
+      w="100%"
+      pt="1.5rem"
+      h="100%"
+      px={{ base: 0, sm: "1rem" }}
+    >
       {header()}
       <TableContainer w="100%" h="100%">
-        <Table w="100%" h="100%" p={0} size="sm">
+        <Table w="100%" h="100%" p={0} size="sm" fontSize="8px">
           <Thead h="41px" w="100%">
             <Tr w="100%">
               <Th>Activity</Th>
@@ -71,18 +83,34 @@ const Activities = () => {
             </Tr>
           </Thead>
 
-          <Tbody p={0} w="100vw" h="calc(100% - 195px)" maxH="100%">
+          <Tbody
+            p={0}
+            w="100vw"
+            h="calc(100% - 195px)"
+            maxH="100%"
+            // sx={{
+            //   td: {
+            //     fontSize: "12px ",
+            //   },
+            // }}
+          >
             {activitiesStatus === "completed" && !!activities
               ? activities
                   .concat(activities)
                   .map((activity: any, i: number) => {
                     return (
                       <Tr key={i} w="100%" textAlign="left">
-                        <Td textAlign="left" textTransform="capitalize">
+                        <Td
+                          fontSize={{ base: "xs", sm: "sm" }}
+                          textAlign="left"
+                          textTransform="capitalize"
+                        >
                           {`${activity.side} ${activity.qty} ${activity.symbol}`}
                         </Td>
-                        <Td>{dayjs(activity.timestamp).format(dateFormat)}</Td>
-                        <Td isNumeric>
+                        <Td fontSize={{ base: "xs", sm: "sm" }}>
+                          {dayjs(activity.timestamp).format(dateFormat)}
+                        </Td>
+                        <Td fontSize={{ base: "xs", sm: "sm" }} isNumeric>
                           <Text>
                             {calculateActivityCost(
                               activity.qty,
@@ -90,7 +118,7 @@ const Activities = () => {
                             )}
                           </Text>
                         </Td>
-                        <Td>
+                        <Td fontSize={{ base: "xs", sm: "sm" }}>
                           {activity.order_id ? (
                             <Center>
                               <Link to={`/order/${activity.order_id}`}>
