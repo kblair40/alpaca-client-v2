@@ -13,6 +13,7 @@ import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import CustomPieChart from "./CustomPieChart";
 import { fetchAccount } from "store/accountSlice";
+import { convertToCurrency } from "utils/helpers";
 import {
   darkModeChartColors as darkColors,
   lightModeChartColors as lightColors,
@@ -43,23 +44,7 @@ const PositionsChart = () => {
   const { data: accountData, status: accountStatus } = useSelector(
     (st) => st.account
   );
-  const {
-    data: positionData,
-    // status: positionStatus
-  } = useSelector((st) => st.position);
-
-  let options = {
-    currency: "USD",
-    currencyDisplay: "narrowSymbol",
-    currencySign: "accounting",
-    style: "currency",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
-  const convertToCurrency = (num: string) => {
-    return parseFloat(num).toLocaleString("en-US", options);
-  };
+  const { data: positionData } = useSelector((st) => st.position);
 
   useEffect(() => {
     dispatch(fetchAccount());

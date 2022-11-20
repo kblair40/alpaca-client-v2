@@ -13,6 +13,7 @@ import {
 import Activities from "./Activities";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
+import { convertToCurrency } from "utils/helpers";
 import { fetchAccount } from "store/accountSlice";
 
 const AlpacaAccount = () => {
@@ -64,19 +65,6 @@ type StatProps = {
 };
 
 const CustomStat = ({ label, value }: StatProps) => {
-  let options = {
-    currency: "USD",
-    currencyDisplay: "narrowSymbol",
-    currencySign: "accounting",
-    style: "currency",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  };
-
-  const convertToCurrency = (num: string) => {
-    return parseFloat(num).toLocaleString("en-US", options);
-  };
-
   return (
     <GridItem w={{ base: "160px", sm: "200px" }}>
       <Stat display="flex" flexDirection="column" alignItems="center">
