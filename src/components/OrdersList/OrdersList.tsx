@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 
 import { VisibleIcon } from "utils/icons";
+import { convertToCurrency } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
 import useSelector from "hooks/useSelector";
 import OrderFilters from "./OrderFilters";
@@ -65,7 +66,12 @@ const OrdersList = () => {
   const bodyFontSize = useBreakpointValue({ base: "xs", sm: "sm" });
 
   return (
-    <Flex h="calc(100% + 16px)" direction="column" minH="240px">
+    <Flex
+      h="100%"
+      // h="calc(100% + 16px)"
+      direction="column"
+      minH="240px"
+    >
       <Box px="1rem">
         <OrderFilters />
       </Box>
@@ -75,8 +81,9 @@ const OrdersList = () => {
         h="100%"
         mt="1rem"
         px={{ base: "0", sm: "1rem" }}
+        overflowY="auto"
       >
-        <Table size="sm">
+        <Table size="sm" h="100%">
           <Thead>
             <Tr>
               {COLUMN_LABELS.map((label, i) => {
@@ -109,7 +116,9 @@ const OrdersList = () => {
                       {order.qty || "-"}
                     </Td>
                     <Td fontSize={bodyFontSize} isNumeric>
-                      {order.filled_avg_price || "-"}
+                      {order.filled_avg_price
+                        ? convertToCurrency(order.filled_avg_price)
+                        : "-"}
                     </Td>
                     <Td>
                       <Center>
