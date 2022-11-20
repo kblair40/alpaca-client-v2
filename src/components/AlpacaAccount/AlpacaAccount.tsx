@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Fragment } from "react";
 import {
   Text,
   Flex,
@@ -22,7 +22,7 @@ const AlpacaAccount = () => {
   useEffect(() => {
     dispatch(fetchAccount());
   }, [dispatch]);
-  console.log("ACCOUNT DATA:", data);
+  // console.log("ACCOUNT DATA:", data);
 
   return (
     <Flex mt={{ base: "1rem" }} direction="column" align="center">
@@ -35,23 +35,28 @@ const AlpacaAccount = () => {
           <Spinner />
         </Center>
       ) : status === "completed" && !!data ? (
-        <Grid
-          w="100%"
-          pt="1rem"
-          maxW={{ base: "500px", md: "unset" }}
-          gridTemplateRows={{ base: "72px 72px" }}
-          justifyItems={{ base: "center" }}
-          gridTemplateColumns={{ base: "50% 50%", md: "25% 25% 25% 25%" }}
-        >
-          <CustomStat label="Total Equity" value={data.equity} />
-          <CustomStat label="Buying Power" value={data.buying_power} />
-          <CustomStat label="Cash For Trading" value={data.cash} />
+        <Fragment>
+          <Grid
+            w="100%"
+            pt="1rem"
+            maxW={{ base: "500px", md: "unset" }}
+            gridTemplateRows={{ base: "72px 72px", md: "72px" }}
+            justifyItems={{ base: "center" }}
+            gridTemplateColumns={{ base: "50% 50%", md: "25% 25% 25% 25%" }}
+          >
+            <CustomStat label="Total Equity" value={data.equity} />
+            <CustomStat label="Buying Power" value={data.buying_power} />
+            <CustomStat label="Cash For Trading" value={data.cash} />
 
-          <CustomStat
-            label="Total Position Value"
-            value={data.position_market_value}
-          />
-        </Grid>
+            <CustomStat
+              label="Total Position Value"
+              value={data.position_market_value}
+            />
+          </Grid>
+          {/* <Text variant="secondary" fontSize="sm">
+            {`Data as of ${data.balance_asof}`}
+          </Text> */}
+        </Fragment>
       ) : null}
     </Flex>
   );
@@ -62,10 +67,9 @@ export default AlpacaAccount;
 type StatProps = {
   label: string;
   value: string;
-  helpText?: string;
 };
-// 200 x 72
-const CustomStat = ({ label, value, helpText }: StatProps) => {
+
+const CustomStat = ({ label, value }: StatProps) => {
   let options = {
     currency: "USD",
     currencyDisplay: "narrowSymbol",
