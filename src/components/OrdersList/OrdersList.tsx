@@ -18,7 +18,6 @@ import { Link } from "react-router-dom";
 
 import { VisibleIcon } from "utils/icons";
 import { convertToCurrency } from "utils/helpers";
-import { type IOrder } from "utils/types/order";
 import useSelector from "hooks/useSelector";
 import OrderFilters from "./OrderFilters";
 
@@ -47,14 +46,7 @@ const COLUMN_LABELS: Label[] = [
 ];
 
 const OrdersList = () => {
-  // const { colorMode } = useColorMode();
-  // const isDark = colorMode === "dark";
-
-  const {
-    status,
-    // error,
-    orders,
-  } = useSelector((st) => st.order);
+  const { status, orders } = useSelector((st) => st.order);
 
   const shortDateFormat = "MM//DD/YY";
   const longDateFormat = "MM//DD/YYYY hh:mm:ss A";
@@ -66,12 +58,7 @@ const OrdersList = () => {
   const bodyFontSize = useBreakpointValue({ base: "xs", sm: "sm" });
 
   return (
-    <Flex
-      h="100%"
-      // h="calc(100% + 16px)"
-      direction="column"
-      minH="240px"
-    >
+    <Flex h="100%" direction="column" minH="240px">
       <Box px="1rem">
         <OrderFilters />
       </Box>
