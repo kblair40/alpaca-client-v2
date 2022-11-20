@@ -71,3 +71,19 @@ export const getTimeToNextOpenAndClose = (
     return `Market opens in ${res}`;
   }
 };
+
+let options = {
+  currency: "USD",
+  currencyDisplay: "narrowSymbol",
+  currencySign: "accounting",
+  style: "currency",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+};
+
+export const convertToCurrency = (num: string | number) => {
+  if (typeof num === "string") {
+    num = parseFloat(num);
+  }
+  return num.toLocaleString("en-US", options);
+};
