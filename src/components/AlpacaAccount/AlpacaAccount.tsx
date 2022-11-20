@@ -1,6 +1,5 @@
 import { useEffect, Fragment } from "react";
 import {
-  Text,
   Flex,
   Center,
   Spinner,
@@ -11,6 +10,7 @@ import {
   GridItem,
 } from "@chakra-ui/react";
 
+import Activities from "./Activities";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import { fetchAccount } from "store/accountSlice";
@@ -22,14 +22,9 @@ const AlpacaAccount = () => {
   useEffect(() => {
     dispatch(fetchAccount());
   }, [dispatch]);
-  // console.log("ACCOUNT DATA:", data);
 
   return (
-    <Flex mt={{ base: "1rem" }} direction="column" align="center">
-      <Text fontSize="xl" fontWeight="600">
-        Account
-      </Text>
-
+    <Flex direction="column" align="center">
       {status === "loading" ? (
         <Center>
           <Spinner />
@@ -53,11 +48,10 @@ const AlpacaAccount = () => {
               value={data.position_market_value}
             />
           </Grid>
-          {/* <Text variant="secondary" fontSize="sm">
-            {`Data as of ${data.balance_asof}`}
-          </Text> */}
         </Fragment>
       ) : null}
+
+      <Activities />
     </Flex>
   );
 };
