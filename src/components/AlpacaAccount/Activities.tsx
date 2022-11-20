@@ -64,13 +64,7 @@ const Activities = () => {
   }
 
   return (
-    <Stack
-      align="start"
-      w="100%"
-      pt="1.5rem"
-      h="100%"
-      px={{ base: 0, sm: "1rem" }}
-    >
+    <Stack align="start" w="100%" pt="1.5rem" h="100%">
       {header()}
       <TableContainer w="100%" h="100%">
         <Table w="100%" h="100%" p={0} size="sm" fontSize="8px">
@@ -83,17 +77,7 @@ const Activities = () => {
             </Tr>
           </Thead>
 
-          <Tbody
-            p={0}
-            w="100vw"
-            h="calc(100% - 195px)"
-            maxH="100%"
-            // sx={{
-            //   td: {
-            //     fontSize: "12px ",
-            //   },
-            // }}
-          >
+          <Tbody p={0} w="100vw" h="calc(100% - 195px)" maxH="100%">
             {activitiesStatus === "completed" && !!activities
               ? activities
                   .concat(activities)
