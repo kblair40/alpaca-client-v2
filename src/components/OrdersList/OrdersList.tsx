@@ -63,13 +63,7 @@ const OrdersList = () => {
         <OrderFilters />
       </Box>
 
-      <TableContainer
-        w="100%"
-        h="100%"
-        mt="1rem"
-        px={{ base: "0", sm: "1rem" }}
-        overflowY="auto"
-      >
+      <TableContainer w="100%" h="100%" mt="1rem" overflowY="auto">
         <Table size="sm" h="100%">
           <Thead>
             <Tr>
