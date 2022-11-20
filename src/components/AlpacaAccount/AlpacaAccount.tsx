@@ -7,15 +7,10 @@ import {
   Stat,
   StatLabel,
   StatNumber,
-  StatHelpText,
-  // StatArrow,
-  StatGroup,
-  Stack,
-  Wrap,
-  Box,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 
-// import { type IAccount } from "utils/types/account";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import { fetchAccount } from "store/accountSlice";
@@ -30,12 +25,7 @@ const AlpacaAccount = () => {
   console.log("ACCOUNT DATA:", data);
 
   return (
-    <Flex
-      mt={{ base: "1rem" }}
-      direction="column"
-      align="center"
-      px={{ base: "1rem" }}
-    >
+    <Flex mt={{ base: "1rem" }} direction="column" align="center">
       <Text fontSize="xl" fontWeight="600">
         Account
       </Text>
@@ -45,54 +35,23 @@ const AlpacaAccount = () => {
           <Spinner />
         </Center>
       ) : status === "completed" && !!data ? (
-        <Box w="100%" pt="1rem">
-          {/* <StatGroup
-            border="1px solid white"
-            display="flex"
-            justifyContent="space-between"
-          > */}
-          <Wrap border=".2px solid #888">
-            {/* <Stat>
-              <StatLabel>Total Equity</StatLabel>
-              <StatNumber>
-                {parseFloat(data.equity).toLocaleString()}
-              </StatNumber>
-              <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat> */}
+        <Grid
+          w="100%"
+          pt="1rem"
+          maxW={{ base: "500px", md: "unset" }}
+          gridTemplateRows={{ base: "72px 72px" }}
+          justifyItems={{ base: "center" }}
+          gridTemplateColumns={{ base: "50% 50%", md: "25% 25% 25% 25%" }}
+        >
+          <CustomStat label="Total Equity" value={data.equity} />
+          <CustomStat label="Buying Power" value={data.buying_power} />
+          <CustomStat label="Cash For Trading" value={data.cash} />
 
-            {/* <Stat>
-              <StatLabel>Buying Power</StatLabel>
-              <StatNumber>
-                {parseFloat(data.buying_power).toLocaleString()}
-              </StatNumber>
-              <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat> */}
-
-            {/* <Stat>
-              <StatLabel>Cash For Trading</StatLabel>
-              <StatNumber>{parseFloat(data.cash).toLocaleString()}</StatNumber>
-              <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat> */}
-
-            <CustomStat label="Total Equity" value={data.equity} />
-            <CustomStat label="Buying Powe" value={data.buying_power} />
-            <CustomStat label="Cash For Trading" value={data.cash} />
-
-            <CustomStat
-              label="Total Position Value"
-              value={data.position_market_value}
-            />
-
-            {/* <Stat>
-              <StatLabel>Total Position Value</StatLabel>
-              <StatNumber>
-                {parseFloat(data.position_market_value).toLocaleString()}
-              </StatNumber>
-              <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat> */}
-          </Wrap>
-          {/* </StatGroup> */}
-        </Box>
+          <CustomStat
+            label="Total Position Value"
+            value={data.position_market_value}
+          />
+        </Grid>
       ) : null}
     </Flex>
   );
@@ -105,7 +64,7 @@ type StatProps = {
   value: string;
   helpText?: string;
 };
-// 200 x 104
+// 200 x 72
 const CustomStat = ({ label, value, helpText }: StatProps) => {
   let options = {
     currency: "USD",
@@ -121,10 +80,11 @@ const CustomStat = ({ label, value, helpText }: StatProps) => {
   };
 
   return (
-    <Stat>
-      <StatLabel>{label}</StatLabel>
-      <StatNumber>{convertToCurrency(value)}</StatNumber>
-      {/* {helpText && <StatHelpText>{helpText}</StatHelpText>} */}
-    </Stat>
+    <GridItem w={{ base: "160px", sm: "200px" }}>
+      <Stat display="flex" flexDirection="column" alignItems="center">
+        <StatLabel textAlign={"center"}>{label}</StatLabel>
+        <StatNumber>{convertToCurrency(value)}</StatNumber>
+      </Stat>
+    </GridItem>
   );
 };
