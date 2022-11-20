@@ -36,7 +36,12 @@ const Activities = (props: Props) => {
   }, [dispatch]);
 
   const header = () => (
-    <Text fontSize="xl" fontWeight="600">
+    <Text
+      fontSize="xl"
+      fontWeight="600"
+      lineHeight={1}
+      // border="1px solid red"
+    >
       Account Activities
     </Text>
   );
@@ -44,9 +49,8 @@ const Activities = (props: Props) => {
   const calculateActivityCost = (qty: string, price: string) => {
     let intQty = parseFloat(qty);
     let intPrice = parseFloat(price);
+
     return convertToCurrency(intQty * intPrice);
-    // return 0;
-    // return (intQty * intPrice).toLocaleString();
   };
 
   if (activitiesStatus === "loading") {
@@ -59,12 +63,42 @@ const Activities = (props: Props) => {
   }
 
   return (
-    <Stack align="start" w="100%" mt="2rem">
-      {header()}
-
-      <TableContainer w="100%">
-        <Table w="100%">
-          <Thead>
+    <Stack
+      align="start"
+      w="100%"
+      pt="2rem"
+      position="absolute"
+      top={0}
+      bottom={0}
+      left={0}
+      right={0}
+      h="100%"
+      // overflowY="auto"
+      px="1rem"
+      border="1px solid red"
+    >
+      {header()} {/* h-22px + 2rem (from padding-top) = 54px */}
+      <TableContainer
+        w="100%"
+        h="100%"
+        // border="1px solid #aaa"
+        mt={0}
+        p={0}
+        position="absolute"
+        top="54px"
+        left={0}
+        right={0}
+      >
+        <Table w="100%" h="100%" p={0}>
+          <Thead
+            // p={0}
+            // p="0 2rem 0 0"
+            h="41px"
+            w="calc(100% - 1rem)"
+            // top={}
+            // border="1px solid orange"
+          >
+            {/* h-41px */}
             <Tr>
               <Th>Activity</Th>
               <Th>Date</Th>
@@ -72,28 +106,40 @@ const Activities = (props: Props) => {
             </Tr>
           </Thead>
 
-          <Tbody>
+          <Tbody
+            p={0}
+            overflowY="auto"
+            w="100vw"
+            h="100%"
+            maxH="calc(100% - 95px)"
+            position="absolute"
+            bottom={0}
+            left="1rem"
+            top={"54px"}
+            right={0}
+          >
             {activitiesStatus === "completed" && !!activities
-              ? activities.map((activity: any, i: number) => {
-                  return (
-                    <Tr key={i}>
-                      <Td>
-                        <Text textTransform="capitalize">{`${activity.side} ${activity.qty} ${activity.symbol}`}</Text>
-                      </Td>
-                      <Td>
-                        <Text>
-                          {dayjs(activity.timestamp).format(dateFormat)}
-                        </Text>
-                      </Td>
-                      <Td>
-                        {/* <Text>{activity.symbol}</Text> */}
-                        <Text>
-                          {calculateActivityCost(activity.qty, activity.price)}
-                        </Text>
-                      </Td>
-                    </Tr>
-                  );
-                })
+              ? activities
+                  .concat(activities)
+                  .map((activity: any, i: number) => {
+                    return (
+                      <Tr key={i} w="100%" textAlign="left">
+                        <Td textAlign="left" textTransform="capitalize">
+                          {`${activity.side} ${activity.qty} ${activity.symbol}`}
+                        </Td>
+                        <Td>{dayjs(activity.timestamp).format(dateFormat)}</Td>
+                        <Td>
+                          {/* <Text>{activity.symbol}</Text> */}
+                          <Text>
+                            {calculateActivityCost(
+                              activity.qty,
+                              activity.price
+                            )}
+                          </Text>
+                        </Td>
+                      </Tr>
+                    );
+                  })
               : null}
           </Tbody>
         </Table>

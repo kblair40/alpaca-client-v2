@@ -76,11 +76,12 @@ const Dashboard = (props: Props) => {
               </Box>
             </Flex>
           </TabPanel>
+
           <TabPanel h="100%">
             <OrdersList />
           </TabPanel>
 
-          <TabPanel h="100%">
+          <TabPanel h="100%" p={0}>
             <AlpacaAccount />
           </TabPanel>
         </TabPanels>
