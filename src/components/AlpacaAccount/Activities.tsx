@@ -6,26 +6,25 @@ import {
   Center,
   Spinner,
   Stack,
+  IconButton,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
 
+import { VisibleIcon } from "utils/icons";
 import { fetchAccountActivities } from "store/accountSlice";
 import useDispatch from "hooks/useDispatch";
 import useSelector from "hooks/useSelector";
 import { convertToCurrency } from "utils/helpers";
 
-type Props = {};
-
-const Activities = (props: Props) => {
+const Activities = () => {
   const dispatch = useDispatch();
   const { activitiesStatus, activities } = useSelector((st) => st.account);
 
@@ -69,6 +68,7 @@ const Activities = (props: Props) => {
               <Th>Activity</Th>
               <Th>Date</Th>
               <Th isNumeric>Amount</Th>
+              <Th>Detail</Th>
             </Tr>
           </Thead>
 
@@ -90,6 +90,20 @@ const Activities = (props: Props) => {
                               activity.price
                             )}
                           </Text>
+                        </Td>
+                        <Td>
+                          {activity.order_id ? (
+                            <Center>
+                              <Link to={`/order/${activity.order_id}`}>
+                                <IconButton
+                                  size="xs"
+                                  variant="icon-button"
+                                  aria-label="Link to details page"
+                                  icon={<VisibleIcon boxSize="16px" />}
+                                />
+                              </Link>
+                            </Center>
+                          ) : null}
                         </Td>
                       </Tr>
                     );
