@@ -3,13 +3,7 @@ import {
   Flex,
   Text,
   Center,
-  Spinner,
-  // useColorMode,
-  HStack,
-  VStack,
   IconButton,
-  StackDivider,
-  Tooltip,
   Table,
   Thead,
   Tbody,
@@ -61,6 +55,13 @@ const OrdersList = () => {
     orders,
   } = useSelector((st) => st.order);
 
+  const shortDateFormat = "MM//DD/YY";
+  const longDateFormat = "MM//DD/YYYY hh:mm:ss A";
+  const dateFormat = useBreakpointValue({
+    base: shortDateFormat,
+    md: longDateFormat,
+  });
+
   const bodyFontSize = useBreakpointValue({ base: "xs", sm: "sm" });
 
   return (
@@ -94,10 +95,16 @@ const OrdersList = () => {
                 return (
                   <Tr key={i}>
                     <Td fontSize={bodyFontSize}>{order.symbol}</Td>
-                    <Td fontSize={bodyFontSize}>{order.side}</Td>
-                    <Td fontSize={bodyFontSize}>{order.type}</Td>
-                    <Td fontSize={bodyFontSize}>{order.created_at}</Td>
-                    <Td fontSize={bodyFontSize}>{order.status}</Td>
+                    <Td textTransform="capitalize" fontSize={bodyFontSize}>
+                      {order.side}
+                    </Td>
+                    <Td fontSize={bodyFontSize}>{orderTypes[order.type]}</Td>
+                    <Td fontSize={bodyFontSize}>
+                      {dayjs(order.created_at).format(dateFormat)}
+                    </Td>
+                    <Td textTransform="capitalize" fontSize={bodyFontSize}>
+                      {order.status}
+                    </Td>
                     <Td fontSize={bodyFontSize} isNumeric>
                       {order.qty || "-"}
                     </Td>
@@ -106,12 +113,14 @@ const OrdersList = () => {
                     </Td>
                     <Td>
                       <Center>
-                        <IconButton
-                          aria-label="See Details"
-                          variant="icon-button"
-                          size="xs"
-                          icon={<VisibleIcon boxSize="16px" />}
-                        />
+                        <Link to={`/order/${order.id}`}>
+                          <IconButton
+                            aria-label="See Details"
+                            variant="icon-button"
+                            size="xs"
+                            icon={<VisibleIcon boxSize="16px" />}
+                          />
+                        </Link>
                       </Center>
                     </Td>
                   </Tr>
