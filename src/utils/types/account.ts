@@ -7,6 +7,7 @@ export type IAccount = {
   cash: string;
   created_at: string;
   currency: string;
+  position_market_value: string;
   non_marginable_buying_power: string;
   accrued_fees: string;
   pending_transfer_in: string;
