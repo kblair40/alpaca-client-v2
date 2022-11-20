@@ -11,6 +11,7 @@ import {
   // StatArrow,
   StatGroup,
   Stack,
+  Wrap,
   Box,
 } from "@chakra-ui/react";
 
@@ -45,41 +46,52 @@ const AlpacaAccount = () => {
         </Center>
       ) : status === "completed" && !!data ? (
         <Box w="100%" pt="1rem">
-          <StatGroup
-            // border="1px solid white"
+          {/* <StatGroup
+            border="1px solid white"
             display="flex"
             justifyContent="space-between"
-          >
-            <Stat>
+          > */}
+          <Wrap border=".2px solid #888">
+            {/* <Stat>
               <StatLabel>Total Equity</StatLabel>
               <StatNumber>
                 {parseFloat(data.equity).toLocaleString()}
               </StatNumber>
               <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat>
+            </Stat> */}
 
-            <Stat>
+            {/* <Stat>
               <StatLabel>Buying Power</StatLabel>
               <StatNumber>
                 {parseFloat(data.buying_power).toLocaleString()}
               </StatNumber>
               <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat>
+            </Stat> */}
 
-            <Stat>
+            {/* <Stat>
               <StatLabel>Cash For Trading</StatLabel>
               <StatNumber>{parseFloat(data.cash).toLocaleString()}</StatNumber>
               <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat>
+            </Stat> */}
 
-            <Stat>
+            <CustomStat label="Total Equity" value={data.equity} />
+            <CustomStat label="Buying Powe" value={data.buying_power} />
+            <CustomStat label="Cash For Trading" value={data.cash} />
+
+            <CustomStat
+              label="Total Position Value"
+              value={data.position_market_value}
+            />
+
+            {/* <Stat>
               <StatLabel>Total Position Value</StatLabel>
               <StatNumber>
                 {parseFloat(data.position_market_value).toLocaleString()}
               </StatNumber>
               <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
-            </Stat>
-          </StatGroup>
+            </Stat> */}
+          </Wrap>
+          {/* </StatGroup> */}
         </Box>
       ) : null}
     </Flex>
@@ -87,3 +99,32 @@ const AlpacaAccount = () => {
 };
 
 export default AlpacaAccount;
+
+type StatProps = {
+  label: string;
+  value: string;
+  helpText?: string;
+};
+// 200 x 104
+const CustomStat = ({ label, value, helpText }: StatProps) => {
+  let options = {
+    currency: "USD",
+    currencyDisplay: "narrowSymbol",
+    currencySign: "accounting",
+    style: "currency",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  };
+
+  const convertToCurrency = (num: string) => {
+    return parseFloat(num).toLocaleString("en-US", options);
+  };
+
+  return (
+    <Stat>
+      <StatLabel>{label}</StatLabel>
+      <StatNumber>{convertToCurrency(value)}</StatNumber>
+      {/* {helpText && <StatHelpText>{helpText}</StatHelpText>} */}
+    </Stat>
+  );
+};
