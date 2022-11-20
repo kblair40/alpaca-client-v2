@@ -56,7 +56,7 @@ const Dashboard = (props: Props) => {
         <TabPanels h="calc(100vh - 120px)" overflowY="auto">
           <TabPanel h="100%" pb={0} px={0} overflowX="hidden">
             <Flex h="100%" direction="column" w="100%">
-              <Box minH="180px" flex={1.25} px="1rem">
+              <Box minH="180px" flex={1.25} p={0}>
                 <PositionsList />
               </Box>
 

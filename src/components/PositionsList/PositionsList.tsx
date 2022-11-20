@@ -132,7 +132,11 @@ const PositionsList = () => {
           <Thead>
             <Tr>
               {COLUMN_LABELS.map((label, i) => {
-                return <Td isNumeric={label.isNumeric}>{label.label}</Td>;
+                return (
+                  <Th key={i} isNumeric={label.isNumeric}>
+                    {label.label}
+                  </Th>
+                );
               })}
             </Tr>
           </Thead>
@@ -148,9 +152,24 @@ const PositionsList = () => {
                       <Td>{pos.symbol}</Td>
                       <Td>{convertToCurrency(pos.market_value)}</Td>
                       <Td>{convertToCurrency(pos.unrealized_intraday_pl)}</Td>
-                      <Td>{pos.unrealized_intraday_plpc}</Td>
+                      <Td>
+                        {parseFloat(pos.unrealized_intraday_plpc).toFixed(3)}%
+                      </Td>
                       <Td>{convertToCurrency(pos.unrealized_pl)}</Td>
-                      <Td>{pos.unrealized_plpc}</Td>
+                      <Td>{parseFloat(pos.unrealized_plpc).toFixed(3)}</Td>
+                      <Td>
+                        <IconButton
+                          onClick={() => handleClickManage(pos)}
+                          aria-label="Manage position"
+                          icon={
+                            <ChevronDownIcon
+                              boxSize="12px"
+                              transform="rotate(-90deg)"
+                            />
+                          }
+                          boxSize="20px"
+                        />
+                      </Td>
                     </Tr>
                   );
                 })
