@@ -8,6 +8,13 @@ import {
   HStack,
   VStack,
   IconButton,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
 } from "@chakra-ui/react";
 
 import { type Position } from "utils/types/position";
@@ -20,8 +27,52 @@ import {
   fetchQuote,
   positionActions,
 } from "store/positionSlice";
+import { convertToCurrency } from "utils/helpers";
 import PositionDrawer from "./PositionDrawer";
-import QuestionBubble from "components/QuestionBubble";
+// import QuestionBubble from "components/QuestionBubble";
+
+const COLUMN_LABELS = [
+  {
+    label: "Symbol",
+    isNumeric: false,
+  },
+  {
+    label: "Qty",
+    isNumeric: true,
+  },
+  {
+    label: "Avg. Entry Price",
+    isNumeric: true,
+  },
+  {
+    label: "Cost",
+    isNumeric: true,
+  },
+  {
+    label: "Mkt Value",
+    isNumeric: true,
+  },
+  {
+    label: "Day Gain ($)",
+    isNumeric: true,
+  },
+  {
+    label: "Day Gain (%)",
+    isNumeric: true,
+  },
+  {
+    label: "Gain (%)",
+    isNumeric: true,
+  },
+  {
+    label: "Gain (%)",
+    isNumeric: true,
+  },
+  {
+    label: "Manage",
+    isNumeric: false,
+  },
+];
 
 const PositionsList = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -70,108 +121,43 @@ const PositionsList = () => {
   }
 
   return (
-    <Box minW="340px">
+    <Box minW="340px" w="100%" h="100%">
       <PositionDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
-      <HStack
-        w="100%"
-        textAlign="center"
-        fontWeight="600"
-        fontSize="xs"
-        h="40px"
-        textDecoration="underline"
-        align="end"
-        mb="8px"
-      >
-        <Text flex={{ base: 0.75, sm: 0.5 }} textAlign="left">
-          Symbol
-        </Text>
-        <Text flex={0.5}>Qty</Text>
-        <Text display={{ base: "none", sm: "inline" }} flex={1}>
-          Avg. Entry Price
-        </Text>
-        <Text flex={1}>Cost</Text>
-        <Text flex={1}>Mkt Value</Text>
-        <Text flex={1} display={{ base: "none", md: "inline" }}>
-          Day Gain ($)
-        </Text>
-        <Text flex={1} display={{ base: "none", md: "inline" }}>
-          Day Gain (%)
-        </Text>
-        <Text display={{ base: "none", sm: "inline" }} flex={1}>
-          Gain ($)
-        </Text>
-        <Text display={{ base: "none", md: "inline" }} flex={0.75}>
-          Gain (%)
-        </Text>
-        <Text flex={0.5}>Manage</Text>
-      </HStack>
 
-      <VStack spacing="4px">
-        {positions && positions.length ? (
-          positions.map((pos, i) => {
-            return (
-              <HStack
-                key={i}
-                w="100%"
-                textAlign="center"
-                fontSize="xs"
-                fontWeight="400"
-                py="2px"
-              >
-                <Text flex={{ base: 0.75, sm: 0.5 }} textAlign="left">
-                  {pos.symbol}
-                </Text>
-                <Text flex={0.5}>{pos.qty}</Text>
-                <Text display={{ base: "none", sm: "inline" }} flex={1}>
-                  {parseFloat(pos.avg_entry_price).toFixed(2)}
-                </Text>
-                <Text flex={1}>
-                  {parseFloat(pos.cost_basis).toLocaleString("en-US")}
-                </Text>
+      <TableContainer h="100%" w="100%">
+        <Table size="sm">
+          <Thead>
+            <Tr>
+              {COLUMN_LABELS.map((label, i) => {
+                return <Td isNumeric={label.isNumeric}>{label.label}</Td>;
+              })}
+            </Tr>
+          </Thead>
 
-                <Text flex={1}>
-                  {parseFloat(
-                    parseFloat(pos.market_value).toFixed(2)
-                  ).toLocaleString("en-US")}
-                </Text>
-                <Text display={{ base: "none", md: "inline" }} flex={1}>
-                  {unrealizedGain(pos.unrealized_intraday_pl)}
-                </Text>
-                <Text display={{ base: "none", md: "inline" }} flex={1}>
-                  {unrealizedGain(pos.unrealized_intraday_plpc)}%
-                </Text>
-                <Text display={{ base: "none", sm: "inline" }} flex={1}>
-                  {unrealizedGain(pos.unrealized_pl)}
-                </Text>
-                <Text display={{ base: "none", md: "inline" }} flex={0.75}>
-                  {unrealizedGain(pos.unrealized_plpc)}%
-                </Text>
-
-                <Flex flex={0.5} justify="center">
-                  <IconButton
-                    onClick={() => handleClickManage(pos)}
-                    aria-label="Manage position"
-                    icon={
-                      <ChevronDownIcon
-                        boxSize="12px"
-                        transform="rotate(-90deg)"
-                      />
-                    }
-                    boxSize="20px"
-                  />
-                </Flex>
-              </HStack>
-            );
-          })
-        ) : positions && !positions.length ? (
-          <Text fontSize="xl" fontWeight="600" textAlign="center">
-            You do not have any active positions
-          </Text>
-        ) : null}
-      </VStack>
+          <Tbody>
+            {status === "completed" && positions && positions.length
+              ? positions.map((pos, i) => {
+                  return (
+                    <Tr key={i}>
+                      <Td>{pos.symbol}</Td>
+                      <Td>{pos.qty}</Td>
+                      <Td>{convertToCurrency(pos.avg_entry_price)}</Td>
+                      <Td>{pos.symbol}</Td>
+                      <Td>{convertToCurrency(pos.market_value)}</Td>
+                      <Td>{convertToCurrency(pos.unrealized_intraday_pl)}</Td>
+                      <Td>{pos.unrealized_intraday_plpc}</Td>
+                      <Td>{convertToCurrency(pos.unrealized_pl)}</Td>
+                      <Td>{pos.unrealized_plpc}</Td>
+                    </Tr>
+                  );
+                })
+              : null}
+          </Tbody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
