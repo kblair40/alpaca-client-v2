@@ -67,9 +67,15 @@ const AlpacaAccount = () => {
             </Stat>
 
             <Stat>
-              <StatLabel>Buying Power</StatLabel>
+              <StatLabel>Cash For Trading</StatLabel>
+              <StatNumber>{parseFloat(data.cash).toLocaleString()}</StatNumber>
+              <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
+            </Stat>
+
+            <Stat>
+              <StatLabel>Total Position Value</StatLabel>
               <StatNumber>
-                {parseFloat(data.buying_power).toLocaleString()}
+                {parseFloat(data.position_market_value).toLocaleString()}
               </StatNumber>
               <StatHelpText>{`as of ${data.balance_asof}`}</StatHelpText>
             </Stat>
