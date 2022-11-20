@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Fragment } from "react";
 import {
   Flex,
   Center,
@@ -9,6 +9,7 @@ import {
   Grid,
   GridItem,
   Box,
+  Text,
 } from "@chakra-ui/react";
 
 import Activities from "./Activities";
@@ -25,6 +26,14 @@ const AlpacaAccount = () => {
     dispatch(fetchAccount());
   }, [dispatch]);
 
+  const header = () => (
+    <Box w="100%" p="1.5rem 0 0 1rem">
+      <Text fontSize="xl" fontWeight="600" lineHeight={1} textAlign="center">
+        Balances
+      </Text>
+    </Box>
+  );
+
   return (
     <Flex h="100%" direction="column" align="center">
       {status === "loading" ? (
@@ -32,24 +41,27 @@ const AlpacaAccount = () => {
           <Spinner />
         </Center>
       ) : status === "completed" && !!data ? (
-        <Grid
-          h={{ base: "162px", md: "90px" }}
-          w="100%"
-          pt="1rem"
-          maxW={{ base: "500px", md: "unset" }}
-          gridTemplateRows={{ base: "72px 72px", md: "72px" }}
-          justifyItems={{ base: "center" }}
-          gridTemplateColumns={{ base: "50% 50%", md: "25% 25% 25% 25%" }}
-        >
-          <CustomStat label="Total Equity" value={data.equity} />
-          <CustomStat label="Buying Power" value={data.buying_power} />
-          <CustomStat label="Cash For Trading" value={data.cash} />
+        <Fragment>
+          {header()}
+          <Grid
+            h={{ base: "162px", md: "90px" }}
+            w="100%"
+            pt="1rem"
+            maxW={{ base: "500px", md: "unset" }}
+            gridTemplateRows={{ base: "72px 72px", md: "72px" }}
+            justifyItems={{ base: "center" }}
+            gridTemplateColumns={{ base: "50% 50%", md: "25% 25% 25% 25%" }}
+          >
+            <CustomStat label="Total Equity" value={data.equity} />
+            <CustomStat label="Buying Power" value={data.buying_power} />
+            <CustomStat label="Cash For Trading" value={data.cash} />
 
-          <CustomStat
-            label="Total Position Value"
-            value={data.position_market_value}
-          />
-        </Grid>
+            <CustomStat
+              label="Total Position Value"
+              value={data.position_market_value}
+            />
+          </Grid>
+        </Fragment>
       ) : null}
 
       <Box position="relative" w="100vw">

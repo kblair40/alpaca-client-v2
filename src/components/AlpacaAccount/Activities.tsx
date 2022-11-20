@@ -36,9 +36,11 @@ const Activities = (props: Props) => {
   }, [dispatch]);
 
   const header = () => (
-    <Text fontSize="xl" fontWeight="600" lineHeight={1}>
-      Account Activities
-    </Text>
+    <Box w="100%">
+      <Text fontSize="xl" fontWeight="600" lineHeight={1} textAlign="center">
+        Account Activities
+      </Text>
+    </Box>
   );
 
   const calculateActivityCost = (qty: string, price: string) => {
