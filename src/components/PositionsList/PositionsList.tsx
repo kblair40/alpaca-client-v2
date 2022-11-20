@@ -15,6 +15,7 @@ import {
   Th,
   Td,
   TableContainer,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 
 import { type Position } from "utils/types/position";
@@ -151,23 +152,22 @@ const PositionsList = () => {
                       <Td>{convertToCurrency(pos.avg_entry_price)}</Td>
                       <Td>{pos.symbol}</Td>
                       <Td>{convertToCurrency(pos.market_value)}</Td>
-                      <Td>{convertToCurrency(pos.unrealized_intraday_pl)}</Td>
-                      <Td>
-                        {parseFloat(pos.unrealized_intraday_plpc).toFixed(3)}%
-                      </Td>
-                      <Td>{convertToCurrency(pos.unrealized_pl)}</Td>
-                      <Td>{parseFloat(pos.unrealized_plpc).toFixed(3)}</Td>
+                      <Td>{unrealizedGain(pos.unrealized_intraday_pl)}</Td>
+                      <Td>{unrealizedGain(pos.unrealized_intraday_plpc)}%</Td>
+                      <Td>{unrealizedGain(pos.unrealized_pl)}</Td>
+                      <Td>{unrealizedGain(pos.unrealized_plpc)}%</Td>
                       <Td>
                         <IconButton
                           onClick={() => handleClickManage(pos)}
                           aria-label="Manage position"
                           icon={
                             <ChevronDownIcon
-                              boxSize="12px"
+                              boxSize="14px"
                               transform="rotate(-90deg)"
                             />
                           }
-                          boxSize="20px"
+                          size="xs"
+                          variant="icon-button"
                         />
                       </Td>
                     </Tr>
