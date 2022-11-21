@@ -28,12 +28,12 @@ const Home = () => {
   useEffect(() => {
     const updateAssets = async () => {
       return; // remove this line to update assets.  Drop assets collection first
-      try {
-        const response = await alpaca.patch("/asset/update");
-        console.log("\n\nUPDATE RESPONSE:", response.data, "\n\n");
-      } catch (e) {
-        console.log("FAILED TO UPDATE ASSETS:", e);
-      }
+      // try {
+      //   const response = await alpaca.patch("/asset/update");
+      //   console.log("\n\nUPDATE RESPONSE:", response.data, "\n\n");
+      // } catch (e) {
+      //   console.log("FAILED TO UPDATE ASSETS:", e);
+      // }
     };
     updateAssets();
   }, []);
