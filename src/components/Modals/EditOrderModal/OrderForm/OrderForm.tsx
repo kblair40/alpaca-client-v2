@@ -79,56 +79,78 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
     setFormData(DEFAULT_VALUES[orderType]);
   }, [orderType]);
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    const tradeParams: { [key: string]: string | number } = {
-      symbol: tickerSymbol, // could use alpaca_id alternatively
-      qty: formData.quantity, // might need parseInt to wrap
-      side: "buy",
-      type: orderType,
-      time_in_force: timeInForce,
-    };
-    // console.log("TRADE PARAMS:", tradeParams, "\n");
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   const tradeParams: { [key: string]: string | number } = {
+  //     symbol: tickerSymbol, // could use alpaca_id alternatively
+  //     qty: formData.quantity, // might need parseInt to wrap
+  //     side: "buy",
+  //     type: orderType,
+  //     time_in_force: timeInForce,
+  //   };
+  //   // console.log("TRADE PARAMS:", tradeParams, "\n");
 
-    if (orderType !== "market") {
-      if (orderType === "limit" || orderType === "stop_limit") {
-        // console.log("LIMIT REF:", limitRef.current!.value);
-        if (limitRef.current && limitRef.current.value) {
-          tradeParams.limit_price = limitRef.current.value;
-        } else {
-          console.log("EARLY RETURN1 - MISSING INFORMATION");
-          setLoading(false);
-          return;
-        }
-      }
-      if (orderType === "stop" || orderType === "stop_limit") {
-        if (stopRef.current && stopRef.current.value) {
-          tradeParams.stop_price = stopRef.current.value;
-        } else {
-          console.log("EARLY RETURN2 - MISSING INFORMATION");
-          setLoading(false);
-          return;
-        }
-      }
-    }
+  //   if (orderType !== "market") {
+  //     if (orderType === "limit" || orderType === "stop_limit") {
+  //       // console.log("LIMIT REF:", limitRef.current!.value);
+  //       if (limitRef.current && limitRef.current.value) {
+  //         tradeParams.limit_price = limitRef.current.value;
+  //       } else {
+  //         console.log("EARLY RETURN1 - MISSING INFORMATION");
+  //         setLoading(false);
+  //         return;
+  //       }
+  //     }
+  //     if (orderType === "stop" || orderType === "stop_limit") {
+  //       if (stopRef.current && stopRef.current.value) {
+  //         tradeParams.stop_price = stopRef.current.value;
+  //       } else {
+  //         console.log("EARLY RETURN2 - MISSING INFORMATION");
+  //         setLoading(false);
+  //         return;
+  //       }
+  //     }
+  //   }
 
-    try {
-      const tradeResponse = await alpaca.post("/order", { tradeParams });
-      console.log("\n\nTRADE RESPONSE:", tradeResponse, "\n\n");
-      if (onPlaceOrder) onPlaceOrder(true);
-    } catch (e) {
-      console.log("FAILED TO COMPLETE TRADE:", e);
-      if (onPlaceOrder) onPlaceOrder(false);
-    }
+  //   try {
+  //     const tradeResponse = await alpaca.post("/order", { tradeParams });
+  //     console.log("\n\nTRADE RESPONSE:", tradeResponse, "\n\n");
+  //     if (onPlaceOrder) onPlaceOrder(true);
+  //   } catch (e) {
+  //     console.log("FAILED TO COMPLETE TRADE:", e);
+  //     if (onPlaceOrder) onPlaceOrder(false);
+  //   }
 
-    setLoading(false);
-  };
+  //   setLoading(false);
+  // };
 
   const limitRef = useRef<HTMLInputElement>(null);
   const stopRef = useRef<HTMLInputElement>(null);
   const typeRef = useRef<HTMLSelectElement>(null);
   const tifRef = useRef<HTMLSelectElement>(null);
   const qtyRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = async () => {
+    if (!tifRef.current || !typeRef.current || !qtyRef.current) return;
+
+    const tif = tifRef.current.value;
+    const type = typeRef.current.value;
+    const qty = qtyRef.current.value;
+    let limitPrice: string;
+    let stopPrice: string;
+
+    if (["limit", "stop_limit"].includes(type)) {
+      if (!limitRef.current) return;
+      limitPrice = limitRef.current.value;
+    }
+    if (["stop", "stop_limit"].includes(type)) {
+      if (!stopRef.current) return;
+      stopPrice = stopRef.current.value;
+    }
+
+    // @ts-ignore
+    console.log("ALL DATA:", { tif, type, qty, limitPrice, stopPrice });
+  };
 
   return (
     <React.Fragment>
