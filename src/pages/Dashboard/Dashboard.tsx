@@ -64,7 +64,6 @@ const Dashboard = () => {
       <Tabs
         h="calc(100vh - 108px)"
         pt="1rem"
-        // defaultIndex={1}
         defaultIndex={tabIndex}
         onChange={setTabIndex}
         isFitted
@@ -75,24 +74,16 @@ const Dashboard = () => {
           <Tab {...tabStyles}>Account</Tab>
         </TabList>
 
-        {/* <TabPanels h="calc(100vh - 118px)" overflowY="hidden"> */}
         <TabPanels h="calc(100vh - 120px)" overflowY="auto">
           <TabPanel h="100%" p={0} overflowX="hidden">
-            <Flex h="100%" direction="column" w="100%" border="1px solid white">
-              <Box
-                minH="180px"
-                // flex={1}
-                h="50%"
-                p={0}
-              >
+            <Flex h="100%" direction="column" w="100%">
+              <Box minH="180px" h="50%" p={0}>
                 <PositionsList />
               </Box>
 
               <Box
                 borderTop="1px solid"
                 borderColor={borderTopColor}
-                // mt=".5rem"
-                // pt=".5rem"
                 minH="180px"
                 sx={{
                   ".recharts-responsive-container": {
@@ -100,7 +91,6 @@ const Dashboard = () => {
                   },
                 }}
                 h="50%"
-                // flex={1}
               >
                 <PositionsChart />
               </Box>

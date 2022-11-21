@@ -159,24 +159,9 @@ const PositionsChart = () => {
       </Box>
 
       {/* @ts-ignore */}
-      <Box
-        // h="100%"
-        display={{ base: "none", sm: "block" }}
-        {...chartWrapperProps}
-      >
+      <Box display={{ base: "none", sm: "block" }} {...chartWrapperProps}>
         {stocksChartData && (
-          // <CustomPieChart data={stocksChartData} label="Stocks" />
-          <CustomPieChart
-            data={stocksChartData
-              .concat(stocksChartData)
-              .concat(stocksChartData)
-              .concat(stocksChartData)
-              .concat(stocksChartData)
-              .concat(stocksChartData)
-              .concat(stocksChartData)
-              .concat(stocksChartData)}
-            label="Stocks"
-          />
+          <CustomPieChart data={stocksChartData} label="Stocks" />
         )}
       </Box>
 
