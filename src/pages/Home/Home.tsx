@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Box,
   useBreakpointValue,
@@ -6,6 +7,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+import { alpaca } from "api";
 import Drawer from "components/Drawer";
 import Chart from "components/Chart";
 import TickerDetail from "components/TickerDetail";
@@ -22,6 +24,19 @@ const Home = () => {
   const {
     colors: { gray },
   } = useTheme();
+
+  useEffect(() => {
+    const updateAssets = async () => {
+      return; // remove this line to update assets.  Drop assets collection first
+      try {
+        const response = await alpaca.patch("/asset/update");
+        console.log("\n\nUPDATE RESPONSE:", response.data, "\n\n");
+      } catch (e) {
+        console.log("FAILED TO UPDATE ASSETS:", e);
+      }
+    };
+    updateAssets();
+  }, []);
 
   const isMd = useBreakpointValue({ base: false, md: true });
   const borderStyle = useBreakpointValue({ base: "none", md: "1px solid" });
