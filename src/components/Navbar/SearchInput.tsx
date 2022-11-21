@@ -66,6 +66,14 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
     setSearching(false);
   };
 
+  const handleClickResult = (
+    result: SearchResult,
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    e.stopPropagation();
+    console.log("CLICKED RESULT:", result);
+  };
+
   const popoverBg = isDark ? "gray.800" : "gray.50";
 
   return (
@@ -104,12 +112,23 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
         </PopoverTrigger>
 
         <Portal>
-          <PopoverContent bg={popoverBg}>
+          <PopoverContent
+            bg={popoverBg}
+            onClick={(e: any) => e.stopPropagation()}
+          >
             <PopoverHeader>Results</PopoverHeader>
+
             <PopoverBody py="4px" px={0}>
               {results && results.length ? (
                 results.map((res, i) => {
-                  return <Result key={i} result={res} isDark={isDark} />;
+                  return (
+                    <Result
+                      key={i}
+                      result={res}
+                      isDark={isDark}
+                      onClick={handleClickResult}
+                    />
+                  );
                 })
               ) : results && !results.length ? (
                 <Text textAlign="center">No Results</Text>
@@ -131,9 +150,11 @@ export default SearchInput;
 const Result = ({
   result,
   isDark,
+  onClick,
 }: {
   result: SearchResult;
   isDark: boolean;
+  onClick: (result: SearchResult, e: any) => void;
 }) => {
   const styles = {
     transition: "background-color 0.2s",
@@ -141,10 +162,16 @@ const Result = ({
     bg: isDark ? "gray.800" : "gray.50",
     _hover: { bg: isDark ? "gray.700" : "gray.100" },
     _active: { bg: isDark ? "gray.600" : "gray.200" },
+    p: "2px 0.75rem",
+    zIndex: 1000000,
   };
 
   return (
-    <Flex direction="column" {...styles} px={"0.75rem"} py="2px">
+    <Flex
+      {...styles}
+      direction="column"
+      onMouseDown={(e) => onClick(result, e)}
+    >
       <Flex align="end">
         <Text fontSize="sm" fontWeight="600">
           {result.symbol}
