@@ -117,7 +117,9 @@ const OrdersList = () => {
                 );
               })
             ) : status === "completed" && orders && !orders.length ? (
-              <NoOrders />
+              <Tr>
+                <NoOrders />
+              </Tr>
             ) : null}
           </Tbody>
         </Table>
@@ -130,7 +132,15 @@ export default OrdersList;
 
 const NoOrders = () => {
   return (
-    <Flex mt="2rem" py="1rem" direction="column" align="center">
+    <Flex
+      mt="2rem"
+      py="1rem"
+      direction="column"
+      align="center"
+      position="absolute"
+      left="50%"
+      transform="translateX(-50%)"
+    >
       <Text textAlign="center" fontWeight="600">
         No Orders Match Your Search Criteria
       </Text>

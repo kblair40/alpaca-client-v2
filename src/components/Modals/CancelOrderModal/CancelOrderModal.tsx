@@ -5,8 +5,6 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
-  // ModalBody,
-  ModalCloseButton,
   Button,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -18,21 +16,32 @@ import { alpaca } from "api";
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onDeleteOrder: () => void;
   orderId: string;
 };
 
-const CancelOrderModal = ({ isOpen, onClose, orderId }: Props) => {
+const CancelOrderModal = ({
+  isOpen,
+  onClose,
+  orderId,
+  onDeleteOrder,
+}: Props) => {
+  const [loading, setLoading] = useState(false);
+
   const dispatch = useDispatch();
 
   const handleClickConfirm = async () => {
+    setLoading(true);
     try {
       const response = await alpaca.delete(`/order/${orderId}`);
       console.log("\n\nDELETE RESPONSE:", response.data, "\n\n");
 
-      // dispatch(fetchOrders());
+      dispatch(fetchOrders());
+      onDeleteOrder();
     } catch (e) {
       console.log("FAILED TO DELETE CANCEL ORDER");
     }
+    setLoading(false);
   };
 
   const bg = useColorModeValue("gray.50", "gray.800");
@@ -46,8 +55,9 @@ const CancelOrderModal = ({ isOpen, onClose, orderId }: Props) => {
     >
       <ModalOverlay />
       <ModalContent bg={bg}>
-        {/* <ModalCloseButton size="sm" /> */}
-        <ModalHeader>Are you sure you want to cancel this order?</ModalHeader>
+        <ModalHeader textAlign="center">
+          Are you sure you want to cancel this order?
+        </ModalHeader>
 
         <ModalFooter>
           <Button w="50%" onClick={onClose}>
@@ -58,6 +68,7 @@ const CancelOrderModal = ({ isOpen, onClose, orderId }: Props) => {
             variant="solid-red"
             ml="1rem"
             onClick={handleClickConfirm}
+            isLoading={loading}
           >
             Confirm
           </Button>

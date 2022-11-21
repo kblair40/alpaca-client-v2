@@ -65,8 +65,12 @@ const Order = () => {
   };
 
   const handleReplaceOrder = () => {
-    navigate("/dashboard");
     handleCloseEditModal();
+    navigate("/dashboard");
+  };
+  const handleDeleteOrder = () => {
+    setCancelModalOpen(false);
+    navigate("/dashboard");
   };
 
   if (loading) {
@@ -127,6 +131,7 @@ const Order = () => {
             isOpen={cancelModalOpen}
             onClose={() => setCancelModalOpen(false)}
             orderId={orderData.id}
+            onDeleteOrder={handleDeleteOrder}
           />
         ) : null}
 

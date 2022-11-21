@@ -171,10 +171,11 @@ const OrderForm = ({
     console.log("TRADE PARAMS:", tradeParams, "\n");
 
     try {
-      const response = await alpaca.patch(`/order/${orderData.id}`, {
+      await alpaca.patch(`/order/${orderData.id}`, {
         tradeParams,
       });
-      console.log("\nORDER PATCH RESPONSE:", response.data);
+      // console.log("\nORDER PATCH RESPONSE:", response.data);
+
       // current order is now in "replaced" status and a new order has been created
       dispatch(fetchOrders());
       onReplaceOrder();
