@@ -66,6 +66,7 @@ const Activities = () => {
   return (
     <Stack align="start" w="100%" pt="1.5rem" h="100%">
       {header()}
+
       <TableContainer w="100%" h="100%">
         <Table w="100%" h="100%" p={0} size="sm" fontSize="8px">
           <Thead h="41px" w="100%">
@@ -105,7 +106,10 @@ const Activities = () => {
                         <Td fontSize={{ base: "xs", sm: "sm" }}>
                           {activity.order_id ? (
                             <Center>
-                              <Link to={`/order/${activity.order_id}`}>
+                              <Link
+                                to={`/order/${activity.order_id}`}
+                                state={{ tabIndex: 2 }}
+                              >
                                 <IconButton
                                   size="xs"
                                   variant="icon-button"

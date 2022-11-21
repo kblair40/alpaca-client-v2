@@ -103,7 +103,7 @@ const OrdersList = () => {
                     </Td>
                     <Td>
                       <Center>
-                        <Link to={`/order/${order.id}`}>
+                        <Link to={`/order/${order.id}`} state={{ tabIndex: 1 }}>
                           <IconButton
                             aria-label="See Details"
                             variant="icon-button"
