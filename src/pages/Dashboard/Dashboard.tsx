@@ -41,8 +41,10 @@ const Dashboard = () => {
   const borderTopColor = useColorModeValue(gray["200"], gray["600"]);
 
   useEffect(() => {
-    console.log("\n\nPARAMS", params, "\n\n");
-  }, [params]);
+    if ([0, 1].includes(tabIndex || 2)) {
+      dispatch(fetchOrders());
+    }
+  }, [tabIndex, dispatch]);
 
   useEffect(() => {
     dispatch(fetchOrders());
