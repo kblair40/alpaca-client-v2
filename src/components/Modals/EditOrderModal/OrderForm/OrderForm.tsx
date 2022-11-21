@@ -103,10 +103,20 @@ const OrderForm = ({
           if (!formData.stopPrice) return false; // should set an error message here instead
         }
       }
-
       return true;
     }
 
+    if (orderData.limit_price) {
+      if (parseFloat(orderData.limit_price) !== formData.limitPrice) {
+        return true;
+      }
+    }
+
+    if (orderData.stop_price) {
+      if (parseFloat(orderData.stop_price) !== formData.stopPrice) {
+        return true;
+      }
+    }
     return false;
   };
 
