@@ -32,8 +32,6 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
   const [value, setValue] = useState("");
   const [results, setResults] = useState<any[] | null>(null);
   const [searching, setSearching] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
   const placeholderColor = isDark ? "gray.300" : "gray.500";
@@ -59,7 +57,6 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
         setResults(null);
       }
     } else {
-      setShowResults(false);
       setResults(null);
     }
     setSearching(false);
@@ -118,7 +115,6 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
                 </Center>
               ) : null}
             </PopoverBody>
-            {/* <Results results={results} /> */}
           </PopoverContent>
         </Portal>
       </Popover>
