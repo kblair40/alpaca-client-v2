@@ -11,7 +11,7 @@ import {
   Button,
   useColorMode,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 // import useDispatch from "hooks/useDispatch";
 import { ArrowLeftIcon, EditIcon } from "utils/icons";
@@ -20,6 +20,14 @@ import { type IOrder } from "utils/types/order";
 import { alpaca } from "api";
 import EditOrderModal from "components/Modals/EditOrderModal";
 import CancelOrderModal from "components/Modals/CancelOrderModal";
+
+type ReturnTab = "orders" | "account" | "positions";
+
+const TABS: { [key: string]: ReturnTab } = {
+  0: "positions",
+  1: "orders",
+  2: "account",
+};
 
 const ASSET_CLASSES: { [key: string]: string } = {
   us_equity: "US Equity",
@@ -31,8 +39,18 @@ const Order = () => {
   const [orderData, setOrderData] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const { state } = useLocation();
+  const tabIndex = state?.tabIndex;
+  let returnTab: ReturnTab | undefined = undefined;
+  if (![null, undefined].includes(tabIndex)) {
+    returnTab = TABS[tabIndex];
+  }
+
+  let goBackLink = returnTab ? `/dashboard/${returnTab}` : "/dashboard";
+  // console.log("goBackLink:", goBackLink);
+
+  // console.log("\n\nLOCATION STATE:", state, "\n\n");
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
 
   const { orderId } = useParams();
 
@@ -66,11 +84,11 @@ const Order = () => {
 
   const handleReplaceOrder = () => {
     handleCloseEditModal();
-    navigate("/dashboard/orders");
+    navigate(goBackLink);
   };
   const handleDeleteOrder = () => {
     setCancelModalOpen(false);
-    navigate("/dashboard/orders");
+    navigate(goBackLink);
   };
 
   if (loading) {
@@ -112,7 +130,6 @@ const Order = () => {
     const isEditable = editableStatuses.includes(orderData.status);
     const isFilled =
       filledStatuses.includes(orderData.status) && !!filledAvgPrice;
-
     // console.log("status:", status);
 
     return (
@@ -136,7 +153,7 @@ const Order = () => {
         ) : null}
 
         <Box position="fixed" top="76px" left="1rem">
-          <BackToDashboard />
+          <BackToDashboard goBackLink={goBackLink} />
         </Box>
 
         <Flex
@@ -330,7 +347,11 @@ const DataField = ({
   );
 };
 
-const BackToDashboard = () => {
+type BackProps = {
+  goBackLink: string;
+};
+
+const BackToDashboard = ({ goBackLink }: BackProps) => {
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
 
@@ -348,7 +369,7 @@ const BackToDashboard = () => {
   const btnStyles = isDark ? darkStyles : lightStyles;
 
   return (
-    <Link to="/dashboard/orders">
+    <Link to={goBackLink}>
       <Button
         {...btnStyles}
         leftIcon={<ArrowLeftIcon boxSize="18px" />}
