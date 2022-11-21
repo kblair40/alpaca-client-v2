@@ -22,12 +22,7 @@ import {
 
 import { type IOrder } from "utils/types/order";
 import useSelector from "hooks/useSelector";
-import {
-  DEFAULT_VALUES,
-  TIME_IN_FORCE,
-  ORDER_TYPES,
-  type OrderFormData,
-} from "./options";
+import { TIME_IN_FORCE, ORDER_TYPES, type OrderFormData } from "./options";
 import { alpaca } from "api";
 
 type OrderType = "market" | "stop" | "limit" | "stop_limit";
@@ -41,7 +36,6 @@ type Props = {
 
 const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
   const {
-    symbol,
     qty: def_qty,
     time_in_force: def_timeInForce,
     type: def_orderType,
@@ -59,10 +53,20 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
     stopPrice: def_stopPrice,
   });
 
-  const [orderType, setOrderType] = useState<OrderType>("market");
-  const [timeInForce, setTimeInForce] = useState<TimeInForce>("day");
-  const [formData, setFormData] = useState<OrderFormData>(
-    DEFAULT_VALUES["market"]
+  const [formData, setFormData] = useState<OrderFormData>({
+    quantity: parseInt(
+      originalData.current.qty ? originalData.current.qty : "0"
+    ),
+    limitPrice: originalData.current.limitPrice
+      ? parseFloat(originalData.current.limitPrice)
+      : undefined,
+    stopPrice: originalData.current.stopPrice
+      ? parseFloat(originalData.current.stopPrice)
+      : undefined,
+  });
+  const [orderType, setOrderType] = useState(originalData.current.type);
+  const [timeInForce, setTimeInForce] = useState(
+    originalData.current.timeInForce
   );
   const [price, setPrice] = useState<null | number>(null);
   const [loading, setLoading] = useState(false);
@@ -75,9 +79,28 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
     }
   }, [priceData]);
 
-  useEffect(() => {
-    setFormData(DEFAULT_VALUES[orderType]);
-  }, [orderType]);
+  const dataChanged = () => {
+    const defaults = originalData.current;
+
+    console.log("DEFAULTS:", defaults);
+    let defaultQty = parseInt(defaults.qty ? defaults.qty : "0");
+    if (defaultQty !== formData.quantity) return true;
+    if (timeInForce !== defaults.timeInForce) return true;
+    if (defaults.type !== orderType) {
+      if (["limit", "stop", "stop_limit"].includes(orderType)) {
+        if (["limit", "stop_limit"].includes(orderType)) {
+          if (!limitRef.current?.value) return false; // should set an error message here instead
+        }
+        if (["stop", "stop_limit"].includes(orderType)) {
+          if (!stopRef.current?.value) return false; // should set an error message here instead
+        }
+      }
+
+      return true;
+    }
+
+    return false;
+  };
 
   // const handleSubmit = async () => {
   //   setLoading(true);
@@ -126,30 +149,43 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
 
   const limitRef = useRef<HTMLInputElement>(null);
   const stopRef = useRef<HTMLInputElement>(null);
-  const typeRef = useRef<HTMLSelectElement>(null);
-  const tifRef = useRef<HTMLSelectElement>(null);
   const qtyRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async () => {
-    if (!tifRef.current || !typeRef.current || !qtyRef.current) return;
+    if (!timeInForce || !orderType || !formData.quantity) {
+      console.log("EARLY RETURN:", {
+        qty: formData.quantity,
+        timeInForce,
+        orderType,
+      });
+      return;
+    }
 
-    const tif = tifRef.current.value;
-    const type = typeRef.current.value;
-    const qty = qtyRef.current.value;
+    const dataDidChange = dataChanged();
+    console.log("DATA DID CHANGE:", dataDidChange);
+
+    const qty = formData.quantity;
     let limitPrice: string;
     let stopPrice: string;
 
-    if (["limit", "stop_limit"].includes(type)) {
+    if (["limit", "stop_limit"].includes(orderType)) {
       if (!limitRef.current) return;
       limitPrice = limitRef.current.value;
     }
-    if (["stop", "stop_limit"].includes(type)) {
+    if (["stop", "stop_limit"].includes(orderType)) {
       if (!stopRef.current) return;
       stopPrice = stopRef.current.value;
     }
 
-    // @ts-ignore
-    console.log("ALL DATA:", { tif, type, qty, limitPrice, stopPrice });
+    console.log("ALL DATA:", {
+      timeInForce,
+      orderType,
+      qty,
+      // @ts-ignore
+      limitPrice,
+      // @ts-ignore
+      stopPrice,
+    });
   };
 
   return (
@@ -173,7 +209,14 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
         <Stack>
           <FormControl isRequired>
             <FormLabel>Order Type</FormLabel>
-            <Select defaultValue={def_orderType}>
+            <Select
+              value={orderType}
+              onChange={({ target: { value } }) => {
+                if (["market", "limit", "stop", "stop_limit"].includes(value)) {
+                  setOrderType(value as OrderType);
+                }
+              }}
+            >
               {ORDER_TYPES.map((type, i) => (
                 <option key={i} value={type.value}>
                   {type.label}
@@ -184,7 +227,14 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
 
           <FormControl isRequired>
             <FormLabel>Time in Force</FormLabel>
-            <Select defaultValue={def_timeInForce}>
+            <Select
+              value={timeInForce}
+              onChange={({ target: { value } }) => {
+                if (["day", "gtc", "ioc", "fok"].includes(value)) {
+                  setTimeInForce(value as TimeInForce);
+                }
+              }}
+            >
               {TIME_IN_FORCE.map((tif, i) => (
                 <option key={i} value={tif.value}>
                   {tif.label}
@@ -196,7 +246,11 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
           <FormControl isRequired>
             <FormLabel>Quantity</FormLabel>
             <NumberInput
-              defaultValue={def_qty ? def_qty : 0}
+              // defaultValue={def_qty ? def_qty : 0}
+              onChange={(val) =>
+                setFormData({ ...formData, quantity: parseInt(val) })
+              }
+              value={formData.quantity}
               min={1}
               step={1}
               max={100000000}
