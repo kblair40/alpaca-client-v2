@@ -106,7 +106,7 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
         <Portal>
           <PopoverContent bg={popoverBg}>
             <PopoverHeader>Results</PopoverHeader>
-            <PopoverBody border="1px solid green" px={0}>
+            <PopoverBody p={0}>
               {results && results.length ? (
                 results.map((res, i) => {
                   return <Result key={i} result={res} isDark={isDark} />;
