@@ -19,6 +19,7 @@ import { toTitleCase } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
 import { alpaca } from "api";
 import EditOrderModal from "components/Modals/EditOrderModal";
+import CancelOrderModal from "components/Modals/CancelOrderModal";
 
 const ASSET_CLASSES: { [key: string]: string } = {
   us_equity: "US Equity",
@@ -26,6 +27,7 @@ const ASSET_CLASSES: { [key: string]: string } = {
 
 const Order = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
+  const [cancelModalOpen, setCancelModalOpen] = useState(false);
   const [orderData, setOrderData] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -120,6 +122,14 @@ const Order = () => {
           />
         )}
 
+        {cancelModalOpen && orderData ? (
+          <CancelOrderModal
+            isOpen={cancelModalOpen}
+            onClose={() => setCancelModalOpen(false)}
+            orderId={orderData.id}
+          />
+        ) : null}
+
         <Box position="fixed" top="76px" left="1rem">
           <BackToDashboard />
         </Box>
@@ -152,16 +162,28 @@ const Order = () => {
             )}
 
             {isEditable && (
-              <Button
-                ml="1rem"
-                variant="solid-blue"
-                size="xs"
-                leftIcon={<EditIcon boxSize="16px" />}
-                onClick={() => setEditModalOpen(true)}
-                isDisabled={!orderData}
-              >
-                Edit Order
-              </Button>
+              <Fragment>
+                <Button
+                  ml="2rem"
+                  variant="solid-blue"
+                  size="xs"
+                  leftIcon={<EditIcon boxSize="16px" />}
+                  onClick={() => setEditModalOpen(true)}
+                  isDisabled={!orderData}
+                >
+                  Edit Order
+                </Button>
+                <Button
+                  ml="1rem"
+                  variant="solid-red"
+                  size="xs"
+                  leftIcon={<EditIcon boxSize="16px" />}
+                  onClick={() => setCancelModalOpen(true)}
+                  isDisabled={!orderData}
+                >
+                  Cancel Order
+                </Button>
+              </Fragment>
             )}
           </Flex>
 
