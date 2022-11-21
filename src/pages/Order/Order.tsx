@@ -58,9 +58,9 @@ const Order = () => {
     setEditModalOpen(false);
   };
 
-  const handleClickEdit = () => {
-    //
-  };
+  // const handleClickEdit = () => {
+
+  // };
 
   if (loading) {
     return (
@@ -106,7 +106,13 @@ const Order = () => {
 
     return (
       <Fragment>
-        <EditOrderModal isOpen={editModalOpen} onClose={handleCloseEditModal} />
+        {orderData && (
+          <EditOrderModal
+            orderData={orderData}
+            isOpen={editModalOpen}
+            onClose={handleCloseEditModal}
+          />
+        )}
 
         <Box position="fixed" top="76px" left="1rem">
           <BackToDashboard />

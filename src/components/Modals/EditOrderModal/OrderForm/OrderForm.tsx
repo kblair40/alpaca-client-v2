@@ -16,6 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { type IOrder } from "utils/types/order";
 import useSelector from "hooks/useSelector";
 import {
   DEFAULT_VALUES,
@@ -31,9 +32,19 @@ type TimeInForce = "day" | "gtc" | "ioc" | "fok";
 type Props = {
   closeModal?: () => void;
   onPlaceOrder?: (isSuccessful?: boolean) => void;
+  orderData: IOrder;
 };
 
-const OrderForm = ({ closeModal, onPlaceOrder }: Props) => {
+const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
+  const {
+    symbol,
+    qty: def_qty,
+    time_in_force: def_timeInForce,
+    type: def_orderType,
+    limit_price: def_limitPrice,
+    stop_price: def_stopPrice,
+  } = orderData;
+
   const [orderType, setOrderType] = useState<OrderType>("market");
   const [timeInForce, setTimeInForce] = useState<TimeInForce>("day");
   const [formData, setFormData] = useState<OrderFormData>(
@@ -66,11 +77,11 @@ const OrderForm = ({ closeModal, onPlaceOrder }: Props) => {
       type: orderType,
       time_in_force: timeInForce,
     };
-    console.log("TRADE PARAMS:", tradeParams, "\n");
+    // console.log("TRADE PARAMS:", tradeParams, "\n");
 
     if (orderType !== "market") {
       if (orderType === "limit" || orderType === "stop_limit") {
-        console.log("LIMIT REF:", limitRef.current!.value);
+        // console.log("LIMIT REF:", limitRef.current!.value);
         if (limitRef.current && limitRef.current.value) {
           tradeParams.limit_price = limitRef.current.value;
         } else {
@@ -108,14 +119,7 @@ const OrderForm = ({ closeModal, onPlaceOrder }: Props) => {
         <Stack>
           <FormControl isRequired>
             <FormLabel>Order Type</FormLabel>
-            <Select
-              value={orderType}
-              onChange={({ target: { value } }) => {
-                if (["market", "limit", "stop", "stop_limit"].includes(value)) {
-                  setOrderType(value as OrderType);
-                }
-              }}
-            >
+            <Select defaultValue={def_orderType}>
               {ORDER_TYPES.map((type, i) => (
                 <option key={i} value={type.value}>
                   {type.label}
@@ -126,14 +130,7 @@ const OrderForm = ({ closeModal, onPlaceOrder }: Props) => {
 
           <FormControl isRequired>
             <FormLabel>Time in Force</FormLabel>
-            <Select
-              value={timeInForce}
-              onChange={({ target: { value } }) => {
-                if (["day", "gtc", "ioc", "fok"].includes(value)) {
-                  setTimeInForce(value as TimeInForce);
-                }
-              }}
-            >
+            <Select defaultValue={def_timeInForce}>
               {TIME_IN_FORCE.map((tif, i) => (
                 <option key={i} value={tif.value}>
                   {tif.label}
@@ -145,10 +142,7 @@ const OrderForm = ({ closeModal, onPlaceOrder }: Props) => {
           <FormControl isRequired>
             <FormLabel>Quantity</FormLabel>
             <NumberInput
-              onChange={(val) =>
-                setFormData({ ...formData, quantity: parseInt(val) })
-              }
-              value={formData.quantity}
+              defaultValue={def_qty ? def_qty : 0}
               min={1}
               step={1}
               max={100000000}
