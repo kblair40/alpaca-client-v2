@@ -24,7 +24,7 @@ import { convertToCurrency } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
 // import useSelector from "hooks/useSelector";
 import { TIME_IN_FORCE, ORDER_TYPES, type OrderFormData } from "./options";
-// import { alpaca } from "api";
+import { alpaca } from "api";
 
 type OrderType = "market" | "stop" | "limit" | "stop_limit";
 type TimeInForce = "day" | "gtc" | "ioc" | "fok";
@@ -156,7 +156,6 @@ const OrderForm = ({
 
   const limitRef = useRef<HTMLInputElement>(null);
   const stopRef = useRef<HTMLInputElement>(null);
-  const qtyRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async () => {
     if (!timeInForce || !orderType || !formData.quantity) {
@@ -170,29 +169,55 @@ const OrderForm = ({
 
     const dataDidChange = dataChanged();
     console.log("DATA DID CHANGE:", dataDidChange);
-
-    const qty = formData.quantity;
-    let limitPrice: string;
-    let stopPrice: string;
-
-    if (["limit", "stop_limit"].includes(orderType)) {
-      if (!limitRef.current) return;
-      limitPrice = limitRef.current.value;
-    }
-    if (["stop", "stop_limit"].includes(orderType)) {
-      if (!stopRef.current) return;
-      stopPrice = stopRef.current.value;
+    if (!dataDidChange) {
+      console.log("NO CHANGE TO DATA - RETURNING EARLY");
+      return;
     }
 
-    console.log("ALL DATA:", {
-      timeInForce,
-      orderType,
-      qty,
-      // @ts-ignore
-      limitPrice,
-      // @ts-ignore
-      stopPrice,
-    });
+    setLoading(true);
+
+    const tradeParams: { [key: string]: string | number } = {
+      symbol: orderData.symbol, // could use alpaca_id alternatively
+      qty: formData.quantity, // might need parseInt to wrap
+      side: "buy",
+      type: orderType,
+      time_in_force: timeInForce,
+    };
+
+    if (orderType !== "market") {
+      if (orderType === "limit" || orderType === "stop_limit") {
+        // console.log("LIMIT REF:", limitRef.current!.value);
+        if (limitRef.current && limitRef.current.value) {
+          tradeParams.limit_price = limitRef.current.value;
+        } else {
+          console.log("EARLY RETURN1 - MISSING INFORMATION");
+          setLoading(false);
+          return;
+        }
+      }
+      if (orderType === "stop" || orderType === "stop_limit") {
+        if (stopRef.current && stopRef.current.value) {
+          tradeParams.stop_price = stopRef.current.value;
+        } else {
+          console.log("EARLY RETURN2 - MISSING INFORMATION");
+          setLoading(false);
+          return;
+        }
+      }
+    }
+
+    console.log("TRADE PARAMS:", tradeParams, "\n");
+
+    try {
+      const response = await alpaca.patch(`/order/${orderData.id}`, {
+        tradeParams,
+      });
+      console.log("\nORDER PATCH RESPONSE:", response.data);
+    } catch (e) {
+      console.log("\n\nFAILED TO REPLACE ORDER:", e);
+    }
+
+    setLoading(false);
   };
 
   return (
