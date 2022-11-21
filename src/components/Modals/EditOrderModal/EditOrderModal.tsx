@@ -14,6 +14,7 @@ import {
 
 import { type IOrder } from "utils/types/order";
 import OrderForm from "./OrderForm";
+import { alpaca } from "api";
 // import useSelector from "hooks/useSelector";
 // import useDispatch from "hooks/useDispatch";
 
@@ -24,7 +25,21 @@ type Props = {
 };
 
 const EditOrderModal = ({ isOpen, onClose, orderData }: Props) => {
-  // const dispatch = useDispatch();
+  const [priceData, setPriceData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchPriceData = async () => {
+      try {
+        const response = await alpaca.get(`/snapshot/${orderData.symbol}`);
+        console.log("PRICE DATA RESPONSE:", response.data, "\n\n");
+        if (response.data) setPriceData(response.data);
+      } catch (e) {
+        console.log("FAILED TO FETCH PRICE DATA:", e);
+        if (priceData) setPriceData(null);
+      }
+    };
+    fetchPriceData();
+  }, [orderData]);
 
   const { colorMode } = useColorMode();
   const isDark = colorMode === "dark";
@@ -62,7 +77,13 @@ const EditOrderModal = ({ isOpen, onClose, orderData }: Props) => {
           </Flex>
         </ModalHeader>
 
-        {orderData && <OrderForm orderData={orderData} closeModal={onClose} />}
+        {orderData && (
+          <OrderForm
+            priceData={priceData}
+            orderData={orderData}
+            closeModal={onClose}
+          />
+        )}
       </ModalContent>
     </Modal>
   );

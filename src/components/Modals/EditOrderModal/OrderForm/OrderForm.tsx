@@ -20,10 +20,11 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 
+import { convertToCurrency } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
-import useSelector from "hooks/useSelector";
+// import useSelector from "hooks/useSelector";
 import { TIME_IN_FORCE, ORDER_TYPES, type OrderFormData } from "./options";
-import { alpaca } from "api";
+// import { alpaca } from "api";
 
 type OrderType = "market" | "stop" | "limit" | "stop_limit";
 type TimeInForce = "day" | "gtc" | "ioc" | "fok";
@@ -32,9 +33,15 @@ type Props = {
   closeModal?: () => void;
   onPlaceOrder?: (isSuccessful?: boolean) => void;
   orderData: IOrder;
+  priceData: any;
 };
 
-const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
+const OrderForm = ({
+  closeModal,
+  onPlaceOrder,
+  orderData,
+  priceData,
+}: Props) => {
   const {
     qty: def_qty,
     time_in_force: def_timeInForce,
@@ -71,11 +78,11 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
   const [price, setPrice] = useState<null | number>(null);
   const [loading, setLoading] = useState(false);
 
-  const { priceData, tickerSymbol } = useSelector((st) => st.order);
+  // const { priceData, tickerSymbol } = useSelector((st) => st.order);
 
   useEffect(() => {
     if (priceData) {
-      setPrice(priceData.snapshot.minuteBar.c);
+      setPrice(priceData.minuteBar.c);
     }
   }, [priceData]);
 
@@ -295,14 +302,14 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
             <Text w="124px" mr="1rem">
               Price Per Share
             </Text>
-            <Text w="100px">{price ? `$${price.toFixed(2)}` : ""}</Text>
+            <Text w="100px">{price ? convertToCurrency(price) : ""}</Text>
           </Flex>
           <Flex justify="center">
             <Text w="124px" mr="1rem">
               Est. Order Total
             </Text>
             <Text w="100px">
-              {price ? `$${(price * formData.quantity).toFixed(2)}` : ""}
+              {price ? convertToCurrency(price * formData.quantity) : ""}
             </Text>
           </Flex>
         </Flex>

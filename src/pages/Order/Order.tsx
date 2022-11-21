@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
+import useDispatch from "hooks/useDispatch";
 import { ArrowLeftIcon, EditIcon } from "utils/icons";
 import { toTitleCase } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
@@ -27,6 +28,8 @@ const Order = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [orderData, setOrderData] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const dispatch = useDispatch();
 
   const { orderId } = useParams();
 
