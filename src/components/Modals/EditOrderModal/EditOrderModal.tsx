@@ -22,9 +22,15 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   orderData: IOrder;
+  onReplaceOrder: () => void;
 };
 
-const EditOrderModal = ({ isOpen, onClose, orderData }: Props) => {
+const EditOrderModal = ({
+  isOpen,
+  onClose,
+  orderData,
+  onReplaceOrder,
+}: Props) => {
   const [priceData, setPriceData] = useState<any>(null);
 
   useEffect(() => {
@@ -82,6 +88,7 @@ const EditOrderModal = ({ isOpen, onClose, orderData }: Props) => {
             priceData={priceData}
             orderData={orderData}
             closeModal={onClose}
+            onReplaceOrder={onReplaceOrder}
           />
         )}
       </ModalContent>

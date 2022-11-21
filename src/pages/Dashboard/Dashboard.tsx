@@ -45,7 +45,7 @@ const Dashboard = (props: Props) => {
 
   return (
     <React.Fragment>
-      <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted>
+      <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted defaultIndex={1}>
         <TabList h="42px">
           <Tab {...tabStyles}>Positions</Tab>
           <Tab {...tabStyles}>Orders</Tab>

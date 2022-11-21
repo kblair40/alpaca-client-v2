@@ -31,15 +31,15 @@ type OrderType = "market" | "stop" | "limit" | "stop_limit";
 type TimeInForce = "day" | "gtc" | "ioc" | "fok";
 
 type Props = {
-  closeModal?: () => void;
-  onPlaceOrder?: (isSuccessful?: boolean) => void;
+  closeModal: () => void;
+  onReplaceOrder: (isSuccessful?: boolean) => void;
   orderData: IOrder;
   priceData: any;
 };
 
 const OrderForm = ({
   closeModal,
-  onPlaceOrder,
+  onReplaceOrder,
   orderData,
   priceData,
 }: Props) => {
@@ -171,6 +171,7 @@ const OrderForm = ({
       console.log("\nORDER PATCH RESPONSE:", response.data);
       // current order is now in "replaced" status and a new order has been created
       dispatch(fetchOrders());
+      onReplaceOrder();
     } catch (e) {
       console.log("\n\nFAILED TO REPLACE ORDER:", e);
     }

@@ -11,7 +11,7 @@ import {
   Button,
   useColorMode,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import useDispatch from "hooks/useDispatch";
 import { ArrowLeftIcon, EditIcon } from "utils/icons";
@@ -29,6 +29,7 @@ const Order = () => {
   const [orderData, setOrderData] = useState<IOrder | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { orderId } = useParams();
@@ -59,6 +60,11 @@ const Order = () => {
 
   const handleCloseEditModal = () => {
     setEditModalOpen(false);
+  };
+
+  const handleReplaceOrder = () => {
+    navigate("/dashboard");
+    handleCloseEditModal();
   };
 
   // const handleClickEdit = () => {
@@ -114,6 +120,7 @@ const Order = () => {
             orderData={orderData}
             isOpen={editModalOpen}
             onClose={handleCloseEditModal}
+            onReplaceOrder={handleReplaceOrder}
           />
         )}
 
