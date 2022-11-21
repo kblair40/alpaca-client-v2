@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Tabs,
   TabList,
@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   useTheme,
 } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 
 import useDispatch from "hooks/useDispatch";
 import { fetchCalendarData } from "store/calendarSlice";
@@ -20,15 +21,28 @@ import PositionsChart from "components/PositionsChart";
 import OrderModal from "components/Modals/OrderModal";
 import AlpacaAccount from "components/AlpacaAccount";
 
-type Props = {};
+const TABS: { [key: string]: number } = {
+  positions: 0,
+  orders: 1,
+  account: 2,
+};
 
-const Dashboard = (props: Props) => {
+const Dashboard = () => {
+  const params = useParams();
+
+  const [tabIndex, setTabIndex] = useState<number | undefined>(
+    params.tab ? TABS[params.tab] : 0
+  );
   const dispatch = useDispatch();
 
   const {
     colors: { gray },
   } = useTheme();
   const borderTopColor = useColorModeValue(gray["200"], gray["600"]);
+
+  useEffect(() => {
+    console.log("\n\nPARAMS", params, "\n\n");
+  }, [params]);
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -45,7 +59,14 @@ const Dashboard = (props: Props) => {
 
   return (
     <React.Fragment>
-      <Tabs h="calc(100vh - 108px)" pt="1rem" isFitted defaultIndex={1}>
+      <Tabs
+        h="calc(100vh - 108px)"
+        pt="1rem"
+        // defaultIndex={1}
+        defaultIndex={tabIndex}
+        onChange={setTabIndex}
+        isFitted
+      >
         <TabList h="42px">
           <Tab {...tabStyles}>Positions</Tab>
           <Tab {...tabStyles}>Orders</Tab>

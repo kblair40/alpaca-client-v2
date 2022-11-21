@@ -57,6 +57,14 @@ function App() {
             }
           />
           <Route
+            path="/dashboard/:tab"
+            element={
+              <Suspense fallback={<Loading />}>
+                <Dashboard />
+              </Suspense>
+            }
+          />
+          <Route
             path="/order/:orderId"
             element={
               <Suspense fallback={<Loading />}>
