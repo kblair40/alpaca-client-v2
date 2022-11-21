@@ -49,6 +49,16 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
     stop_price: def_stopPrice,
   } = orderData;
 
+  // Use to check if any changes have been made when submitted.
+  // Prevent submission if all details are the same.
+  const originalData = useRef({
+    timeInForce: def_timeInForce,
+    type: def_orderType,
+    qty: def_qty,
+    limitPrice: def_limitPrice,
+    stopPrice: def_stopPrice,
+  });
+
   const [orderType, setOrderType] = useState<OrderType>("market");
   const [timeInForce, setTimeInForce] = useState<TimeInForce>("day");
   const [formData, setFormData] = useState<OrderFormData>(
@@ -129,7 +139,7 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
         >
           <AlertIcon />
           <AlertTitle>Warning!</AlertTitle>
-          <AlertDescription lineHeight={1.25}>
+          <AlertDescription lineHeight={1.25} fontSize="sm" fontWeight="500">
             If the existing order is filled before the replacement order reaches
             the execution venue, the existing order will not be replaced.
           </AlertDescription>
@@ -237,5 +247,3 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
 };
 
 export default OrderForm;
-
-const Warning = () => <Text></Text>;
