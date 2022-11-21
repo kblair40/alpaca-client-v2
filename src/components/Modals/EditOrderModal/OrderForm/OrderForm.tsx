@@ -75,9 +75,6 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
     }
   }, [priceData]);
 
-  const limitRef = useRef<HTMLInputElement>(null);
-  const stopRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     setFormData(DEFAULT_VALUES[orderType]);
   }, [orderType]);
@@ -126,6 +123,12 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
 
     setLoading(false);
   };
+
+  const limitRef = useRef<HTMLInputElement>(null);
+  const stopRef = useRef<HTMLInputElement>(null);
+  const typeRef = useRef<HTMLSelectElement>(null);
+  const tifRef = useRef<HTMLSelectElement>(null);
+  const qtyRef = useRef<HTMLInputElement>(null);
 
   return (
     <React.Fragment>
