@@ -22,7 +22,8 @@ import {
 
 import { convertToCurrency } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
-// import useSelector from "hooks/useSelector";
+import useDispatch from "hooks/useDispatch";
+import { fetchOrders } from "store/orderSlice";
 import { TIME_IN_FORCE, ORDER_TYPES, type OrderFormData } from "./options";
 import { alpaca } from "api";
 
@@ -78,7 +79,7 @@ const OrderForm = ({
   const [price, setPrice] = useState<null | number>(null);
   const [loading, setLoading] = useState(false);
 
-  // const { priceData, tickerSymbol } = useSelector((st) => st.order);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (priceData) {
@@ -108,51 +109,6 @@ const OrderForm = ({
 
     return false;
   };
-
-  // const handleSubmit = async () => {
-  //   setLoading(true);
-  //   const tradeParams: { [key: string]: string | number } = {
-  //     symbol: tickerSymbol, // could use alpaca_id alternatively
-  //     qty: formData.quantity, // might need parseInt to wrap
-  //     side: "buy",
-  //     type: orderType,
-  //     time_in_force: timeInForce,
-  //   };
-  //   // console.log("TRADE PARAMS:", tradeParams, "\n");
-
-  //   if (orderType !== "market") {
-  //     if (orderType === "limit" || orderType === "stop_limit") {
-  //       // console.log("LIMIT REF:", limitRef.current!.value);
-  //       if (limitRef.current && limitRef.current.value) {
-  //         tradeParams.limit_price = limitRef.current.value;
-  //       } else {
-  //         console.log("EARLY RETURN1 - MISSING INFORMATION");
-  //         setLoading(false);
-  //         return;
-  //       }
-  //     }
-  //     if (orderType === "stop" || orderType === "stop_limit") {
-  //       if (stopRef.current && stopRef.current.value) {
-  //         tradeParams.stop_price = stopRef.current.value;
-  //       } else {
-  //         console.log("EARLY RETURN2 - MISSING INFORMATION");
-  //         setLoading(false);
-  //         return;
-  //       }
-  //     }
-  //   }
-
-  //   try {
-  //     const tradeResponse = await alpaca.post("/order", { tradeParams });
-  //     console.log("\n\nTRADE RESPONSE:", tradeResponse, "\n\n");
-  //     if (onPlaceOrder) onPlaceOrder(true);
-  //   } catch (e) {
-  //     console.log("FAILED TO COMPLETE TRADE:", e);
-  //     if (onPlaceOrder) onPlaceOrder(false);
-  //   }
-
-  //   setLoading(false);
-  // };
 
   const limitRef = useRef<HTMLInputElement>(null);
   const stopRef = useRef<HTMLInputElement>(null);
@@ -213,6 +169,8 @@ const OrderForm = ({
         tradeParams,
       });
       console.log("\nORDER PATCH RESPONSE:", response.data);
+      // current order is now in "replaced" status and a new order has been created
+      dispatch(fetchOrders());
     } catch (e) {
       console.log("\n\nFAILED TO REPLACE ORDER:", e);
     }
