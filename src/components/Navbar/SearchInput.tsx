@@ -9,15 +9,11 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  // PopoverCloseButton,
-  PopoverAnchor,
   Portal,
-  Box,
   Text,
   Center,
   Spinner,
+  Flex,
 } from "@chakra-ui/react";
 
 import api from "api";
@@ -28,9 +24,17 @@ interface SearchProps {
   isDisabled: boolean;
 }
 
+type SearchResult = {
+  alpaca_id: string;
+  exchange: string;
+  name: string;
+  symbol: string;
+  _id?: string;
+};
+
 const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
   const [value, setValue] = useState("");
-  const [results, setResults] = useState<any[] | null>(null);
+  const [results, setResults] = useState<SearchResult[] | null>(null);
   const [searching, setSearching] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -102,10 +106,10 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
         <Portal>
           <PopoverContent bg={popoverBg}>
             <PopoverHeader>Results</PopoverHeader>
-            <PopoverBody>
+            <PopoverBody border="1px solid green" px={0}>
               {results && results.length ? (
                 results.map((res, i) => {
-                  return <Box key={i}>{res.symbol}</Box>;
+                  return <Result key={i} result={res} isDark={isDark} />;
                 })
               ) : results && !results.length ? (
                 <Text textAlign="center">No Results</Text>
@@ -124,10 +128,35 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
 
 export default SearchInput;
 
-const Results = ({ results }: { results: null | any[] }) => {
+const Result = ({
+  result,
+  isDark,
+}: {
+  result: SearchResult;
+  isDark: boolean;
+}) => {
+  const styles = {
+    transition: "background-color 0.2s",
+    cursor: "pointer",
+    bg: isDark ? "gray.800" : "gray.50",
+    _hover: { bg: isDark ? "gray.700" : "gray.100" },
+    _active: { bg: isDark ? "gray.600" : "gray.200" },
+  };
+
   return (
-    <PopoverBody>
-      Body Body Body Body Body Body Body Body Body Body Body Body Body Body
-    </PopoverBody>
+    <Flex direction="column" {...styles} px={"0.75rem"} py="2px">
+      <Flex align="end">
+        <Text fontSize="sm" fontWeight="600">
+          {result.symbol}
+        </Text>
+        <Text fontSize="sm" ml="8px" fontWeight="500" variant="secondary">
+          {result.exchange}
+        </Text>
+      </Flex>
+
+      <Text fontSize="sm" variant="secondary" noOfLines={1}>
+        {result.name}
+      </Text>
+    </Flex>
   );
 };
