@@ -14,6 +14,10 @@ import {
   Select,
   Flex,
   Text,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
 } from "@chakra-ui/react";
 
 import { type IOrder } from "utils/types/order";
@@ -116,6 +120,21 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
   return (
     <React.Fragment>
       <ModalBody>
+        <Alert
+          status="warning"
+          flexDirection="column"
+          alignItems="center"
+          textAlign="center"
+          mb="1rem"
+        >
+          <AlertIcon />
+          <AlertTitle>Warning!</AlertTitle>
+          <AlertDescription lineHeight={1.25}>
+            If the existing order is filled before the replacement order reaches
+            the execution venue, the existing order will not be replaced.
+          </AlertDescription>
+        </Alert>
+
         <Stack>
           <FormControl isRequired>
             <FormLabel>Order Type</FormLabel>
@@ -218,3 +237,5 @@ const OrderForm = ({ closeModal, onPlaceOrder, orderData }: Props) => {
 };
 
 export default OrderForm;
+
+const Warning = () => <Text></Text>;
