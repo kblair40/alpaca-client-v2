@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 
-import useDispatch from "hooks/useDispatch";
+// import useDispatch from "hooks/useDispatch";
 import { ArrowLeftIcon, EditIcon } from "utils/icons";
 import { toTitleCase } from "utils/helpers";
 import { type IOrder } from "utils/types/order";
@@ -30,7 +30,7 @@ const Order = () => {
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const { orderId } = useParams();
 
@@ -66,10 +66,6 @@ const Order = () => {
     navigate("/dashboard");
     handleCloseEditModal();
   };
-
-  // const handleClickEdit = () => {
-
-  // };
 
   if (loading) {
     return (
