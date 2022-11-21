@@ -66,11 +66,11 @@ const Order = () => {
 
   const handleReplaceOrder = () => {
     handleCloseEditModal();
-    navigate("/dashboard");
+    navigate("/dashboard/orders");
   };
   const handleDeleteOrder = () => {
     setCancelModalOpen(false);
-    navigate("/dashboard");
+    navigate("/dashboard/orders");
   };
 
   if (loading) {
@@ -348,7 +348,7 @@ const BackToDashboard = () => {
   const btnStyles = isDark ? darkStyles : lightStyles;
 
   return (
-    <Link to="/dashboard">
+    <Link to="/dashboard/orders">
       <Button
         {...btnStyles}
         leftIcon={<ArrowLeftIcon boxSize="18px" />}
