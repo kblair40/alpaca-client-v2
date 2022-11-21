@@ -25,7 +25,6 @@ type BalanceChartData = {
   Stocks: DataPoint;
   Short: DataPoint;
 };
-type PositionChartData = { [key: string]: DataPoint };
 export type ChartData = {
   [key: string]: string | number;
   name: string;
@@ -114,7 +113,6 @@ const PositionsChart = () => {
       chartData.push({ name, value, legendValue, color });
     }
     setAllChartData(chartData.filter((data) => data.value > totalValue * 0.01));
-    // setMinAllowedAllValue(totalValue * 0.01);
   };
 
   const containerWidth = useBreakpointValue({
