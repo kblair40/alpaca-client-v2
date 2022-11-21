@@ -62,7 +62,7 @@ const EditOrderModal = ({ isOpen, onClose, orderData }: Props) => {
           </Flex>
         </ModalHeader>
 
-        {orderData && <OrderForm orderData={orderData} />}
+        {orderData && <OrderForm orderData={orderData} closeModal={onClose} />}
       </ModalContent>
     </Modal>
   );
