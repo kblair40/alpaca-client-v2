@@ -7,9 +7,6 @@ import {
   useBreakpointValue,
   Tooltip,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
 } from "@chakra-ui/react";
 import { useLocation, Link } from "react-router-dom";
 
@@ -19,13 +16,13 @@ import {
   HamburgerIcon,
   DashboardIcon,
   FolderIcon,
-  SearchIcon,
   HomeIcon,
 } from "utils/icons";
 import AvatarMenu from "./AvatarMenu";
 import AuthButtons from "./AuthButtons";
 import AlpacaButton from "./AlpacaButton";
 import { userActions } from "store/userSlice";
+import SearchInput from "./SearchInput";
 
 type CollapseButtonLabel = "Dashboard" | "Portfolio" | "Home";
 
@@ -180,36 +177,4 @@ const icons = {
   Dashboard: <DashboardIcon boxSize="20px" />,
   Portfolio: <FolderIcon boxSize="20px" />,
   Home: <HomeIcon boxSize="20px" />,
-};
-
-interface SearchProps {
-  isDark: boolean;
-  isDisabled: boolean;
-}
-
-const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
-  const placeholderColor = isDark ? "gray.300" : "gray.500";
-  return (
-    <Tooltip label="You must be signed in" isDisabled={!isDisabled}>
-      <InputGroup maxW="260px">
-        <InputLeftElement
-          h="36px"
-          children={<SearchIcon boxSize="16px" />}
-          pointerEvents="none"
-        />
-        <Input
-          isDisabled={isDisabled}
-          h="36px"
-          borderRadius="6px"
-          _placeholder={{
-            color: placeholderColor,
-            fontSize: "sm",
-            position: "relative",
-            bottom: "1px",
-          }}
-          placeholder="Search for stocks or indexes"
-        />
-      </InputGroup>
-    </Tooltip>
-  );
 };
