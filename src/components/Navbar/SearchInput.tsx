@@ -70,7 +70,6 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
     result: SearchResult,
     e: React.MouseEvent<HTMLDivElement>
   ) => {
-    e.stopPropagation();
     console.log("CLICKED RESULT:", result);
   };
 
@@ -112,10 +111,7 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
         </PopoverTrigger>
 
         <Portal>
-          <PopoverContent
-            bg={popoverBg}
-            onClick={(e: any) => e.stopPropagation()}
-          >
+          <PopoverContent bg={popoverBg}>
             <PopoverHeader>Results</PopoverHeader>
 
             <PopoverBody py="4px" px={0}>
