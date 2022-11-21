@@ -109,10 +109,6 @@ const PositionsList = () => {
     dispatch(fetchTickerData({ symbol: position.symbol, timeframe: "1D" }));
   };
 
-  const assetClassMap: { [key: string]: string } = {
-    us_equity: "Equity",
-  };
-
   if (status === "loading") {
     return (
       <Center h="100px">
@@ -122,13 +118,18 @@ const PositionsList = () => {
   }
 
   return (
-    <Box minW="340px" w="100%" h="100%">
+    <Box
+      minW="340px"
+      w="100%"
+      h="100%"
+      // border="1px solid green"
+    >
       <PositionDrawer
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
 
-      <TableContainer h="100%" w="100%">
+      <TableContainer h="100%" w="100%" overflowY="auto" py="1rem">
         <Table size="sm">
           <Thead>
             <Tr>

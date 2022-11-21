@@ -137,21 +137,46 @@ const PositionsChart = () => {
   const chartWrapperProps = {
     width: containerWidth,
     maxH: "100%",
-    overflowY: "hidden",
+    h: "100%",
+    overflowY: "auto",
     minW: "180px",
+    pt: "1rem",
+    pb: ".5rem",
   };
 
   return (
-    <Flex h="100%" justify="center" w="100vw" maxW="100vw">
+    <Flex
+      h="100%"
+      justify="center"
+      w="100vw"
+      maxW="100vw"
+      minH={{ base: "100px", sm: "120px", md: "220px" }}
+      overflowY="auto"
+    >
       {/* @ts-ignore */}
       <Box mr={{ base: "1rem", sm: "2rem" }} {...chartWrapperProps}>
         {allChartData && <CustomPieChart data={allChartData} label="All" />}
       </Box>
 
       {/* @ts-ignore */}
-      <Box display={{ base: "none", sm: "block" }} {...chartWrapperProps}>
+      <Box
+        // h="100%"
+        display={{ base: "none", sm: "block" }}
+        {...chartWrapperProps}
+      >
         {stocksChartData && (
-          <CustomPieChart data={stocksChartData} label="Stocks" />
+          // <CustomPieChart data={stocksChartData} label="Stocks" />
+          <CustomPieChart
+            data={stocksChartData
+              .concat(stocksChartData)
+              .concat(stocksChartData)
+              .concat(stocksChartData)
+              .concat(stocksChartData)
+              .concat(stocksChartData)
+              .concat(stocksChartData)
+              .concat(stocksChartData)}
+            label="Stocks"
+          />
         )}
       </Box>
 

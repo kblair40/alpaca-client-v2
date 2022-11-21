@@ -17,11 +17,6 @@ import {
 } from "@chakra-ui/react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 
-import {
-  darkModeChartColors as darkColors,
-  lightModeChartColors as lightColors,
-} from "utils/constants";
-
 import { type ChartData } from "./PositionsChart";
 
 type Props = {
@@ -30,8 +25,6 @@ type Props = {
 };
 
 const CustomPieChart = ({ data, label }: Props) => {
-  const COLORS = useColorModeValue(lightColors, darkColors);
-
   const renderLegend = (props: any) => {
     // console.log("\n\nLEGEND PROPS:", props.payload, "\n\n");
     if (!props) return null;
@@ -49,9 +42,6 @@ const CustomPieChart = ({ data, label }: Props) => {
       >
         <Stack spacing={{ base: "4px" }} w="max-content">
           {props.payload.map((dataPoint: ChartData, index: number) => {
-            // if (!dataPoint.value || dataPoint.value < minAllowedValue) {
-            //   return null;
-            // }
             if (!dataPoint.value) return null;
 
             return (
@@ -112,7 +102,7 @@ const CustomPieChart = ({ data, label }: Props) => {
     payload: data,
     ...legendLayout,
   };
-  // console.log("\n\n\n\n\n\n");
+
   return (
     <Fragment>
       <Scrollbars
