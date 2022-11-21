@@ -97,10 +97,10 @@ const OrderForm = ({
     if (defaults.type !== orderType) {
       if (["limit", "stop", "stop_limit"].includes(orderType)) {
         if (["limit", "stop_limit"].includes(orderType)) {
-          if (!limitRef.current?.value) return false; // should set an error message here instead
+          if (!formData.limitPrice) return false; // should set an error message here instead
         }
         if (["stop", "stop_limit"].includes(orderType)) {
-          if (!stopRef.current?.value) return false; // should set an error message here instead
+          if (!formData.stopPrice) return false; // should set an error message here instead
         }
       }
 
@@ -109,9 +109,6 @@ const OrderForm = ({
 
     return false;
   };
-
-  const limitRef = useRef<HTMLInputElement>(null);
-  const stopRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = async () => {
     if (!timeInForce || !orderType || !formData.quantity) {
@@ -142,9 +139,8 @@ const OrderForm = ({
 
     if (orderType !== "market") {
       if (orderType === "limit" || orderType === "stop_limit") {
-        // console.log("LIMIT REF:", limitRef.current!.value);
-        if (limitRef.current && limitRef.current.value) {
-          tradeParams.limit_price = limitRef.current.value;
+        if (formData.limitPrice) {
+          tradeParams.limit_price = formData.limitPrice;
         } else {
           console.log("EARLY RETURN1 - MISSING INFORMATION");
           setLoading(false);
@@ -152,8 +148,8 @@ const OrderForm = ({
         }
       }
       if (orderType === "stop" || orderType === "stop_limit") {
-        if (stopRef.current && stopRef.current.value) {
-          tradeParams.stop_price = stopRef.current.value;
+        if (formData.stopPrice) {
+          tradeParams.stop_price = formData.stopPrice;
         } else {
           console.log("EARLY RETURN2 - MISSING INFORMATION");
           setLoading(false);
@@ -257,8 +253,16 @@ const OrderForm = ({
           {orderType === "limit" || orderType === "stop_limit" ? (
             <FormControl isRequired>
               <FormLabel>Limit Price</FormLabel>
-              <NumberInput precision={2} min={0} max={100000}>
-                <NumberInputField ref={limitRef} />
+              <NumberInput
+                precision={2}
+                min={0}
+                max={100000}
+                onChange={(val) =>
+                  setFormData({ ...formData, limitPrice: parseInt(val) })
+                }
+                value={formData.limitPrice}
+              >
+                <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
@@ -270,8 +274,16 @@ const OrderForm = ({
           {orderType === "stop" || orderType === "stop_limit" ? (
             <FormControl isRequired>
               <FormLabel>Stop Price</FormLabel>
-              <NumberInput precision={2} min={0} max={100000}>
-                <NumberInputField ref={stopRef} />
+              <NumberInput
+                precision={2}
+                min={0}
+                max={100000}
+                value={formData.stopPrice}
+                onChange={(val) =>
+                  setFormData({ ...formData, stopPrice: parseInt(val) })
+                }
+              >
+                <NumberInputField />
                 <NumberInputStepper>
                   <NumberIncrementStepper />
                   <NumberDecrementStepper />
