@@ -16,6 +16,8 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
+import { chartActions } from "store/chartSlice";
+import useDispatch from "hooks/useDispatch";
 import api from "api";
 import { SearchIcon } from "utils/icons";
 
@@ -37,6 +39,8 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
   const [results, setResults] = useState<SearchResult[] | null>(null);
   const [searching, setSearching] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+
+  const dispatch = useDispatch();
 
   const placeholderColor = isDark ? "gray.300" : "gray.500";
 
@@ -71,6 +75,7 @@ const SearchInput = ({ isDark, isDisabled }: SearchProps) => {
     e: React.MouseEvent<HTMLDivElement>
   ) => {
     console.log("CLICKED RESULT:", result);
+    dispatch(chartActions.setTicker(result));
   };
 
   const popoverBg = isDark ? "gray.800" : "gray.50";
