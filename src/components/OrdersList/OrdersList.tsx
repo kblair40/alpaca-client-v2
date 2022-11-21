@@ -64,7 +64,7 @@ const OrdersList = () => {
       </Box>
 
       <TableContainer w="100%" h="100%" mt="1rem" overflowY="auto">
-        <Table size="sm" h="100%">
+        <Table size="sm">
           <Thead>
             <Tr>
               {COLUMN_LABELS.map((label, i) => {
